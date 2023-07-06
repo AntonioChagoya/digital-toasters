@@ -3,17 +3,13 @@ import Link from "next/link"
 const Menu = () => {
 
   return (
-    <section>
-      <div className="container mx-auto flex justify-between py-5">
-        <Link href={"/"}>
-          <h2>Digital Toaster</h2>
-        </Link>
-
-
+    <section className="bg-gray-800 text-white uppercase">
+      <div className="container mx-auto flex justify-center py-5">
         <nav className="flex" >
           <ul className="flex gap-5">
             <Link href={"/"}>Home</Link>
-            <Link href={"/toasters"}>Products</Link>
+            <Link href={"/toasters"}>Casas tostadoras</Link>
+            <Link href={"/toasters"}>Cafeterías</Link>
           </ul>
         </nav>
       </div>
