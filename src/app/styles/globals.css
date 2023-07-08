@@ -4,6 +4,6 @@
 
 @layer base {
   a {
-    @apply hover: opacity-50;
+    @apply hover:opacity-50 duration-150;
   }
 }
