@@ -6,7 +6,9 @@ const TopBar = () => {
     <section>
       <div className="container mx-auto flex justify-between py-3">
         <div>
-          USD | Order Online Call Us (0123) 456789
+          <p>
+            USD | Order Online Call Us (0123) 456789
+          </p>
         </div>
 
         <nav className="flex" >

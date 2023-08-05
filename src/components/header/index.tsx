@@ -1,10 +1,12 @@
+// Components
 import TopBar from "./TopBar"
 import Menu from "./Menu"
 import Actions from "./Actions"
+
 const HeaderIndex = () => {
 
   return (
-    <header className="flex flex-col divide-y-[1px]">
+    <header>
       <TopBar />
       <Actions />
       <Menu />

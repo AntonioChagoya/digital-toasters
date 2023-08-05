@@ -7,7 +7,7 @@ const Actions = () => {
     <section>
       <div className="container mx-auto flex justify-between py-10 uppercase">
         <Link className="flex items-center" href={"/"}>
-          <h2>Digital Toaster</h2>
+          <h5>Digital Toaster</h5>
         </Link>
 
 
