@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const GET_ALL_PRODUCTS = gql`
+export const GET_PRODUCTS = gql`
 query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
   products(first: $qty) {
     edges {
@@ -10,6 +10,15 @@ query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
         title
         description
         handle
+        featuredImage {
+          id
+          src
+          url
+          altText
+          width
+          height
+        }
+
         variants(first: $variantsQty) {
           edges {
             cursor

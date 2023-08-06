@@ -41,13 +41,13 @@ const slides = images.map((image, index) => (
 
 const Carousel = () => {
   const plugins = [
-    new AutoPlay({ duration: 2000, direction: "NEXT", stopOnHover: false }),
+    new AutoPlay({ duration: 10000, direction: "NEXT", stopOnHover: false }),
     new Arrow()
   ];
 
 
   return (
-    <section className="w-full h-[70vh]">
+    <section className="w-full">
       <Flicking
         plugins={plugins}
         align="prev"
