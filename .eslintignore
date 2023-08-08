@@ -1,0 +1,10 @@
+# .eslintignore file
+.next/
+coverage/
+dist
+node_modules/
+.gitignore
+README.md
+config/
+cypress/
+.github/
