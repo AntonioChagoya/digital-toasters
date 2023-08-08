@@ -11,7 +11,7 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 // Components
-// import SmallProductCard from "./product-cards/Small";
+import SmallProductCard from "./product-cards/Small";
 
 // Shopify
 import { Product } from "@shopify/hydrogen-react/storefront-api-types";
@@ -26,7 +26,7 @@ const RecentProducts = ({ data }: { data: Product[] }) => {
 
   const slides = data.map((product) => (
     <div key={product.id} className="w-1/5 mx-5 overflow-hidden">
-      {/* <SmallProductCard key={product.id} product={product} /> */}
+      <SmallProductCard key={product.id} product={product} />
     </div>
   ))
 
