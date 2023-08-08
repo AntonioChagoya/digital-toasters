@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 export const GET_PRODUCTS = gql`
 query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
@@ -10,6 +10,26 @@ query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
         title
         description
         handle
+        priceRange {
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        compareAtPriceRange {
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
         featuredImage {
           id
           src
@@ -18,7 +38,6 @@ query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
           width
           height
         }
-
         variants(first: $variantsQty) {
           edges {
             cursor
@@ -29,6 +48,23 @@ query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
                 amount
                 currencyCode
               }
+              compareAtPrice {
+                amount
+                currencyCode
+              }
+              image {
+                id
+                src
+                url
+                altText
+                width
+                height
+              }
+              selectedOptions {
+                name
+                value
+              }
+              sku
             }
           }
         }

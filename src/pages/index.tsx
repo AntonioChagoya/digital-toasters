@@ -1,29 +1,30 @@
-// Component
-import Carousel from "@components/Carousel"
-import HeaderIndex from "@components/header"
-import SmallProductCard from "@components/product-cards/Small";
-import RecentProducts from "@components/RecentProducts";
-
-// GraphQL
-import { useQuery } from '@apollo/client';
-import { GET_PRODUCTS } from "graphql/queries/getAllProducts";
+// Components
+import Carousel from "components/Carousel"
+import RecentProducts from "components/RecentProducts";
 
 // Shopify 
-import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
+import { shopifyClient, parseShopifyResponse } from "libs/shopify";
 
-export default function Home() {
-  const { loading, error, data } = useQuery<StorefrontResponse<Product>>(GET_PRODUCTS, {
-    variables: {
-      qty: 10,
-      variantsQty: 1,
+// Types
+import { LayoutType } from "types/app";
+
+export async function getStaticProps() {
+  const products = await shopifyClient.product.fetchAll();
+
+  return {
+    props: {
+      products: parseShopifyResponse(products),
     },
-  });
+  };
+}
+
+export default function Home({ products }) {
+  console.log("prods", products);
 
   return (
     <>
-      <HeaderIndex />
+      <Carousel />
       <main className="flex flex-col gap-16 items-center justify-between container mx-auto">
-        <Carousel />
 
         <section className="flex flex-col items-center justify-center gap-5 p-5 lg:p-0">
           <div>
@@ -32,13 +33,7 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* {data?.products?.edges.map((product) => (
-              <SmallProductCard key={product.cursor} product={product.node} />
-            ))} */}
-            {
-              data &&
-              <RecentProducts data={data} />
-            }
+            <RecentProducts data={products} />
           </div>
 
         </section>
@@ -46,3 +41,5 @@ export default function Home() {
     </>
   )
 }
+
+Home.layout = LayoutType.PUBLIC
