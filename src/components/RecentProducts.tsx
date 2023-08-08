@@ -9,14 +9,12 @@ import { useState } from "react";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { Transition } from "@headlessui/react";
 
 // Components
 import SmallProductCard from "components/product-cards/Small";
 
 // Shopify
 import { Product } from "@shopify/hydrogen-react/storefront-api-types";
-
 
 const RecentProducts = ({ data }: { data: Product[] }) => {
   const [activeArrows, setActiveArrows] = useState(false);
