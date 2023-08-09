@@ -8,7 +8,7 @@ import { shopifyClient, parseShopifyResponse } from "libs/shopify";
 // Types
 import { LayoutType } from "types/app";
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const products = await shopifyClient.product.fetchAll();
 
   return {
