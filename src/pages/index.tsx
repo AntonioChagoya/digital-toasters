@@ -4,6 +4,7 @@ import RecentProducts from "components/RecentProducts";
 
 // Shopify 
 import { shopifyClient, parseShopifyResponse } from "libs/shopify";
+import { useEffect } from "react";
 
 // Types
 import { LayoutType } from "types/app";
@@ -19,6 +20,15 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ products }) {
+
+  useEffect(() => {
+    const seeProducts = async () => {
+      const products2 = await shopifyClient.product.fetchAll();
+
+      console.log("products client", parseShopifyResponse(products2));
+    }
+    seeProducts()
+  }, [])
 
   return (
     <>
