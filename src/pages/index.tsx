@@ -9,26 +9,18 @@ import { useEffect } from "react";
 // Types
 import { LayoutType } from "types/app";
 
-export async function getServerSideProps() {
-  const products = await shopifyClient.product.fetchAll();
+// export async function getServerSideProps() {
+//   const products = await shopifyClient.product.fetchAll();
 
-  return {
-    props: {
-      products: parseShopifyResponse(products),
-    },
-  };
-}
+//   return {
+//     props: {
+//       products: parseShopifyResponse(products),
+//     },
+//   };
+// }
 
 export default function Home({ products }) {
 
-  useEffect(() => {
-    const seeProducts = async () => {
-      const products2 = await shopifyClient.product.fetchAll();
-
-      console.log("products client", parseShopifyResponse(products2));
-    }
-    seeProducts()
-  }, [])
 
   return (
     <>
@@ -42,7 +34,7 @@ export default function Home({ products }) {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-10">
-            <RecentProducts data={products} />
+            {/* <RecentProducts data={products} /> */}
           </div>
 
         </section>
