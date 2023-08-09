@@ -11,7 +11,7 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { ChevronRightIcon, ChevronLeftIcon } from '@heroicons/react/24/solid'
 
 // GraphQL
-import { useQuery } from "@apollo/client"
+// import { useQuery } from "@apollo/client"
 
 // Types
 interface CarouselItem {

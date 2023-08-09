@@ -5,8 +5,8 @@ import "../styles/globals.css";
 import { AppProps } from 'next/app';
 
 // Apollo
-import { ApolloProvider } from '@apollo/client';
-import { client } from "graphql/apollo";
+// import { ApolloProvider } from '@apollo/client';
+// import { client } from "graphql/apollo";
 
 // Components
 import PublicLayout from "components/PublicLayout";
@@ -33,7 +33,8 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
   }
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
+    <>
       <DefaultSeo
         title="Digital Toasters | Coffee Shop"
         description="Coffee Shop"
@@ -47,7 +48,8 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
       <CustomLayout>
         <Component {...pageProps} />
       </CustomLayout>
-    </ApolloProvider>
+    </>
+    // </ApolloProvider>
   );
 }
 
