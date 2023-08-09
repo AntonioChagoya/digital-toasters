@@ -1,3 +1,4 @@
+import { sendShopifyAnalytics } from "@shopify/hydrogen-react"
 
 const Footer = () => {
 

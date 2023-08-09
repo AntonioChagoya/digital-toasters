@@ -1,12 +1,12 @@
 // Styles
 import "../styles/globals.css";
 
-// Next
-import { AppProps } from 'next/app';
+// React
+import { useEffect } from 'react';
 
-// Apollo
-// import { ApolloProvider } from '@apollo/client';
-// import { client } from "graphql/apollo";
+// Next
+import { useRouter } from 'next/router';
+import { AppProps } from 'next/app';
 
 // Components
 import PublicLayout from "components/PublicLayout";
@@ -14,12 +14,40 @@ import PublicLayout from "components/PublicLayout";
 // Libs
 import { DefaultSeo } from "next-seo";
 
+// Shopify
+import {
+  sendShopifyAnalytics,
+  getClientBrowserParameters,
+  AnalyticsEventName,
+  useShopifyCookies,
+} from '@shopify/hydrogen-react';
+
+
 // Types
 import { LayoutType } from "types/app";
 
 interface CustomAppProps extends AppProps {
   Component: AppProps["Component"] & { layout: string };
 }
+
+
+function sendPageView(analyticsPageData) {
+  const payload = {
+    ...getClientBrowserParameters(),
+    ...analyticsPageData,
+  };
+  sendShopifyAnalytics({
+    eventName: AnalyticsEventName.PAGE_VIEW,
+    payload,
+  });
+}
+// Hook into your router's page change events to fire this analytics event:
+// for example, in NextJS:
+const analyticsShopData = {
+  shopId: 'gid://shopify/Shop/8f5ec6-2',
+  currency: 'MXN',
+  acceptedLanguage: 'es',
+};
 
 const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
   const CustomLayout = getLayout();
@@ -31,6 +59,34 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
       return ((children) => <>{children}</>);
     }
   }
+
+  const router = useRouter();
+
+  const hasUserConsent = true;
+
+  const analytics = {
+    hasUserConsent,
+    ...analyticsShopData,
+    ...pageProps.analytics,
+  };
+  const pagePropsWithAppAnalytics = {
+    ...pageProps,
+    analytics,
+  };
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      sendPageView(analytics);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [analytics, router.events]);
+
+  useShopifyCookies();
 
   return (
     // <ApolloProvider client={client}>
@@ -46,7 +102,7 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
         }}
       />
       <CustomLayout>
-        <Component {...pageProps} />
+        <Component {...pagePropsWithAppAnalytics} />
       </CustomLayout>
     </>
     // </ApolloProvider>
