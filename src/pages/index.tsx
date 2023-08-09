@@ -1,26 +1,24 @@
 // Components
 import Carousel from "components/Carousel"
-// import RecentProducts from "components/RecentProducts";
+import RecentProducts from "components/RecentProducts";
 
 // Shopify 
 import { shopifyClient, parseShopifyResponse } from "libs/shopify";
-import { useEffect } from "react";
 
 // Types
 import { LayoutType } from "types/app";
 
-// export async function getServerSideProps() {
-//   const products = await shopifyClient.product.fetchAll();
+export async function getServerSideProps() {
+  const products = await shopifyClient.product.fetchAll();
 
-//   return {
-//     props: {
-//       products: parseShopifyResponse(products),
-//     },
-//   };
-// }
+  return {
+    props: {
+      products: parseShopifyResponse(products),
+    },
+  };
+}
 
 export default function Home({ products }) {
-
 
   return (
     <>
@@ -34,7 +32,7 @@ export default function Home({ products }) {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-10">
-            {/* <RecentProducts data={products} /> */}
+            <RecentProducts data={products} />
           </div>
 
         </section>
