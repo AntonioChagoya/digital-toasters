@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 // Shopify
 import type { Product, ImageConnection } from '@shopify/hydrogen-react/storefront-api-types';
+import { Image } from '@shopify/hydrogen-react';
 
 const SmallProductCard = ({ product }: { product: Product }) => {
   const [images, setImages] = useState<ImageConnection>(product.images)
@@ -10,18 +11,14 @@ const SmallProductCard = ({ product }: { product: Product }) => {
   const { src: imageUrl } = images[0]
   const { price, compareAtPrice } = variants[0]
 
+  console.log(product);
+
   return (
     <article className='flex flex-col gap-5'>
       <a href={`/products/${handle}`} className='block '>
-
-        {
-
-        }
         <img
           src={imageUrl}
           alt={product?.featuredImage?.altText}
-          width={product?.featuredImage?.width}
-          height={product?.featuredImage?.height}
         />
 
         <h5 className='text-center'>{title}</h5>

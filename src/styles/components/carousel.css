@@ -18,4 +18,11 @@
     object-position: bottom;
     position: absolute;
   }
+
+  .custom-arrow.flicking-arrow-prev.is-circle,
+  .custom-arrow.flicking-arrow-next.is-circle {
+    background-color: #000;
+    width: 2rem;
+    height: 2rem;
+  }
 }

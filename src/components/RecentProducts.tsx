@@ -20,28 +20,29 @@ const RecentProducts = ({ data }: { data: Product[] }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
-    new AutoPlay({ duration: 5000, direction: "NEXT", stopOnHover: false }),
+    new AutoPlay({ duration: 1000000, direction: "NEXT", stopOnHover: false }),
     new Arrow()
   ];
 
   const slides = data.map((product) => (
-    <div key={product.id} className="w-1/5 mx-5 overflow-hidden">
+    <div key={product.id} className="w-full sm:w-2/4 lg:w-1/4 sm:px-3 lg:px-5 flicking-panel">
       <SmallProductCard key={product.id} product={product} />
     </div>
   ))
 
   return (
-    <section className="relative w-full" onMouseEnter={() => setActiveArrows(true)} onMouseLeave={() => setActiveArrows(false)}>
+    <section className="relative" onMouseEnter={() => setActiveArrows(true)} onMouseLeave={() => setActiveArrows(false)}>
       <Flicking
         plugins={plugins}
         circular={true}
         align={"prev"}
+        renderOnlyVisible={true}
       >
         {slides}
 
         <ViewportSlot>
-          <FaAngleLeft className={`${activeArrows ? "opacity-100" : "opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
-          <FaAngleRight className={`${activeArrows ? "opacity-100" : "opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
+          <FaAngleLeft className={`${activeArrows ? "opacity-100" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
+          <FaAngleRight className={`${activeArrows ? "opacity-100" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
         </ViewportSlot>
       </Flicking>
     </section >
