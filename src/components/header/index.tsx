@@ -1,6 +1,5 @@
 // Components
 import TopBar from "./TopBar"
-import Menu from "./Menu"
 import Actions from "./Actions"
 
 const HeaderIndex = () => {
@@ -9,7 +8,6 @@ const HeaderIndex = () => {
     <header>
       <TopBar />
       <Actions />
-      <Menu />
     </header>
   )
 }

@@ -3,7 +3,7 @@ import Link from "next/link"
 const TopBar = () => {
 
   return (
-    <section>
+    <section className="bg-black text-white">
       <div className="container mx-auto flex justify-between py-3">
         <div>
           <p>

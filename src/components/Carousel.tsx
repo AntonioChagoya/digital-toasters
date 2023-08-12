@@ -47,7 +47,7 @@ const Carousel = () => {
 
   return (
     <section
-      className="container mx-auto w-full grid grid-rows-3 grid-cols-6 gap-4 py-10 h-[650px]"
+      className="container mx-auto w-full grid grid-rows-3 grid-cols-6 gap-4 h-[650px]"
     >
       <div
         onMouseEnter={() => setActiveArrows(true)} onMouseLeave={() => setActiveArrows(false)}

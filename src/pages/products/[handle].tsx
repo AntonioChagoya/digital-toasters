@@ -1,35 +1,37 @@
+// React
+import { useEffect, useRef, useState } from "react";
+
+// Next
+import { useRouter } from "next/router";
+
 // Shopify
-import { Product, ProductVariantConnection } from "@shopify/hydrogen-react/storefront-api-types";
+import { Product } from "@shopify/hydrogen-react/storefront-api-types";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
-import Link from "next/link";
+import { parseIdStorefront } from "utils/parseIdStorefront";
+import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
+import { FaFireBurner, FaMinus, FaPlus } from "react-icons/fa6";
+import { useForm, useFieldArray } from "react-hook-form";
 
 // Types
 import { LayoutType } from "types/app";
-
-// Utils
-import { parseIdStorefront } from "utils/parseIdStorefront";
+import { parse } from "path";
 
 export const getServerSideProps = async ({ params, query }) => {
   const { handle } = params
 
   const product = await shopifyClient.product.fetchByHandle(handle);
-  // const { data } = await client.query({
-  //   query: GET_PRODUCTS,
-  //   variables: { qty: 6, variantsQty: 3 },
-  // });
 
   return {
     props: {
       product: parseShopifyResponse(product) || null,
-      variantId: query.variant || null,
-      // data: data || null,
     },
   };
 };
 
-const ProductPage = ({ product, variantId }: { product: Product, variantId: string }) => {
+
+const ProductPage = ({ product }: { product: Product }) => {
   /* 
    * Missing or incorrect types 
    * - JS Buy SDK types are not up to date or synced with @shopify/hydrogen-react/storefront-api-types
@@ -38,15 +40,33 @@ const ProductPage = ({ product, variantId }: { product: Product, variantId: stri
   */
   const { variants, handle }: any = product
 
-  console.log("product", product);
-  console.log("variantId", variantId);
+  const router = useRouter()
+  const countRef = useRef()
+  const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
+    defaultValues: {
+      ProductAmount: 1
+    }
+  });
+
+  const [selectedVariant, setSelectedVariant] = useState(variants[0] || null)
+
+  useEffect(() => {
+    const findVariant = variants.find((variant: Product) => parseIdStorefront(variant.id) === router.query.variant)
+    setSelectedVariant(findVariant ? findVariant : variants[0])
+  }, [router.query])
+
+  const onSubmit = (data) => console.log("submit", data);
 
 
-  const getProductTitle = () => {
-    const variant = variants.find((variant: Product) => btoa(variant.id) === variantId)
-    return product.title + `${variantId ? " - " + variant.title : ""}`
-  }
-  console.log("title", getProductTitle());
+  const incrementCounter = () => {
+    const currentValue = getValues('ProductAmount') || 0;
+    setValue('ProductAmount', currentValue + 1);
+  };
+
+  const decrementCounter = () => {
+    const currentValue = getValues('ProductAmount') || 0;
+    setValue('ProductAmount', currentValue - 1);
+  };
 
   return (
     <section className="container mx-auto p-5 lg:p-20">
@@ -63,28 +83,79 @@ const ProductPage = ({ product, variantId }: { product: Product, variantId: stri
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 w-1/2">
-          <div>
-            <h1 className="text-2xl">
-              {getProductTitle()}
-            </h1>
-            <p>{product?.description}</p>
-          </div>
+        <div className="lg:w-1/2 pr-36">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-2">
+                <div>
+                  <h1 className="text-3xl font-bold">
+                    {product.title + `${selectedVariant ? " - " + selectedVariant.title : ""}`}
+                  </h1>
+                  <div className="flex gap-2 items-center">
+                    <TbStarFilled className="text-yellow-500" />
+                    <TbStarFilled className="text-yellow-500" />
+                    <TbStarFilled className="text-yellow-500" />
+                    <TbStarHalfFilled className="text-yellow-500" />
+                    <TbStar className="text-yellow-500" />
+                    <span>1 reviews</span>
+                  </div>
+                  <p className="mb-5 mt-2 text-gray-500">{product.description}</p>
+                </div>
 
-          <div className="">
-            {variants.length > 1 && variants.map((variant: Product) => (
-              <Link
-                key={variant.id}
-                href={`/products/${handle}?variant=${btoa(variant.id)}`}
-                className="inline-block mx-2 p-2 border rounded"
-              >
-                {variant.title}
-              </Link>
-            ))}
-          </div>
+                <h4 className="text-2xl text-gray-900">${selectedVariant.price.amount}</h4>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <div className="flex gap-2 items-center">
+                  <FaFireBurner size={30} /><h5> {product.vendor}</h5>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <FaFireBurner size={30} /><h5> {product.vendor}</h5>
+                </div>
+              </div>
+
+              <div className="">
+                <h5>Peso</h5>
+                <div className="flex gap-4">
+                  {variants?.length > 1 && variants.map((variant: Product) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => router.push(`/products/${handle}?variant=${parseIdStorefront(variant.id)}`)}
+                      className={`${variant.id === selectedVariant.id ? " bg-gray-900 text-white" : ""} hover:opacity-70 duration-200 inline-block p-2 border rounded`}
+                    >
+                      {variant.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-10">
+                <button type="submit" className="border rounded p-4 bg-orange-400 text-white">Agregar al carrito</button>
+                <div className="flex gap-3 items-center">
+                  <button onClick={decrementCounter} type="button" className="p-3 rounded bg-slate-100"><FaMinus /></button>
+                  <input
+                    type="number"
+                    id="ProductAmount"
+                    name="ProductAmount"
+                    {...register("ProductAmount", { min: 1, max: 99 })}
+                    onBlur={(e) => {
+                      if (parseInt(e.target.value) > 99) {
+                        setValue('ProductAmount', 99);
+                      }
+                      if (parseInt(e.target.value) < 1) {
+                        setValue('ProductAmount', 1);
+                      }
+                    }}
+                    className="w-24 h-10 border rounded text-center px-4"
+                  />
+                  <button type="button" onClick={incrementCounter} className="p-3 rounded bg-slate-100"><FaPlus /></button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-      </article>
-    </section>
+      </article >
+    </section >
   )
 }
 
