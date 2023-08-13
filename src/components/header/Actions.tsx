@@ -1,6 +1,12 @@
+// Next
 import Link from "next/link"
-import { AcademicCapIcon, HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
-import Menu from "./Menu"
+
+// Libs
+import { HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline'
+
+// Components
+import Menu from "@components/header/Menu"
+import Cart from "@components/cart"
 
 const Actions = () => {
 
@@ -18,9 +24,8 @@ const Actions = () => {
             <Link href={"/"} className="flex gap-2 items-center">
               <HeartIcon className="w-8" />
             </Link>
-            <Link href={"/toasters"} className="flex gap-2 items-center">
-              <ShoppingBagIcon className="w-8" />
-            </Link>
+
+            <Cart />
           </div>
         </nav>
       </div>

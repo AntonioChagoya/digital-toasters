@@ -8,6 +8,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AppProps } from 'next/app';
 
+// Contexts
+import { CartContextProvider } from "context/CartContext";
+
 // Components
 import PublicLayout from "components/PublicLayout";
 
@@ -22,14 +25,12 @@ import {
   useShopifyCookies,
 } from '@shopify/hydrogen-react';
 
-
 // Types
 import { LayoutType } from "types/app";
 
 interface CustomAppProps extends AppProps {
   Component: AppProps["Component"] & { layout: string };
 }
-
 
 function sendPageView(analyticsPageData) {
   const payload = {
@@ -41,8 +42,7 @@ function sendPageView(analyticsPageData) {
     payload,
   });
 }
-// Hook into your router's page change events to fire this analytics event:
-// for example, in NextJS:
+
 const analyticsShopData = {
   shopId: 'gid://shopify/Shop/8f5ec6-2',
   currency: 'MXN',
@@ -101,9 +101,11 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
           site_name: "Coffee Shop",
         }}
       />
-      <CustomLayout>
-        <Component {...pagePropsWithAppAnalytics} />
-      </CustomLayout>
+      <CartContextProvider>
+        <CustomLayout>
+          <Component {...pagePropsWithAppAnalytics} />
+        </CustomLayout>
+      </CartContextProvider>
     </>
     // </ApolloProvider>
   );

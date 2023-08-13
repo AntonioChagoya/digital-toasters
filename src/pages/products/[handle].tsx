@@ -5,18 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 // Shopify
-import { Product } from "@shopify/hydrogen-react/storefront-api-types";
+import { Product, ProductVariant, ProductVariantConnection } from "@shopify/hydrogen-react/storefront-api-types";
+
+// Utils
+import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
-import { parseIdStorefront } from "utils/parseIdStorefront";
-import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
-import { FaFireBurner, FaMinus, FaPlus } from "react-icons/fa6";
-import { useForm, useFieldArray } from "react-hook-form";
+import { TbStar, TbStarHalfFilled, TbStarFilled, TbBuildingWarehouse } from "react-icons/tb";
+import { FaFireBurner, FaMinus, FaPlus, FaBoxesStacked } from "react-icons/fa6";
+import { useForm } from "react-hook-form";
+
+// Components
+import Options from "@components/productPage/Options";
 
 // Types
 import { LayoutType } from "types/app";
-import { parse } from "path";
 
 export const getServerSideProps = async ({ params, query }) => {
   const { handle } = params
@@ -38,10 +42,9 @@ const ProductPage = ({ product }: { product: Product }) => {
    *    Reference: https://github.com/Shopify/js-buy-sdk/issues/770
    * - Using any for now to avoid errors
   */
-  const { variants, handle }: any = product
+  const { variants, options, handle }: any = product
 
   const router = useRouter()
-  const countRef = useRef()
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       ProductAmount: 1
@@ -51,22 +54,27 @@ const ProductPage = ({ product }: { product: Product }) => {
   const [selectedVariant, setSelectedVariant] = useState(variants[0] || null)
 
   useEffect(() => {
-    const findVariant = variants.find((variant: Product) => parseIdStorefront(variant.id) === router.query.variant)
+    const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
     setSelectedVariant(findVariant ? findVariant : variants[0])
   }, [router.query])
 
   const onSubmit = (data) => console.log("submit", data);
 
-
   const incrementCounter = () => {
-    const currentValue = getValues('ProductAmount') || 0;
-    setValue('ProductAmount', currentValue + 1);
+    if (watch('ProductAmount') < 99) {
+      const currentValue = getValues('ProductAmount') || 0;
+      setValue('ProductAmount', currentValue + 1);
+    }
   };
 
   const decrementCounter = () => {
-    const currentValue = getValues('ProductAmount') || 0;
-    setValue('ProductAmount', currentValue - 1);
+    if (watch('ProductAmount') > 1) {
+      const currentValue = getValues('ProductAmount') || 0;
+      setValue('ProductAmount', currentValue - 1);
+    }
   };
+
+  console.log("product", product);
 
   return (
     <section className="container mx-auto p-5 lg:p-20">
@@ -102,35 +110,30 @@ const ProductPage = ({ product }: { product: Product }) => {
                   <p className="mb-5 mt-2 text-gray-500">{product.description}</p>
                 </div>
 
-                <h4 className="text-2xl text-gray-900">${selectedVariant.price.amount}</h4>
+                <div className="flex gap-3">
+                  {
+                    selectedVariant?.compareAtPrice?.amount &&
+                    <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(selectedVariant.compareAtPrice.amount)}</h4>
+                  }
+                  <h4 className="text-2xl text-gray-900">{parseMoneyFormat(selectedVariant?.price.amount)}</h4>
+                </div>
               </div>
 
               <div className="flex flex-col gap-3">
                 <div className="flex gap-2 items-center">
-                  <FaFireBurner size={30} /><h5> {product.vendor}</h5>
+                  <FaBoxesStacked size={30} /><h5>{selectedVariant.sku}</h5>
                 </div>
                 <div className="flex gap-2 items-center">
-                  <FaFireBurner size={30} /><h5> {product.vendor}</h5>
+                  <FaFireBurner size={30} /><h5>{product.vendor}</h5>
                 </div>
               </div>
 
-              <div className="">
-                <h5>Peso</h5>
-                <div className="flex gap-4">
-                  {variants?.length > 1 && variants.map((variant: Product) => (
-                    <button
-                      key={variant.id}
-                      onClick={() => router.push(`/products/${handle}?variant=${parseIdStorefront(variant.id)}`)}
-                      className={`${variant.id === selectedVariant.id ? " bg-gray-900 text-white" : ""} hover:opacity-70 duration-200 inline-block p-2 border rounded`}
-                    >
-                      {variant.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <Options options={options} handle={handle} selectedVariant={selectedVariant} />
 
               <div className="flex gap-10">
-                <button type="submit" className="border rounded p-4 bg-orange-400 text-white">Agregar al carrito</button>
+                <button type="submit" className="border rounded p-4 bg-orange-400 text-white">
+                  Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}
+                </button>
                 <div className="flex gap-3 items-center">
                   <button onClick={decrementCounter} type="button" className="p-3 rounded bg-slate-100"><FaMinus /></button>
                   <input
@@ -144,6 +147,11 @@ const ProductPage = ({ product }: { product: Product }) => {
                       }
                       if (parseInt(e.target.value) < 1) {
                         setValue('ProductAmount', 1);
+                      }
+                    }}
+                    onChange={(e) => {
+                      if (parseInt(e.target.value) < 99 || parseInt(e.target.value) > 1) {
+                        setValue('ProductAmount', parseInt(e.target.value));
                       }
                     }}
                     className="w-24 h-10 border rounded text-center px-4"

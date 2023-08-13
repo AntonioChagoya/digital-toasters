@@ -1,4 +1,6 @@
 @import '../styles/components/carousel.css';
+@import '../styles/custom.css';
+
 
 @tailwind base;
 @tailwind components;
@@ -30,17 +32,19 @@
   a {
     @apply hover:opacity-50 duration-150;
   }
+  button {
+    @apply hover:opacity-70 duration-200;
+  }
   
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
 }

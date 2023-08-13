@@ -14,3 +14,14 @@ export const parseIdStorefront = (id: string) => {
 
   return storeFrontId;
 };
+/* 
+ * Parse money format to MXN
+ */
+export const parseMoneyFormat = (amount: number, currency = "MXN") => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+  })
+
+  return formatter.format(Number(amount))
+};

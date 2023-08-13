@@ -1,0 +1,5 @@
+@layer base {
+  .variant-options input[type="radio"]:checked+label { 
+    @apply bg-black text-white;
+  }
+} 

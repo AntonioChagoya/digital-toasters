@@ -11,7 +11,7 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 // Components
-import SmallProductCard from "@components/product-cards/Small";
+import SmallProductCard from "@components/productCards/Small";
 
 // Shopify
 import { Product } from "@shopify/hydrogen-react/storefront-api-types";
