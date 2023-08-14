@@ -30,13 +30,23 @@ export const useCartContext = () => {
 };
 
 export const CartContextProvider = ({ children }: Props) => {
-  const [checkout, setCheckout] = useState<Checkout>(null);
+  const [checkout, setCheckout] = useLocalStorage("checkout", null);
   const [lineItems, setLineItems] = useLocalStorage("lineItems", []);
 
   useEffect(() => {
-    shopifyClient.checkout.create().then((checkout) => {
-      setCheckout(checkout)
-    });
+    if (!checkout?.id) {
+      shopifyClient.checkout.create().then((checkout) => {
+        console.log("create checkout", checkout);
+
+        setCheckout(checkout)
+      });
+    } else {
+      shopifyClient.checkout.fetch(checkout?.id).then((checkout) => {
+        console.log("fetch checkout", checkout);
+
+        setCheckout(checkout)
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -47,7 +57,7 @@ export const CartContextProvider = ({ children }: Props) => {
     }
   }, [lineItems]);
 
-  console.log("checkout", checkout?.lineItems);
+  // console.log("checkout", checkout?.lineItems);
 
   const value = {
     checkout,
