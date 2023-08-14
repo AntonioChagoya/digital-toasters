@@ -7,8 +7,6 @@ import { ShoppingBagIcon } from '@heroicons/react/24/outline'
 const Cart = () => {
   const { cart } = useCartContext()
 
-  // console.log("Cart", cart);
-
   return (
     <>
       <ShoppingBagIcon className="w-8" />

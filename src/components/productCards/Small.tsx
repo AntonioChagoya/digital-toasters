@@ -11,8 +11,6 @@ const SmallProductCard = ({ product }: { product: Product }) => {
   const { src: imageUrl } = images[0]
   const { price, compareAtPrice } = variants[0]
 
-  console.log(product);
-
   return (
     <article className='flex flex-col gap-5'>
       <a href={`/products/${handle}`} className='block '>

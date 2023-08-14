@@ -2,7 +2,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 // Shopify
-import { Cart } from "@shopify/hydrogen-react/storefront-api-types";
+import { Cart, Checkout } from "@shopify/hydrogen-react/storefront-api-types";
 
 // Hooks
 import { useLocalStorage } from "hooks/useLocalStorage";
@@ -16,11 +16,13 @@ export interface Props {
 }
 
 export interface CartProviderProps {
-  cart: Cart
+  checkout: Checkout
+  lineItems?: any
+  setLineItems?: any
 }
 
 const CartContext = createContext<CartProviderProps>({
-  cart: null
+  checkout: null,
 });
 
 export const useCartContext = () => {
@@ -28,18 +30,29 @@ export const useCartContext = () => {
 };
 
 export const CartContextProvider = ({ children }: Props) => {
-  const [cartCheckout, setCartCheckout] = useState<Cart>(null);
-  const [checkoutId, setCheckoutId] = useState<number>(null);
+  const [checkout, setCheckout] = useState<Checkout>(null);
+  const [lineItems, setLineItems] = useLocalStorage("lineItems", []);
 
   useEffect(() => {
     shopifyClient.checkout.create().then((checkout) => {
-      setCartCheckout(checkout)
-      setCheckoutId(checkout.id)
-      // console.log("checkout", checkout);
+      setCheckout(checkout)
     });
   }, []);
+
+  useEffect(() => {
+    if (checkout?.id) {
+      shopifyClient.checkout.addLineItems(checkout?.id, lineItems).then((checkout) => {
+        setCheckout(checkout)
+      });
+    }
+  }, [lineItems]);
+
+  console.log("checkout", checkout?.lineItems);
+
   const value = {
-    cart: cartCheckout
+    checkout,
+    lineItems,
+    setLineItems,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
