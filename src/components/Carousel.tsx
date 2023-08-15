@@ -72,7 +72,7 @@ const Carousel = () => {
         style={{
           backgroundImage: "url('https://kofi-demo.myshopify.com/cdn/shop/files/3_a88bf04a-3a9e-4ee5-9556-3311f54c5724.jpg?v=1637578314')",
         }}
-        className="row-span-1 col-span-2 border-[0.5px] rounded h-[180px]"
+        className="row-span-1 col-span-2 border-[0.5px] rounded"
       />
 
       <div

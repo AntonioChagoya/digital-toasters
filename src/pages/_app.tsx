@@ -13,7 +13,7 @@ import { CartContextProvider } from "context/CartContext";
 
 // Components
 import PublicLayout from "components/PublicLayout";
-
+import Cart from "@components/cart";
 // Libs
 import { DefaultSeo } from "next-seo";
 
@@ -106,6 +106,8 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
           <Component {...pagePropsWithAppAnalytics} />
         </CustomLayout>
       </CartContextProvider>
+
+      {/* <Cart /> */}
     </>
     // </ApolloProvider>
   );

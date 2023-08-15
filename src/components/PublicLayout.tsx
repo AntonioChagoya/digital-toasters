@@ -7,7 +7,7 @@ const PublicLayout = ({ children }) => {
   return (
     <>
       <HeaderIndex />
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col gap-20 relative z-0">
         {children}
       </div>
       <Footer />
