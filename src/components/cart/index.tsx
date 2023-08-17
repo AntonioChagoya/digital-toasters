@@ -45,7 +45,7 @@ const Cart = () => {
 
   return (
     <>
-      <TbShoppingCart size={30} onClick={() => setIsCartOpen(true)} className='hover:text-orange-500 cursor-pointer' />
+      <TbShoppingCart size={25} onClick={() => setIsCartOpen(true)} className='hover:text-orange-500 cursor-pointer' />
 
       <Transition
         show={isCartOpen}

@@ -10,14 +10,14 @@ const Menu = () => {
       <ul className="flex gap-8">
         <Link href={"/productos"}>
           <div className="flex flex-col items-center">
-            <TbPaperBag size={30} />
+            <TbPaperBag size={25} />
 
             <p className="text-center leading-tight">
               Productos
             </p>
           </div>
         </Link>
-        <Link href={"/colecciones"}>
+        {/* <Link href={"/colecciones"}>
           <div className="flex flex-col items-center">
             <TbCategory2 size={30} />
 
@@ -25,10 +25,10 @@ const Menu = () => {
               Colecciones
             </p>
           </div>
-        </Link>
+        </Link> */}
         <Link href={"/casas-tostadoras"}>
           <div className="flex flex-col items-center">
-            <TbFlame size={30} />
+            <TbFlame size={25} />
 
             <p className="text-center leading-tight">
               Tostadores
@@ -37,7 +37,7 @@ const Menu = () => {
         </Link>
         <Link href={"/cafeterias"}>
           <div className="flex flex-col items-center">
-            <TbBuildingStore size={30} />
+            <TbBuildingStore size={25} />
 
             <p className="text-center leading-tight">
               Cafeterías
