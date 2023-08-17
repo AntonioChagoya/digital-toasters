@@ -1,5 +1,5 @@
 import HeaderIndex from "../../../src/components/header"
-import Carousel from "../../../src/components/Carousel"
+import Carousel from "../../../src/components/home/Carousel"
 
 export default function Home() {
   return (

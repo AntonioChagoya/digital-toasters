@@ -1,10 +1,15 @@
 @import '../styles/components/carousel.css';
 @import '../styles/custom.css';
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 
+  * Normalized CSS
+  * - Do not write styles for classes, ids or any other than html tags normalization
+  * - For custom styles use custom.css
+*/
 
 @layer base {
   html {

@@ -4,7 +4,9 @@ export default function Document() {
 
   return (
     <Html lang="en">
-      <Head />
+      <Head >
+        <link rel="icon" href="/digital-toasters-favicon.svg" sizes="any" />
+      </Head>
       <body>
         <Main />
         <NextScript />

@@ -1,15 +1,15 @@
 // Components
 import HeaderIndex from "./header"
 import Footer from "./footer"
-import Carousel from "./Carousel"
+import Carousel from "./home/Carousel"
 const PublicLayout = ({ children }) => {
 
   return (
     <>
       <HeaderIndex />
-      <div className="flex flex-col gap-20 relative z-0">
+      <main className="flex flex-col gap-20 relative z-0">
         {children}
-      </div>
+      </main>
       <Footer />
     </>
   )

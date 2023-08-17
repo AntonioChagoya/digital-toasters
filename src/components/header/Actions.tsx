@@ -14,8 +14,9 @@ const Actions = () => {
     <section>
       <div className="container mx-auto flex justify-between py-8">
         <Link className="flex items-center" href={"/"}>
-          <h5>Digital Toaster</h5>
+          <img width={150} src="/digital-toasters-logo.svg" alt="" />
         </Link>
+
         <Menu />
 
         <nav className="flex" >

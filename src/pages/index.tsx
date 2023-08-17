@@ -1,6 +1,6 @@
 // Components
-import Carousel from "components/Carousel"
-import RecentProducts from "@components/RecentProducts";
+import Carousel from "@components/home/Carousel"
+import RecentProducts from "@components/home/RecentProducts";
 
 // Shopify 
 import { shopifyClient, parseShopifyResponse } from "libs/shopify";

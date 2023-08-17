@@ -7,23 +7,24 @@ import { useCartContext } from "context/CartContext";
 // Next
 import { useRouter } from "next/router";
 
-// Shopify
-import { Product, ProductVariant, ProductVariantConnection } from "@shopify/hydrogen-react/storefront-api-types";
-
 // Utils
 import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
-import { TbStar, TbStarHalfFilled, TbStarFilled, TbBuildingWarehouse } from "react-icons/tb";
-import { FaFireBurner, FaMinus, FaPlus, FaBoxesStacked } from "react-icons/fa6";
+import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
+import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 
 // Components
 import Options from "@components/productPage/Options";
+import QuantitySelector from "@components/productPage/QuantitySelector";
 
 // Types
 import { LayoutType } from "types/app";
+import { CustomProduct } from "types/shopify-sdk";
+import { addLineItem, updateLineItem } from "services/shopify";
+import { ProductVariant } from "shopify-buy";
 
 export const getServerSideProps = async ({ params, query }) => {
   const { handle } = params
@@ -38,26 +39,17 @@ export const getServerSideProps = async ({ params, query }) => {
 };
 
 
-const ProductPage = ({ product }: { product: Product }) => {
-  /* 
-   * Missing or incorrect types 
-   * - JS Buy SDK types are not up to date or synced with @shopify/hydrogen-react/storefront-api-types
-   *    Reference: https://github.com/Shopify/js-buy-sdk/issues/770
-   * - Using any for now to avoid errors
-  */
-  const { setLineItems, lineItems } = useCartContext()
-
+const ProductPage = ({ product }: { product: CustomProduct }) => {
   const router = useRouter()
-  const { variants, options, handle }: any = product
-
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
+  const { setIsCartOpen, checkout, setCheckout } = useCartContext()
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       ProductAmount: 1
     }
   });
 
-  const [selectedVariant, setSelectedVariant] = useState<any>()
-
+  const { variants, options, handle } = product
   const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
 
   useEffect(() => {
@@ -68,8 +60,19 @@ const ProductPage = ({ product }: { product: Product }) => {
     }
   }, [router.query])
 
-  const onSubmit = (data) => {
-    setLineItems([...lineItems, { variantId: selectedVariant.id, quantity: data.ProductAmount }]);
+  const onSubmit = async (data) => {
+    const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id)
+    const lineItemToAdd = { variantId: selectedVariant.id, quantity: data.ProductAmount }
+
+    const getLineItemInCheckout = currentCheckout.lineItems.find((item) => item.id === lineItemToAdd.variantId);
+
+    if (getLineItemInCheckout) {
+      updateLineItem([{ variantId: selectedVariant.id, quantity: data.ProductAmount }], currentCheckout, setCheckout)
+    } else {
+      addLineItem([{ variantId: selectedVariant.id, quantity: data.ProductAmount }], currentCheckout, setCheckout)
+    }
+
+    setIsCartOpen(true)
   }
 
   const incrementCounter = () => {
@@ -156,30 +159,13 @@ const ProductPage = ({ product }: { product: Product }) => {
                   <button type="submit" className="border rounded p-4 bg-orange-400 text-white">
                     Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}
                   </button>
-                  <div className="flex gap-3 items-center">
-                    <button onClick={decrementCounter} type="button" className="p-3 rounded bg-slate-100"><FaMinus /></button>
-                    <input
-                      type="number"
-                      id="ProductAmount"
-                      name="ProductAmount"
-                      {...register("ProductAmount", { min: 1, max: 99 })}
-                      onBlur={(e) => {
-                        if (parseInt(e.target.value) > 99) {
-                          setValue('ProductAmount', 99);
-                        }
-                        if (parseInt(e.target.value) < 1) {
-                          setValue('ProductAmount', 1);
-                        }
-                      }}
-                      onChange={(e) => {
-                        if (parseInt(e.target.value) < 99 || parseInt(e.target.value) > 1) {
-                          setValue('ProductAmount', parseInt(e.target.value));
-                        }
-                      }}
-                      className="w-24 h-10 border rounded text-center px-4"
-                    />
-                    <button type="button" onClick={incrementCounter} className="p-3 rounded bg-slate-100"><FaPlus /></button>
-                  </div>
+                  <QuantitySelector
+                    nameId={'ProductAmount'}
+                    decrementCounter={decrementCounter}
+                    incrementCounter={incrementCounter}
+                    register={register}
+                    setValue={setValue}
+                  />
                 </div>
               </div>
             </form>

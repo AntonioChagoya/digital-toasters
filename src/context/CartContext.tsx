@@ -2,10 +2,13 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 // Shopify
-import { Cart, Checkout } from "@shopify/hydrogen-react/storefront-api-types";
+import { Checkout, CheckoutLineItemInput } from "shopify-buy";
 
 // Hooks
 import { useLocalStorage } from "hooks/useLocalStorage";
+
+// Services
+import { updateLineItem } from "services/shopify";
 
 // Libs
 import { shopifyClient } from "libs/shopify";
@@ -17,19 +20,21 @@ export interface Props {
 
 export interface CartProviderProps {
   checkout: Checkout
-  lineItems?: any
-  setLineItems?: any
+  isCartOpen: boolean
+  setIsCartOpen?: (isCartOpen: boolean) => void
+  setCheckout?: (checkout: Checkout) => void
 }
 
 const CartContext = createContext<CartProviderProps>({
   checkout: null,
+  isCartOpen: false,
 });
 
 export const useCartContext = () => {
   return useContext(CartContext);
 };
 
-export const removeDuplicatedItemsFromObjectsArray = (items) => {
+export const removeDuplicatedItemsFromVariantObjectsArray = (items) => {
 
   return items.reduce((acc, obj) => {
     if (acc.has(obj.variantId)) {
@@ -42,9 +47,11 @@ export const removeDuplicatedItemsFromObjectsArray = (items) => {
   }, new Map());
 }
 
+
+
 export const CartContextProvider = ({ children }: Props) => {
   const [checkout, setCheckout] = useLocalStorage("checkout", null);
-  const [lineItems, setLineItems] = useLocalStorage("lineItems", []);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     if (!checkout?.id) {
@@ -59,49 +66,12 @@ export const CartContextProvider = ({ children }: Props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (checkout?.id) {
-      shopifyClient.checkout.fetch(checkout?.id)
-        .then((checkout) => {
-          const notDuplicatedLineItems: any = Array.from(removeDuplicatedItemsFromObjectsArray(lineItems).values())
-
-          const updatedLineItem = checkout?.lineItems?.map((item) => {
-            return {
-              id: item.id,
-              quantity: notDuplicatedLineItems?.find((lineItem: any) => lineItem?.variantId === item?.variant?.id).quantity,
-            };
-          })
-          const notCreatedYetItems = notDuplicatedLineItems?.filter((item) => !checkout?.lineItems?.find((lineItem: any) => lineItem?.variant?.id === item?.variantId))
-
-          if (notCreatedYetItems.length > 0) {
-            shopifyClient.checkout.addLineItems(checkout.id, notCreatedYetItems).then((checkout) => {
-              console.log("Items created at checkout", checkout);
-              setCheckout(checkout)
-            });
-          }
-
-          if (updatedLineItem.length > 0) {
-            shopifyClient.checkout.updateLineItems(checkout.id, updatedLineItem).then((checkout) => {
-              console.log("Items updated at checkout", checkout);
-              setCheckout(checkout)
-            });
-          } else {
-            shopifyClient.checkout.addLineItems(checkout.id, notDuplicatedLineItems).then((checkout) => {
-              console.log("Items created at checkout", checkout);
-              setCheckout(checkout)
-            });
-          }
-        });
-    }
-  }, [lineItems]);
-
-  // console.log("checkout", checkout);
-
 
   const value = {
     checkout,
-    lineItems,
-    setLineItems,
+    isCartOpen,
+    setCheckout,
+    setIsCartOpen
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

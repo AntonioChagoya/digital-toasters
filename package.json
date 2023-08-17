@@ -19,6 +19,7 @@
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "@types/shopify-buy": "^2.17.1",
     "apollo-link-context": "^1.0.20",
     "autoprefixer": "10.4.14",
     "eslint": "8.44.0",

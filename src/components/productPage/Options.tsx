@@ -4,18 +4,20 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 
 // Shopify
-import { Product, ProductOption } from "@shopify/hydrogen-react/storefront-api-types"
+import { ProductVariant } from "shopify-buy"
 
 // Utils
 import { parseIdStorefront } from "utils/stringParse"
-import { parse } from "path"
+
+// Types
+import { CustomProductOption } from "types/shopify-sdk"
 
 interface OptionProps {
-  options: ProductOption[]
+  options: CustomProductOption[]
   selectedVariant: any
   handle: string
-  variants: any
-  register: any
+  variants: ProductVariant[]
+  register
 }
 
 const Options = ({ options, handle, selectedVariant, variants, register }: OptionProps) => {
@@ -23,7 +25,7 @@ const Options = ({ options, handle, selectedVariant, variants, register }: Optio
 
   return (
     <div className="flex flex-col gap-5">
-      {options.map((option: any, index) => (
+      {options.map((option, index) => (
         <div key={index}>
           <h5>{option.name}</h5>
           <div className="variant-options flex gap-4 mt-2">
@@ -54,7 +56,10 @@ const Options = ({ options, handle, selectedVariant, variants, register }: Optio
                           })
                         })
                       })
-                      router.push(`/products/${handle}?variant=${parseIdStorefront(newVariant.id)}`)
+                      router.push({
+                        pathname: `/products/${handle}`,
+                        query: { variant: parseIdStorefront(newVariant.id) }
+                      }, undefined, { scroll: false })
                     }}
                   />
                   <label
