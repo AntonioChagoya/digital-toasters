@@ -14,9 +14,9 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import SmallProductCard from "@components/productCards/Small";
 
 // Shopify
-import { Product } from "@shopify/hydrogen-react/storefront-api-types";
+import { CustomProduct } from "types/shopify-sdk";
 
-const RecentProducts = ({ data }: { data: Product[] }) => {
+const RecentProducts = ({ data }: { data: CustomProduct[] }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
