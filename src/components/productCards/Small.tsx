@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
 // Shopify
-import type { Product, ImageConnection } from '@shopify/hydrogen-react/storefront-api-types';
-import { Image } from '@shopify/hydrogen-react';
+import { CustomProduct } from 'types/shopify-sdk';
 
-const SmallProductCard = ({ product }: { product: Product }) => {
-  const [images, setImages] = useState<ImageConnection>(product.images)
+const SmallProductCard = ({ product }: { product: CustomProduct }) => {
+  const [images, setImages] = useState(product.images)
 
-  const { id, title, variants, handle } = product
+  const { title, variants, handle } = product
   const { src: imageUrl } = images[0]
   const { price, compareAtPrice } = variants[0]
 
