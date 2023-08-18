@@ -12,7 +12,7 @@ import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
-import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
+import { TbStar, TbStarHalfFilled, TbStarFilled, TbLoader3 } from "react-icons/tb";
 import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 
@@ -41,13 +41,14 @@ export const getServerSideProps = async ({ params, query }) => {
 
 const ProductPage = ({ product }: { product: CustomProduct }) => {
   const router = useRouter()
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
-  const { setIsCartOpen, checkout, setCheckout } = useCartContext()
+  const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       ProductAmount: 1
     }
   });
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
+  const [loading, setLoading] = useState(false)
 
   const { variants, options, handle } = product
   const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
@@ -61,6 +62,8 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
   }, [router.query])
 
   const onSubmit = async (data) => {
+    setLoading(true)
+
     const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id)
     const lineItemToAdd = { variantId: selectedVariant.id, quantity: data.ProductAmount }
 
@@ -73,20 +76,25 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     }
 
     setIsCartOpen(true)
+    setLoading(false)
   }
 
   const incrementCounter = () => {
+    setLoading(true)
     if (watch('ProductAmount') < 99) {
       const currentValue = getValues('ProductAmount') || 0;
       setValue('ProductAmount', currentValue + 1);
     }
+    setLoading(false)
   };
 
   const decrementCounter = () => {
+    setLoading(true)
     if (watch('ProductAmount') > 1) {
       const currentValue = getValues('ProductAmount') || 0;
       setValue('ProductAmount', currentValue - 1);
     }
+    setLoading(false)
   };
 
   return (
@@ -156,17 +164,28 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                 }
 
                 <div className="flex flex-col-reverse lg:flex-row gap-10 items-center">
-                  <button type="submit" className="border rounded p-6 bg-orange-400 text-white">
-                    Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}
+                  <button disabled={loading} type="submit" className="disabled:opacity-50 disabled:pointer-events-none border rounded p-3 bg-orange-400 text-white w-full">
+                    {
+                      loading
+                        ?
+                        <div className="flex w-full justify-center items-center">
+                          <TbLoader3 className="animate-spin" size={24} />
+                        </div>
+                        :
+                        <>Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}</>
+                    }
+
                   </button>
-                  {/* <QuantitySelector
+                  <QuantitySelector
                     id="ProductPageSelector"
+                    inputSize="w-20 h-10"
+                    buttonSize="w-10 h-10"
                     name={'ProductAmount'}
                     decrementCounter={decrementCounter}
                     incrementCounter={incrementCounter}
                     register={register}
                     setValue={setValue}
-                  /> */}
+                  />
                 </div>
               </div>
             </form>

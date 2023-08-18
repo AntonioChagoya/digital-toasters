@@ -136,7 +136,8 @@ const Cart = () => {
                                     <div className="relative">
                                       <QuantitySelector
                                         id="CartSelector"
-                                        size="small"
+                                        inputSize="w-10 h-7"
+                                        buttonSize="w-7 h-7"
                                         name={parseIdStorefront(item.variant.id)}
                                         register={register}
                                         setValue={setValue}
