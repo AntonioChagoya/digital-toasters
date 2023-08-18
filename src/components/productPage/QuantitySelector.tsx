@@ -2,27 +2,30 @@
 // Libs
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
-const QuantitySelector = ({ decrementCounter, incrementCounter, register, setValue, nameId, onChange = (event) => { } }) => {
+const QuantitySelector = ({ decrementCounter, incrementCounter, register, setValue, onChange = (event) => { }, ...rest }) => {
 
   return (
     <div className="flex gap-3 items-center">
       <button onClick={decrementCounter} type="button" className="p-3 rounded bg-slate-100"><FaMinus /></button>
       <input
+        {...rest}
         type="number"
-        id={nameId}
-        name={nameId}
-        {...register(nameId, { min: 1, max: 99 })}
+        id={rest.id || ""}
+        name={rest.name || ""}
+        max={99}
+        min={1}
+        {...register(rest.name)}
         onBlur={(e) => {
           if (parseInt(e.target.value) > 99) {
-            setValue(nameId, 99);
+            setValue(rest.name, 99);
           }
           if (parseInt(e.target.value) < 1) {
-            setValue(nameId, 1);
+            setValue(rest.name, 1);
           }
         }}
         onChange={(e) => {
-          if (parseInt(e.target.value) < 99 || parseInt(e.target.value) > 1) {
-            setValue(nameId, parseInt(e.target.value));
+          if (parseInt(e.target.value) < 100 && parseInt(e.target.value) > 0) {
+            setValue(rest.name, parseInt(e.target.value));
             onChange(e)
           }
         }}

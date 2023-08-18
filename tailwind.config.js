@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
@@ -21,6 +22,13 @@ module.exports = {
       fontFamily: {
         default: ["Lato", ...defaultTheme.fontFamily.mono],
       },
+      colors:{
+        "primary": colors.orange[400],
+        "scondary": "",
+        "info": "",
+        "warning": "",
+        "error": "",
+      }
     },
   },
   plugins: [],

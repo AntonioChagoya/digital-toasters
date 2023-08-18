@@ -160,7 +160,8 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                     Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}
                   </button>
                   <QuantitySelector
-                    nameId={'ProductAmount'}
+                    id="ProductPageSelector"
+                    name={'ProductAmount'}
                     decrementCounter={decrementCounter}
                     incrementCounter={incrementCounter}
                     register={register}

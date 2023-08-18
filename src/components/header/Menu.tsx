@@ -8,8 +8,8 @@ const Menu = () => {
     //   <div className="container mx-auto flex justify-center py-5">
     <nav className="flex" >
       <ul className="flex gap-8">
-        <Link href={"/productos"}>
-          <div className="flex flex-col items-center">
+        <Link href={"/colecciones"}>
+          <div className="flex flex-col items-center hover:text-primary">
             <TbPaperBag size={25} />
 
             <p className="text-center leading-tight">

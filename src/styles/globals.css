@@ -13,7 +13,7 @@
 
 @layer base {
   html {
-    @apply font-default;
+    @apply font-default duration-200;
   }
   h1{
     font-size: 5rem;
@@ -34,8 +34,11 @@
   h6{
     font-size: 1rem;
   }
+  p{
+    @apply duration-200 
+  }
   a {
-    @apply hover:opacity-50 duration-200;
+    @apply duration-200;
   }
   button {
     @apply hover:opacity-70 duration-200;
