@@ -1,17 +1,17 @@
 @layer base {
-  @import url('/fonts/Lato-Regular.ttf');
-  @import url('/fonts/Lato-Bold.ttf');
+  @import url("/fonts/LatoRegular.ttf");
+  @import url("/fonts/LatoBold.ttf");
 
   @font-face {
     font-family: "Lato";
-    src: url("/fonts/Lato-Regular.ttf");
+    src: url("/fonts/LatoRegular.ttf");
     font-style: normal;
     font-weight: 400;
   }
 
   @font-face {
     font-family: "Lato";
-    src: url("/fonts/Lato-Bold.ttf");
+    src: url("/fonts/LatoBold.ttf");
     font-style: bold;
     font-weight: 500;
   }
