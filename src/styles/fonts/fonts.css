@@ -1,5 +1,6 @@
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+  @import url('/fonts/Lato-Regular.ttf');
+  @import url('/fonts/Lato-Bold.ttf');
 
   @font-face {
     font-family: "Lato";
