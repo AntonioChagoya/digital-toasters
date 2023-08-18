@@ -2,13 +2,10 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 
 // Shopify
-import { Checkout, CheckoutLineItemInput } from "shopify-buy";
+import { Checkout } from "shopify-buy";
 
 // Hooks
 import { useLocalStorage } from "hooks/useLocalStorage";
-
-// Services
-import { updateLineItem } from "services/shopify";
 
 // Libs
 import { shopifyClient } from "libs/shopify";
@@ -21,6 +18,8 @@ export interface Props {
 export interface CartProviderProps {
   checkout: Checkout
   isCartOpen: boolean
+  isDataLoading?: boolean
+  setIsDataLoading?: (isDataLoading: boolean) => void
   setIsCartOpen?: (isCartOpen: boolean) => void
   setCheckout?: (checkout: Checkout) => void
 }
@@ -50,16 +49,26 @@ export const removeDuplicatedItemsFromVariantObjectsArray = (items) => {
 export const CartContextProvider = ({ children }: Props) => {
   const [checkout, setCheckout] = useLocalStorage("checkout", null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   useEffect(() => {
+    setIsDataLoading(true)
+
     if (!checkout?.id || checkout?.completedAt) {
       shopifyClient.checkout.create().then((checkout) => {
         setCheckout(checkout)
+        setTimeout(() => {
+          setIsDataLoading(false)
+        }, 500)
       });
     } else {
       shopifyClient.checkout.fetch(checkout?.id)
         .then((checkout) => {
           setCheckout(checkout)
+          setTimeout(() => {
+            setIsDataLoading(false)
+          }, 500)
+
         });
     }
   }, [isCartOpen]);
@@ -69,6 +78,8 @@ export const CartContextProvider = ({ children }: Props) => {
     checkout,
     isCartOpen,
     setCheckout,
+    isDataLoading,
+    setIsDataLoading,
     setIsCartOpen
   };
 
