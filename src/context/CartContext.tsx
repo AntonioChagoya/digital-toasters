@@ -62,7 +62,7 @@ export const CartContextProvider = ({ children }: Props) => {
           setCheckout(checkout)
         });
     }
-  }, []);
+  }, [isCartOpen]);
 
 
   const value = {
