@@ -24,7 +24,7 @@ module.exports = {
       },
       colors:{
         "primary": colors.orange[400],
-        "scondary": "",
+        "secondary": colors.gray[600],
         "info": "",
         "warning": "",
         "error": "",

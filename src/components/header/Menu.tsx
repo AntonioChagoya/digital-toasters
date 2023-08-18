@@ -6,7 +6,7 @@ const Menu = () => {
   return (
     // <section className="bg-gray-900 text-white">
     //   <div className="container mx-auto flex justify-center py-5">
-    <nav className="flex" >
+    <nav className="hidden lg:flex" >
       <ul className="flex gap-8">
         <Link href={"/colecciones"}>
           <div className="flex flex-col items-center hover:text-primary">

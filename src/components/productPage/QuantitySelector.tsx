@@ -1,12 +1,13 @@
 
+
 // Libs
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const QuantitySelector = ({ decrementCounter, incrementCounter, register, setValue, onChange = (event) => { }, ...rest }) => {
 
   return (
-    <div className="flex gap-3 items-center">
-      <button onClick={decrementCounter} type="button" className="p-3 rounded bg-slate-100"><FaMinus /></button>
+    <div className="flex gap-1 items-center">
+      <button onClick={decrementCounter} type="button" className="hover:scale-[1.1] p-1 lg:p-2 rounded bg-gray-100"><FaMinus /></button>
       <input
         {...rest}
         type="number"
@@ -29,9 +30,9 @@ const QuantitySelector = ({ decrementCounter, incrementCounter, register, setVal
             onChange(e)
           }
         }}
-        className="w-24 h-10 border rounded text-center px-4"
+        className="w-8 h-6 lg:w-12 lg:h-8 border rounded text-center text-sm"
       />
-      <button type="button" onClick={incrementCounter} className="p-3 rounded bg-slate-100"><FaPlus /></button>
+      <button type="button" onClick={incrementCounter} className={`hover:scale-[1.1] p-1 lg:p-2 rounded bg-gray-100`}><FaPlus /></button>
     </div>
   )
 }

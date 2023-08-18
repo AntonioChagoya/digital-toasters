@@ -10,13 +10,13 @@ import { useEffect, useState } from 'react'
 import { useCartContext } from 'context/CartContext'
 
 // Icons
-import { TbShoppingCart, TbPaperBagOff, TbLoader3 } from 'react-icons/tb'
+import { TbShoppingCart, TbLoader3 } from 'react-icons/tb'
+import { FaXmark } from "react-icons/fa6";
 
 // Libs
 import { useForm } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
 import { shopifyClient } from 'libs/shopify'
-import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Pagination } from "@egjs/flicking-plugins";
 
 // Components
@@ -99,110 +99,105 @@ const Cart = () => {
               leave="duration-200"
               leaveFrom="opacity-100"
               leaveTo="opacity-0 translate-x-24"
-              className="fixed right-0 top-0 max-w-[40vw] px-6 py-4 h-full bg-white z-50 shadow-xl"
+              className="fixed right-0 top-0 h-full w-fit max-w-[95vw] md:max-w-[50vw] lg:max-w-[25vw] p-2 lg:px-3 lg:pb-4 lg:pt-2 bg-white z-50 shadow-xl"
             >
               <aside>
-                <form className='flex flex-col gap-5' onSubmit={handleSubmit(onSubmit)}>
-                  <div className='flex justify-between gap-20 mb-2 py-4 border-b'>
-                    <h4 className='font-bold text-lg'>Mi Carrito</h4>
-                    <span onClick={() => setIsCartOpen(false)}>x</span>
+                <form className='flex flex-col justify-between lg:gap-5 h-screen min-h-[100vh]' onSubmit={handleSubmit(onSubmit)}>
+                  <div className='flex justify-between gap-20 mb-2 p-2 lg:py-4 border-b'>
+                    <h4 className='font-bold text-lg text-secondary'>Mi Carrito</h4>
+                    <FaXmark onClick={() => setIsCartOpen(false)} size={20} className="hover:scale-[1.1] cursor-pointer text-secondary" />
                   </div>
 
-                  <div className='relative pb-8'>
-                    <section className='max-h-[70vh] h-full overflow-y-auto no-scrollbar'>
-                      <div>
-                        <Flicking align={"10"} circular={true} horizontal={false} plugins={plugins}>
-                          {checkout?.lineItems.map((item) => (
-                            <li key={parseIdStorefront(item.id)} className='block mb-5'>
-                              <article className='relative flex flex-nowrap gap-5 border rounded p-3 pt-8 pr-8'>
-                                <div className='w-[100px] max-w-[100px] h-[100px]'>
-                                  <img
-                                    width={80}
-                                    height={80}
-                                    src={item.variant.image.src}
-                                    alt={"Product image" + item.variant.image.altText}
-                                    className='object-cover w-full h-full rounded'
-                                  />
-                                </div>
-                                <button className='absolute top-3 right-3' type='button'>
-                                  <TbPaperBagOff size={20} />
-                                </button>
-
-                                <div className='w-full flex flex-col justify-start gap-5'>
+                  <div className='relative h-full'>
+                    <section className='max-h-[70vh] overflow-y-auto no-scrollbar'>
+                      <div className="divide-y">
+                        {checkout?.lineItems.map((item) => (
+                          <li key={parseIdStorefront(item.id)} className="block">
+                            <article className='relative flex gap-2 lg:gap-5 p-1 lg:p-2 '>
+                              <div className='w-[60px] h-[60px] lg:w-[100px] min-w-[60px] max-w-[100px] lg:h-[100px]'>
+                                <img
+                                  width={80}
+                                  height={80}
+                                  src={item.variant.image.src}
+                                  alt={"Product image" + item.variant.image.altText}
+                                  className='object-cover w-full h-full rounded'
+                                />
+                              </div>
+                              <div className='w-full flex flex-col justify-start gap-2 lg:gap-5'>
+                                <div>
                                   <h5>{item.title + " - " + item.variant.title}</h5>
-                                  <div
-                                    className={`${loading && loading.id === item.variant.id
-                                      ? "pointer-events-none opacity-50"
-                                      : ""
-                                      } flex justify-between items-center gap-10
+                                </div>
+                                <div
+                                  className={`${loading && loading.id === item.variant.id
+                                    ? "pointer-events-none opacity-50"
+                                    : ""
+                                    } flex justify-start items-center gap-3
                                 `}
-                                  >
-                                    <div className="scale-[0.8] ">
-                                      <QuantitySelector
-                                        id="CartSelector"
-                                        name={parseIdStorefront(item.variant.id)}
-                                        register={register}
-                                        setValue={setValue}
-                                        onChange={(e) => {
-                                          e.preventDefault()
-                                          setItemToUpdate(item)
-                                        }}
-                                        decrementCounter={() => {
-                                          setLoading({ id: item.variant.id, status: true })
-                                          const nameId = parseIdStorefront(item.variant.id);
+                                >
+                                  <div className="relative">
+                                    <QuantitySelector
+                                      id="CartSelector"
+                                      size="small"
+                                      name={parseIdStorefront(item.variant.id)}
+                                      register={register}
+                                      setValue={setValue}
+                                      onChange={(e) => {
+                                        e.preventDefault()
+                                        setItemToUpdate(item)
+                                      }}
+                                      decrementCounter={() => {
+                                        setLoading({ id: item.variant.id, status: true })
+                                        const nameId = parseIdStorefront(item.variant.id);
 
-                                          if (watch(nameId) > 1) {
-                                            const currentValue = getValues(nameId) || 0;
+                                        if (watch(nameId) > 1) {
+                                          const currentValue = getValues(nameId) || 0;
 
-                                            shopifyClient.checkout
-                                              .updateLineItems(checkout.id, [{ id: item.id, quantity: currentValue - 1 }])
-                                              .then((checkout) => {
-                                                setCheckout(checkout)
-                                                setLoading({ id: null, status: false })
-                                              })
-                                          }
-                                        }}
-                                        incrementCounter={() => {
-                                          setLoading({ id: item.variant.id, status: true })
+                                          shopifyClient.checkout
+                                            .updateLineItems(checkout.id, [{ id: item.id, quantity: currentValue - 1 }])
+                                            .then((checkout) => {
+                                              setCheckout(checkout)
+                                              setLoading({ id: null, status: false })
+                                            })
+                                        }
+                                      }}
+                                      incrementCounter={() => {
+                                        setLoading({ id: item.variant.id, status: true })
 
-                                          const nameId = parseIdStorefront(item.variant.id);
+                                        const nameId = parseIdStorefront(item.variant.id);
 
-                                          if (watch(nameId) < 99) {
-                                            const currentValue = getValues(nameId) || 0;
+                                        if (watch(nameId) < 99) {
+                                          const currentValue = getValues(nameId) || 0;
 
-                                            shopifyClient.checkout
-                                              .updateLineItems(checkout.id, [{ id: item.id, quantity: currentValue + 1 }])
-                                              .then((checkout) => {
-                                                setCheckout(checkout)
-                                                setLoading({ id: null, status: false })
-                                              })
-                                          }
-                                        }}
-                                      />
-                                    </div>
-
-                                    <div>
-                                      {parseMoneyFormat(item.variant.price.amount * item.quantity)}
-                                    </div>
+                                          shopifyClient.checkout
+                                            .updateLineItems(checkout.id, [{ id: item.id, quantity: currentValue + 1 }])
+                                            .then((checkout) => {
+                                              setCheckout(checkout)
+                                              setLoading({ id: null, status: false })
+                                            })
+                                        }
+                                      }}
+                                    />
                                   </div>
+                                  <FaXmark size={13} />
+                                  <p className="text-sm">
+                                    {parseMoneyFormat(item.variant.price.amount)}
+                                  </p>
                                 </div>
 
-                              </article>
-                            </li>
-                          ))}
-                          <ViewportSlot>
-                            <div id='CustomPagination' className="flicking-pagination"></div>
-                          </ViewportSlot>
-                        </Flicking>
+                              </div>
+
+                            </article>
+                          </li>
+                        ))}
                       </div>
                     </section>
                   </div>
 
-                  <section>
+                  <section className="mb-6">
                     <button
                       disabled={loading.status || false}
                       type="submit"
-                      className="bg-primary p-4 w-full text-white rounded shadow text-lg disabled:opacity-50"
+                      className="bg-primary p-4 w-full text-white rounded shadow text-sm lg:text-lg disabled:opacity-50"
                     >
                       {
                         loading.status

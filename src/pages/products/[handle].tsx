@@ -104,7 +104,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
           </div>
         </div>
 
-        <div className="lg:w-1/2 pr-36">
+        <div className="lg:w-1/2 lg:pr-36">
           {selectedVariant &&
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-10">
@@ -155,18 +155,18 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                   />
                 }
 
-                <div className="flex gap-10">
-                  <button type="submit" className="border rounded p-4 bg-orange-400 text-white">
+                <div className="flex flex-col-reverse lg:flex-row gap-10 items-center">
+                  <button type="submit" className="border rounded p-6 bg-orange-400 text-white">
                     Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}
                   </button>
-                  <QuantitySelector
+                  {/* <QuantitySelector
                     id="ProductPageSelector"
                     name={'ProductAmount'}
                     decrementCounter={decrementCounter}
                     incrementCounter={incrementCounter}
                     register={register}
                     setValue={setValue}
-                  />
+                  /> */}
                 </div>
               </div>
             </form>

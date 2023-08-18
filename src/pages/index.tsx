@@ -59,7 +59,7 @@ export default function Home({ products }) {
             <h4 className="text-center font-bold">¿Cómo funciona DigitalToasters.com?</h4>
           </div>
 
-          <div className="grid grid-rows-2 grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 lg:grid-rows-2 lg:grid-cols-3 gap-5">
             {
               serviceCards.map((card, index) => (
                 <div key={index} className="border border-gray-300 p-5 pr-32 rounded shadow hover:scale-[1.05] duration-200">
