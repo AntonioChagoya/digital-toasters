@@ -69,9 +69,9 @@ const Cart = () => {
 
   const onSubmit = (data) => {
     setLoading({ id: null, status: true })
-    console.log("checkout stored", checkout);
-
-    router.push(checkout.webUrl);
+    if (checkout?.lineItems.length > 0) {
+      router.push(checkout.webUrl);
+    }
   }
 
   return (
@@ -99,7 +99,7 @@ const Cart = () => {
               leave="duration-200"
               leaveFrom="opacity-100"
               leaveTo="opacity-0 translate-x-24"
-              className="fixed right-0 top-0 h-full w-fit max-w-[95vw] md:max-w-[50vw] lg:max-w-[25vw] p-2 lg:px-3 lg:pb-4 lg:pt-2 bg-white z-50 shadow-xl"
+              className="fixed right-0 top-0 h-full w-full max-w-[90vw] md:max-w-[50vw] lg:max-w-[35vw] xl:max-w-[25vw] 2xl:max-w-[22vw] p-2 lg:px-3 lg:pb-4 lg:pt-2 bg-white z-50 shadow-xl"
             >
               <aside>
                 <form className='flex flex-col justify-between lg:gap-5 h-screen min-h-[100vh]' onSubmit={handleSubmit(onSubmit)}>
@@ -195,9 +195,9 @@ const Cart = () => {
 
                   <section className="mb-6">
                     <button
-                      disabled={loading.status || false}
+                      disabled={loading.status || checkout?.lineItems.length <= 0 || false}
                       type="submit"
-                      className="bg-primary p-4 w-full text-white rounded shadow text-sm lg:text-lg disabled:opacity-50"
+                      className="bg-primary hover:opacity-70 p-4 w-full text-white rounded shadow text-sm lg:text-lg disabled:opacity-50"
                     >
                       {
                         loading.status

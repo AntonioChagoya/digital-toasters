@@ -47,14 +47,12 @@ export const removeDuplicatedItemsFromVariantObjectsArray = (items) => {
   }, new Map());
 }
 
-
-
 export const CartContextProvider = ({ children }: Props) => {
   const [checkout, setCheckout] = useLocalStorage("checkout", null);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
-    if (!checkout?.id) {
+    if (!checkout?.id || checkout?.completedAt) {
       shopifyClient.checkout.create().then((checkout) => {
         setCheckout(checkout)
       });

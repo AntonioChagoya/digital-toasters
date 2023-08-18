@@ -32,7 +32,7 @@ const QuantitySelector = ({ decrementCounter, incrementCounter, register, setVal
         }}
         className="w-8 h-6 lg:w-12 lg:h-8 border rounded text-center text-sm"
       />
-      <button type="button" onClick={incrementCounter} className={`hover:scale-[1.1] p-1 lg:p-2 rounded bg-gray-100`}><FaPlus /></button>
+      <button type="button" onClick={incrementCounter} className={`p-1 lg:p-2 rounded bg-gray-100`}><FaPlus /></button>
     </div>
   )
 }
