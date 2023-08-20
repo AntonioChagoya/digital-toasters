@@ -51,11 +51,11 @@ export default function Home({ products }) {
   return (
     <>
       <Carousel />
-      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-10">
+      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-32">
 
-        <section className="flex flex-col items-center justify-center gap-5 p-5 lg:p-0">
+        <section className="flex flex-col items-center justify-center gap-10 p-5 lg:p-0">
           <div>
-            <p className="text-center">Area de servicio</p>
+            <p className="text-center text-accent mb-0">Area de Servicio</p>
             <h4 className="text-center font-bold">¿Cómo funciona DigitalToasters.com?</h4>
           </div>
 
@@ -74,8 +74,8 @@ export default function Home({ products }) {
 
         <section className="flex flex-col items-center justify-center gap-5 p-5 lg:p-0">
           <div>
-            <h4 className="text-center font-bold">Productos recientes</h4>
-            <p className="text-center">Choose your coffee</p>
+            <p className="text-center text-accent mb-0">Café fresco</p>
+            <h4 className="text-center font-bold">Productos Recientes</h4>
           </div>
 
           <div className="flex gap-10">

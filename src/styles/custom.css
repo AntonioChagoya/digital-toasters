@@ -1,8 +1,15 @@
 @layer base {
-
   /* Hide radio buttons  */
   .variant-options input[type="radio"]:checked+label {
     @apply bg-black text-white;
+  }
+
+  footer a {
+    @apply hover:opacity-70;
+  }
+
+  main a {
+    @apply hover:opacity-70 duration-200
   }
 }
 

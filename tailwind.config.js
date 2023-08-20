@@ -25,6 +25,7 @@ module.exports = {
       colors:{
         "primary": colors.orange[400],
         "secondary": colors.gray[600],
+        "accent": "#CA9528",
         "info": "",
         "warning": "",
         "error": "",

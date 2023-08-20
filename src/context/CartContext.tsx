@@ -57,20 +57,17 @@ export const CartContextProvider = ({ children }: Props) => {
     if (!checkout?.id || checkout?.completedAt) {
       shopifyClient.checkout.create().then((checkout) => {
         setCheckout(checkout)
-        setTimeout(() => {
-          setIsDataLoading(false)
-        }, 500)
       });
     } else {
       shopifyClient.checkout.fetch(checkout?.id)
         .then((checkout) => {
           setCheckout(checkout)
-          setTimeout(() => {
-            setIsDataLoading(false)
-          }, 500)
-
         });
     }
+
+    setTimeout(() => {
+      setIsDataLoading(false)
+    }, 500)
   }, [isCartOpen]);
 
 
