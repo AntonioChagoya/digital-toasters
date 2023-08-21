@@ -15,7 +15,11 @@ import { shopifyClient, parseShopifyResponse } from "libs/shopify"
 import { TbStar, TbStarHalfFilled, TbStarFilled, TbLoader3 } from "react-icons/tb";
 import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
-
+import Flicking, { ViewportSlot } from "@egjs/react-flicking";
+import { Sync, Pagination } from "@egjs/flicking-plugins";
+import "@egjs/react-flicking/dist/flicking.css";
+import "@egjs/flicking-plugins/dist/flicking-plugins.css";
+import "@egjs/flicking-plugins/dist/pagination.css";
 // Components
 import Options from "@components/productPage/Options";
 import QuantitySelector from "@components/productPage/QuantitySelector";
@@ -40,6 +44,8 @@ export const getServerSideProps = async ({ params, query }) => {
 
 
 const ProductPage = ({ product }: { product: CustomProduct }) => {
+  const flicking0 = useRef();
+  const flicking1 = useRef();
   const router = useRouter()
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
@@ -52,6 +58,29 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
 
   const { variants, options, handle } = product
   const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
+
+  const [plugins, setPlugins] = useState([]);
+
+  useEffect(() => {
+    setPlugins(
+      [new Sync({
+        type: "index",
+        synchronizedFlickingOptions: [
+          {
+            flicking: flicking0.current,
+            isSlidable: true
+          },
+          {
+            flicking: flicking1.current,
+            isClickable: true,
+            activeClass: "custom-selected-thumb",
+          }
+        ]
+      }),
+      new Pagination({ type: 'bullet' })
+      ],
+    );
+  }, []);
 
   useEffect(() => {
     if (variants && router.query.variant) {
@@ -97,19 +126,67 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   };
 
+  console.log("product", product);
+
   return (
     <section className="container mx-auto p-5 lg:p-20">
       <article className="flex flex-col lg:flex-row justify-center gap-10">
-        <div className="flex lg:w-1/2">
-          <div className="">
-            <img src={product.images[0]?.src} alt={product?.featuredImage?.altText} />
-          </div>
-          <div>
-            <img src="" alt="" />
-            <img src="" alt="" />
-            <img src="" alt="" />
-            <img src="" alt="" />
-          </div>
+        <div className="lg:w-[500px]">
+          <Flicking
+            className="mb-5"
+            ref={flicking0}
+            bounce={30}
+            plugins={plugins}
+          >
+            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[0]?.src} />
+            </div>
+            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[1]?.src} />
+            </div>
+            <div className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[2]?.src} />
+            </div>
+            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
+            </div>
+            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
+            </div>
+            <div className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
+            </div>
+
+            <ViewportSlot>
+              <div className="flicking-pagination"></div>
+            </ViewportSlot>
+          </Flicking>
+
+          <Flicking
+            ref={flicking1}
+            moveType="freeScroll"
+            bound={true}
+            bounce={30}
+          >
+            <div className="w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[0]?.src} />
+            </div>
+            <div className=" w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[1]?.src} />
+            </div>
+            <div className="w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[2]?.src} />
+            </div>
+            <div className=" w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
+            </div>
+            <div className=" w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
+            </div>
+            <div className=" w-[100px] h-[100px] mr-2">
+              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
+            </div>
+          </Flicking>
         </div>
 
         <div className="lg:w-1/2 lg:pr-36">
