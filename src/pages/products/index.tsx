@@ -73,10 +73,8 @@ const Productos = ({ collections, products }: { collections: Collection[], produ
               <h2 className="text-xl text-gray-800 font-bold mb-2">Cafetería</h2>
               <div className="w-full">
                 <select className="w-full border border-gray-300 rounded px-4 py-2 mt-2">
-                  <option value="">A - Z</option>
-                  <option value="">Z - A</option>
-                  <option value="">Precio más bajo</option>
-                  <option value="">Precio más alto</option>
+                  <option value="">Nimbus</option>
+                  <option value="">Zaranda</option>
                 </select>
               </div>
             </section>

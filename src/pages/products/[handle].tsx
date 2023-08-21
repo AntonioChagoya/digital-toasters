@@ -126,7 +126,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   };
 
-  console.log("product", product);
+  console.log("product", product.images);
 
   return (
     <section className="container mx-auto p-5 lg:p-20">
@@ -135,28 +135,20 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
           <Flicking
             className="mb-5"
             ref={flicking0}
-            bounce={30}
             plugins={plugins}
+            bounce={30}
+            renderOnlyVisible={true}
           >
-            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[0]?.src} />
-            </div>
-            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[1]?.src} />
-            </div>
-            <div className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[2]?.src} />
-            </div>
-            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
-            </div>
-            <div className=" w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
-            </div>
-            <div className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-              <img className="panel-image object-cover w-full h-full pointer-events-none" src={product.images[3]?.src} />
-            </div>
-
+            {product.images.map((image, index) => (
+              <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+                <img
+                  className="panel-image object-cover w-full h-full pointer-events-none"
+                  width={image.width}
+                  height={image.height}
+                  src={image.src}
+                />
+              </div>
+            ))}
             <ViewportSlot>
               <div className="flicking-pagination"></div>
             </ViewportSlot>
@@ -168,24 +160,17 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
             bound={true}
             bounce={30}
           >
-            <div className="w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[0]?.src} />
-            </div>
-            <div className=" w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[1]?.src} />
-            </div>
-            <div className="w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[2]?.src} />
-            </div>
-            <div className=" w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
-            </div>
-            <div className=" w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
-            </div>
-            <div className=" w-[100px] h-[100px] mr-2">
-              <img className="thumb-image w-full h-full object-cover rounded" src={product.images[3]?.src} />
-            </div>
+            {product.images.map((image, index) => (
+              <div key={index} className="w-[100px] h-[100px] mr-2">
+                <img
+                  className="thumb-image w-full h-full object-cover rounded"
+                  width={image.width}
+                  height={image.height}
+                  src={image.src}
+                />
+              </div>
+            ))}
+
           </Flicking>
         </div>
 
@@ -240,7 +225,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                   />
                 }
 
-                <div className="flex flex-col-reverse lg:flex-row gap-10 items-center">
+                <div className="flex flex-col-reverse lg:gap-10 gap-5 items-start justify-start">
                   <button disabled={loading} type="submit" className="disabled:opacity-50 disabled:pointer-events-none border rounded p-3 bg-orange-400 text-white w-full">
                     {
                       loading
@@ -255,8 +240,8 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                   </button>
                   <QuantitySelector
                     id="ProductPageSelector"
-                    inputSize="w-20 h-10"
-                    buttonSize="w-10 h-10"
+                    inputsize="w-20 h-10"
+                    buttonsize="w-10 h-10"
                     name={'ProductAmount'}
                     decrementCounter={decrementCounter}
                     incrementCounter={incrementCounter}

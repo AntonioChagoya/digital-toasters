@@ -14,6 +14,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // gridTemaplateColumns: {
+      //   '8': 'repeat(8, minmax(0, 1fr))',
+      // },
+      // gridTemaplateRows: {
+      //   '8': 'repeat(8, minmax(0, 1fr))',
+      // },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -32,5 +38,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms')({ strategy: 'base'}),
+  ],
 }

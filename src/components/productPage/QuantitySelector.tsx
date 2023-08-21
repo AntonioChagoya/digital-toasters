@@ -7,7 +7,7 @@ const QuantitySelector = ({ decrementCounter, incrementCounter, register, setVal
 
   return (
     <div className="flex gap-1 items-center">
-      <button onClick={decrementCounter} type="button" className={`${rest.buttonSize ? rest.buttonSize : "w-6 h-6"} hover:scale-[1.1] flex justify-center items-center rounded bg-gray-100`}><FaMinus /></button>
+      <button onClick={decrementCounter} type="button" className={`${rest?.buttonsize ? rest?.buttonsize : "w-6 h-6"} hover:scale-[1.1] flex justify-center items-center rounded bg-gray-100`}><FaMinus /></button>
       <input
         {...rest}
         type="number"
@@ -30,9 +30,9 @@ const QuantitySelector = ({ decrementCounter, incrementCounter, register, setVal
             onChange(e)
           }
         }}
-        className={`${rest.inputSize ? rest.inputSize : "w-6 h-6"} border rounded text-center text-sm`}
+        className={`${rest?.inputsize ? rest?.inputsize : "w-6 h-6"} border border-gray-200 rounded text-center text-sm`}
       />
-      <button type="button" onClick={incrementCounter} className={`${rest.buttonSize ? rest.buttonSize : "w-6 h-6 flex justify-center items-center"} flex justify-center items-center hover:scale-[1.1] rounded bg-gray-100`}><FaPlus /></button>
+      <button type="button" onClick={incrementCounter} className={`${rest?.buttonsize ? rest?.buttonsize : "w-6 h-6 flex justify-center items-center"} flex justify-center items-center hover:scale-[1.1] rounded bg-gray-100`}><FaPlus /></button>
     </div>
   )
 }

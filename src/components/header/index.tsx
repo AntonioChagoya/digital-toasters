@@ -5,7 +5,7 @@ import Actions from "./Actions"
 const HeaderIndex = () => {
 
   return (
-    <header>
+    <header className="shadow-md shadow-gray-100">
       <TopBar />
       <Actions />
     </header>

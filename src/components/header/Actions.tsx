@@ -11,7 +11,7 @@ import Cart from "@components/cart"
 const Actions = () => {
 
   return (
-    <section>
+    <section className="px-4">
       <div className="container mx-auto flex justify-between py-5">
         <Link className="flex items-center" href={"/"}>
           <img width={120} src="/digital-toasters-logo.svg" alt="" />

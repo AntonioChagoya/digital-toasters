@@ -37,6 +37,7 @@ const RecentProducts = ({ data }: { data: CustomProduct[] }) => {
         circular={true}
         align={"prev"}
         renderOnlyVisible={true}
+        bounce={30}
       >
         {slides}
 

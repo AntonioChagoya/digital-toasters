@@ -8,13 +8,11 @@ const Menu = () => {
     //   <div className="container mx-auto flex justify-center py-5">
     <nav className="hidden lg:flex" >
       <ul className="flex gap-8">
-        <Link href={"/colecciones"}>
-          <div className="flex flex-col items-center hover:text-primary">
+        <Link href={"/products"}>
+          <div className="flex flex-col items-center hover:text-primary duration-200">
             <TbPaperBag size={25} />
 
-            <p className="text-center leading-tight">
-              Productos
-            </p>
+            Productos
           </div>
         </Link>
         {/* <Link href={"/colecciones"}>
@@ -27,21 +25,17 @@ const Menu = () => {
           </div>
         </Link> */}
         <Link href={"/casas-tostadoras"}>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center hover:text-primary duration-200">
             <TbFlame size={25} />
 
-            <p className="text-center leading-tight">
-              Tostadores
-            </p>
+            Tostadores
           </div>
         </Link>
         <Link href={"/cafeterias"}>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center hover:text-primary duration-200">
             <TbBuildingStore size={25} />
 
-            <p className="text-center leading-tight">
-              Cafeterías
-            </p>
+            Cafeterías
           </div>
         </Link>
       </ul>
