@@ -26,8 +26,8 @@ const Productos = ({ collections, products }: { collections: Collection[], produ
   return (
     <>
       <div className="container mx-auto py-16 flex gap-10">
-        <aside className="flex flex-col w-full md:w-1/4 lg:w-auto bg-gray-100 p-10 rounded-lg">
-          <div className="flex flex-col gap-10">
+        <aside className="relative hidden lg:flex flex-col min-w-[20%]">
+          <div className="flex flex-col gap-10 bg-gray-100 p-10 rounded-lg sticky top-5">
             <section className="flex flex-col">
               <h2 className="text-xl text-gray-800 font-bold mb-2">Órden</h2>
               <select className="w-full border border-gray-300 rounded px-4 py-2 mt-2">
@@ -80,13 +80,24 @@ const Productos = ({ collections, products }: { collections: Collection[], produ
             </section>
           </div>
         </aside>
-        <section>
-          <div className="grid grid-cols-3 gap-10">
-            <div className="flex flex-col gap-5">
-              {/* <SmallProductCard
-                product={product}
-              /> */}
-            </div>
+        <section className="md:w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+            {
+              products.map((product, index) => (
+                <SmallProductCard
+                  key={index}
+                  product={product}
+                />
+              ))
+            }
+            {
+              products.map((product, index) => (
+                <SmallProductCard
+                  key={index}
+                  product={product}
+                />
+              ))
+            }
           </div>
         </section>
       </div>

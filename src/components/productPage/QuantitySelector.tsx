@@ -14,18 +14,18 @@ const QuantitySelector = ({ decrementCounter, incrementCounter, register, setVal
         id={rest.id || ""}
         name={rest.name || ""}
         max={99}
-        min={1}
+        min={0}
         {...register(rest.name)}
         onBlur={(e) => {
           if (parseInt(e.target.value) > 99) {
             setValue(rest.name, 99);
           }
           if (parseInt(e.target.value) < 1) {
-            setValue(rest.name, 1);
+            setValue(rest.name, 0);
           }
         }}
         onChange={(e) => {
-          if (parseInt(e.target.value) < 100 && parseInt(e.target.value) > 0) {
+          if (parseInt(e.target.value) < 100) {
             setValue(rest.name, parseInt(e.target.value));
             onChange(e)
           }

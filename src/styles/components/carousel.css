@@ -1,6 +1,7 @@
 @layer base {
-
-  /* Over-ride defaults */
+  /* Over-ride defaults 
+   * 1. Pagination bullets
+  */
   .flicking-pagination .flicking-pagination-bullet-active {
     @apply bg-primary
   }

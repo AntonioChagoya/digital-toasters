@@ -23,11 +23,15 @@ import QuantitySelector from '@components/productPage/QuantitySelector';
 
 // Utils
 import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';
+import { removeLineItem } from "services/shopify";
 
 const Cart = () => {
   const { checkout, setCheckout, isCartOpen, setIsCartOpen, isDataLoading } = useCartContext()
   const { setValue, register, watch, getValues, handleSubmit } = useForm();
   const [itemToUpdate, setItemToUpdate] = useState(null)
+  const [itemToRemove, setItemToRemove] = useState(null)
+  const [isHiddenRemoveItem, setIsHiddenRemoveItem] = useState({ id: null })
+
   const [loading, setLoading] = useState({
     id: null,
     status: false
@@ -63,6 +67,20 @@ const Cart = () => {
       };
     }
   }, [itemToUpdate])
+
+  useEffect(() => {
+    if (itemToRemove && checkout) {
+      setLoading({ id: itemToRemove.variant.id, status: true })
+
+      shopifyClient.checkout
+        .removeLineItems(checkout.id, [itemToRemove.id])
+        .then((checkout) => {
+          setCheckout(checkout)
+          setLoading({ id: null, status: false })
+        })
+
+    }
+  }, [itemToRemove])
 
   const onSubmit = (data) => {
     setLoading({ id: null, status: true })
@@ -111,7 +129,11 @@ const Cart = () => {
                       <section className='max-h-[70vh] overflow-y-auto no-scrollbar'>
                         <div className="divide-y">
                           {checkout?.lineItems.map((item) => (
-                            <li key={parseIdStorefront(item.id)} className="block">
+                            <li
+                              key={parseIdStorefront(item.id)} className="block"
+                              onMouseEnter={() => setIsHiddenRemoveItem({ id: item.id })}
+                              onMouseLeave={() => setIsHiddenRemoveItem({ id: null })}
+                            >
                               <article className='relative flex gap-2 lg:gap-5 p-1 lg:p-2 '>
                                 <div className='w-[60px] h-[60px] lg:w-[100px] min-w-[60px] max-w-[100px] lg:h-[100px]'>
                                   <img
@@ -143,21 +165,31 @@ const Cart = () => {
                                         setValue={setValue}
                                         onChange={(e) => {
                                           e.preventDefault()
+                                          const nameId = parseIdStorefront(item.variant.id);
+
                                           setItemToUpdate(item)
+
+                                          if (watch(nameId) === 0) {
+                                            setItemToRemove(item)
+                                          }
+
                                         }}
                                         decrementCounter={() => {
                                           setLoading({ id: item.variant.id, status: true })
                                           const nameId = parseIdStorefront(item.variant.id);
+                                          const currentValue = watch(nameId) || 0;
 
-                                          if (watch(nameId) > 1) {
-                                            const currentValue = getValues(nameId) || 0;
-
+                                          if (currentValue > 1) {
                                             shopifyClient.checkout
                                               .updateLineItems(checkout.id, [{ id: item.id, quantity: currentValue - 1 }])
                                               .then((checkout) => {
                                                 setCheckout(checkout)
                                                 setLoading({ id: null, status: false })
                                               })
+                                          }
+                                          else if (currentValue - 1 === 0) {
+                                            setItemToRemove(item)
+                                            setValue(nameId, 0)
                                           }
                                         }}
                                         incrementCounter={() => {
@@ -179,13 +211,21 @@ const Cart = () => {
                                       />
                                     </div>
                                     <FaXmark size={13} />
-                                    <p className="text-sm">
+                                    <p className="text-sm mb-0">
                                       {parseMoneyFormat(item.variant.price.amount)}
                                     </p>
                                   </div>
 
                                 </div>
-
+                                {/* <FaXmark
+                                  size={20}
+                                  onClick={() => {
+                                    setLoading({ id: item.variant.id, status: true })
+                                    setItemToRemove(item)
+                                    setLoading({ id: null, status: false })
+                                  }}
+                                  className={`${isHiddenRemoveItem.id !== item.id ? "hidden" : "absolute"} text-gray-300 cursor-pointer duration-200 top-2 right-2`}
+                                /> */}
                               </article>
                             </li>
                           ))}

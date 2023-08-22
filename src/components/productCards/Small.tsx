@@ -16,6 +16,7 @@ const SmallProductCard = ({ product }: { product: CustomProduct }) => {
         <img
           src={imageUrl}
           alt={product?.featuredImage?.altText}
+          className='rounded'
         />
 
         <h5 className='text-center'>{title}</h5>

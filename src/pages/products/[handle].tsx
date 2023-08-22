@@ -1,3 +1,7 @@
+import "@egjs/react-flicking/dist/flicking.css";
+import "@egjs/flicking-plugins/dist/flicking-plugins.css";
+import "@egjs/flicking-plugins/dist/pagination.css";
+
 // React
 import { useEffect, useRef, useState } from "react";
 
@@ -17,9 +21,7 @@ import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Sync, Pagination } from "@egjs/flicking-plugins";
-import "@egjs/react-flicking/dist/flicking.css";
-import "@egjs/flicking-plugins/dist/flicking-plugins.css";
-import "@egjs/flicking-plugins/dist/pagination.css";
+
 // Components
 import Options from "@components/productPage/Options";
 import QuantitySelector from "@components/productPage/QuantitySelector";
@@ -41,7 +43,6 @@ export const getServerSideProps = async ({ params, query }) => {
     },
   };
 };
-
 
 const ProductPage = ({ product }: { product: CustomProduct }) => {
   const flicking0 = useRef();
@@ -126,52 +127,54 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   };
 
-  console.log("product", product.images);
+  // console.log("product", product.images);
 
   return (
     <section className="container mx-auto p-5 lg:p-20">
-      <article className="flex flex-col lg:flex-row justify-center gap-10">
-        <div className="lg:w-[500px]">
-          <Flicking
-            className="mb-5"
-            ref={flicking0}
-            plugins={plugins}
-            bounce={30}
-            renderOnlyVisible={true}
-          >
-            {product.images.map((image, index) => (
-              <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
-                <img
-                  className="panel-image object-cover w-full h-full pointer-events-none"
-                  width={image.width}
-                  height={image.height}
-                  src={image.src}
-                />
-              </div>
-            ))}
-            <ViewportSlot>
-              <div className="flicking-pagination"></div>
-            </ViewportSlot>
-          </Flicking>
+      <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
+        <div className="lg:sticky lg:h-full top-10">
+          <div className="lg:max-w-[500px]">
+            <Flicking
+              className="mb-5"
+              ref={flicking0}
+              plugins={plugins}
+              bounce={30}
+              renderOnlyVisible={true}
+            >
+              {product.images.map((image, index) => (
+                <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+                  <img
+                    className="panel-image object-cover w-full h-full pointer-events-none"
+                    width={image.width}
+                    height={image.height}
+                    src={image.src}
+                  />
+                </div>
+              ))}
+              <ViewportSlot>
+                <div className="flicking-pagination"></div>
+              </ViewportSlot>
+            </Flicking>
 
-          <Flicking
-            ref={flicking1}
-            moveType="freeScroll"
-            bound={true}
-            bounce={30}
-          >
-            {product.images.map((image, index) => (
-              <div key={index} className="w-[100px] h-[100px] mr-2">
-                <img
-                  className="thumb-image w-full h-full object-cover rounded"
-                  width={image.width}
-                  height={image.height}
-                  src={image.src}
-                />
-              </div>
-            ))}
+            <Flicking
+              ref={flicking1}
+              moveType="freeScroll"
+              bound={true}
+              bounce={30}
+            >
+              {product.images.map((image, index) => (
+                <div key={index} className="w-[100px] h-[100px] mr-2">
+                  <img
+                    className="thumb-image w-full h-full object-cover rounded"
+                    width={image.width}
+                    height={image.height}
+                    src={image.src}
+                  />
+                </div>
+              ))}
 
-          </Flicking>
+            </Flicking>
+          </div>
         </div>
 
         <div className="lg:w-1/2 lg:pr-36">
