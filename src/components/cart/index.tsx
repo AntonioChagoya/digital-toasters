@@ -23,14 +23,12 @@ import QuantitySelector from '@components/productPage/QuantitySelector';
 
 // Utils
 import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';
-import { removeLineItem } from "services/shopify";
 
 const Cart = () => {
   const { checkout, setCheckout, isCartOpen, setIsCartOpen, isDataLoading } = useCartContext()
   const { setValue, register, watch, getValues, handleSubmit } = useForm();
   const [itemToUpdate, setItemToUpdate] = useState(null)
   const [itemToRemove, setItemToRemove] = useState(null)
-  const [isHiddenRemoveItem, setIsHiddenRemoveItem] = useState({ id: null })
 
   const [loading, setLoading] = useState({
     id: null,
@@ -131,8 +129,6 @@ const Cart = () => {
                           {checkout?.lineItems.map((item) => (
                             <li
                               key={parseIdStorefront(item.id)} className="block"
-                              onMouseEnter={() => setIsHiddenRemoveItem({ id: item.id })}
-                              onMouseLeave={() => setIsHiddenRemoveItem({ id: null })}
                             >
                               <article className='relative flex gap-2 lg:gap-5 p-1 lg:p-2 '>
                                 <div className='w-[60px] h-[60px] lg:w-[100px] min-w-[60px] max-w-[100px] lg:h-[100px]'>
@@ -217,15 +213,6 @@ const Cart = () => {
                                   </div>
 
                                 </div>
-                                {/* <FaXmark
-                                  size={20}
-                                  onClick={() => {
-                                    setLoading({ id: item.variant.id, status: true })
-                                    setItemToRemove(item)
-                                    setLoading({ id: null, status: false })
-                                  }}
-                                  className={`${isHiddenRemoveItem.id !== item.id ? "hidden" : "absolute"} text-gray-300 cursor-pointer duration-200 top-2 right-2`}
-                                /> */}
                               </article>
                             </li>
                           ))}

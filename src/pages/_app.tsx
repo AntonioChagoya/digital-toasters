@@ -8,6 +8,10 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { AppProps } from 'next/app';
 
+// Apollo
+import { ApolloProvider } from "@apollo/client";
+import { client } from "graphql/apollo";
+
 // Contexts
 import { CartContextProvider } from "context/CartContext";
 
@@ -89,27 +93,27 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
   useShopifyCookies();
 
   return (
-    // <ApolloProvider client={client}>
-    <>
-      <DefaultSeo
-        title="Digital Toasters | Coffee Shop"
-        description="Coffee Shop"
-        openGraph={{
-          type: "website",
-          locale: "en_IE",
-          url: "https://coffee-shop.com",
-          site_name: "Coffee Shop",
-        }}
-      />
-      <CartContextProvider>
-        <CustomLayout>
-          <Component {...pagePropsWithAppAnalytics} />
-        </CustomLayout>
-      </CartContextProvider>
+    <ApolloProvider client={client}>
+      <>
+        <DefaultSeo
+          title="Digital Toasters | Coffee Shop"
+          description="Coffee Shop"
+          openGraph={{
+            type: "website",
+            locale: "en_IE",
+            url: "https://coffee-shop.com",
+            site_name: "Coffee Shop",
+          }}
+        />
+        <CartContextProvider>
+          <CustomLayout>
+            <Component {...pagePropsWithAppAnalytics} />
+          </CustomLayout>
+        </CartContextProvider>
 
-      {/* <Cart /> */}
-    </>
-    // </ApolloProvider>
+        {/* <Cart /> */}
+      </>
+    </ApolloProvider>
   );
 }
 

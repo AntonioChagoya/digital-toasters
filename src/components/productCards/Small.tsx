@@ -2,30 +2,39 @@ import { useState } from 'react';
 
 // Shopify
 import { CustomProduct } from 'types/shopify-sdk';
+import { ProductVariant } from 'shopify-buy';
 
-const SmallProductCard = ({ product }: { product: CustomProduct }) => {
-  const [images, setImages] = useState(product.images)
+interface SmallProductCardProps {
+  handle: CustomProduct['handle'];
+  title: CustomProduct['title'];
+  compareAtPriceRange?: CustomProduct['compareAtPriceRange'];
+  imageUrl: ProductVariant['image']['url'] | ProductVariant['image']['originalSrc'] | ProductVariant['image']['src'];
+  altText: ProductVariant['image']['altText'];
+  price: ProductVariant['price']['amount'];
+}
 
-  const { title, variants, handle } = product
-  const { src: imageUrl } = images[0]
-  const { price, compareAtPrice } = variants[0]
+const SmallProductCard = ({ handle, title, price, imageUrl, altText }: SmallProductCardProps) => {
 
   return (
     <article className='flex flex-col gap-5'>
       <a href={`/products/${handle}`} className='block '>
         <img
           src={imageUrl}
-          alt={product?.featuredImage?.altText}
+          alt={altText}
           className='rounded'
         />
 
         <h5 className='text-center'>{title}</h5>
         <div className='flex justify-center items-center gap-2'>
-          <span className='font-bold'>${price.amount}</span>
+          <span className='font-bold'>${price}</span>
 
-          {compareAtPrice?.amount &&
-            <span className='line-through text-gray-400'>${compareAtPrice?.amount}</span>
-          }
+          {/* {compareAtPriceRange &&
+            <>
+              <span className=' '>${compareAtPriceRange?.maxVariantPrice.amount}</span>
+              <span> - </span>
+              <span className=' '>${compareAtPriceRange?.minVariantPrice.amount}</span>
+            </>
+          } */}
         </div>
       </a>
     </article>

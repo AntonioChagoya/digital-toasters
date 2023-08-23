@@ -1,8 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_PRODUCTS = gql`
-query getProductsAndVariants($qty: Int!, $variantsQty: Int!) {
-  products(first: $qty) {
+query getProductsAndVariants(
+  $first: Int!,
+  $sortKey: ProductSortKeys
+  $reverse: Boolean
+  $query: String
+  $variantsQty: Int!,
+) {
+  products(first: $first, sortKey: $sortKey, reverse: $reverse, query: $query) {
     edges {
       cursor
       node {
