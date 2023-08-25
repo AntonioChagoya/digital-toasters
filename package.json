@@ -15,6 +15,7 @@
     "@egjs/react-flicking": "^4.11.0",
     "@headlessui/react": "^1.7.16",
     "@shopify/hydrogen-react": "^2023.7.2",
+    "@shopify/shopify-api": "^7.5.2",
     "@types/apollo-upload-client": "^17.0.2",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",

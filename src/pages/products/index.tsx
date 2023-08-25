@@ -17,9 +17,7 @@ import { TbLoader3 } from 'react-icons/tb'
 import { LayoutType } from "types/app"
 import { useEffect } from "react";
 
-
 export async function getServerSideProps(params) {
-
   return {
     props: {
       query: params?.query || null,
@@ -37,6 +35,8 @@ const Productos = ({ query }) => {
     reverse: false,
   }
   const [getProducts, { data, loading }] = useLazyQuery(GET_PRODUCTS);
+  const [roasted, setRoasted] = useState([])
+  const [toaster, setToaster] = useState([])
 
   useEffect(() => {
     if (Object.keys(router.query).length === 0) {
@@ -54,8 +54,19 @@ const Productos = ({ query }) => {
     }
   }, [router.query]);
 
-  console.log(data);
+  useEffect(() => {
+    const newQuery = [...roasted, ...toaster].join(" AND ") || router.query.query
 
+    console.log("roasted", roasted);
+    console.log("toaster", toaster);
+
+    if (roasted.length < 1 && toaster.length < 1) {
+      router.push({ query: { ...query, query: null } }, undefined, {})
+    } else {
+      router.push({ query: { ...query, query: newQuery } }, undefined, {})
+    }
+
+  }, [roasted, toaster])
 
   return (
     <>
@@ -81,43 +92,87 @@ const Productos = ({ query }) => {
               <h2 className="text-xl text-gray-800 font-bold mb-2">Tostado</h2>
               <div className="flex flex-col gap-2 w-auto">
                 <label>
-                  <input defaultChecked type="checkbox" name="Ligero" id="" className="mr-2" />
+                  <input
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      console.log("roasted", roasted.filter((roast) => roast !== e.target.value));
+
+                      if (e.target.checked) {
+                        setRoasted((roasted) => ([...roasted, e.target.value]))
+                      } else {
+                        setRoasted((roasted) => (roasted.filter((roast) => roast !== e.target.value)))
+                      }
+                    }}
+                    value="Ligero"
+                    type="checkbox"
+                    name="Ligero"
+                    id=""
+                    className="mr-2" />
                   Ligero
                 </label>
                 <label>
-                  <input defaultChecked type="checkbox" name="Medio" id="" className="mr-2" />
+                  <input
+                    value={"Medio"}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setRoasted((roasters) => ([...roasters, e.target.value]))
+                      } else {
+                        setRoasted((roasters) => (roasters.filter((roaster) => roaster !== e.target.value)))
+                      }
+                    }}
+                    type="checkbox" name="Medio" id="" className="mr-2" />
                   Medio
                 </label>
 
                 <label>
-                  <input type="checkbox" name="Oscuro" id="" className="mr-2" />
+                  <input
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setRoasted((roasters) => ([...roasters, e.target.value]))
+                      } else {
+                        setRoasted((roasters) => (roasters.filter((roaster) => roaster !== e.target.value)))
+                      }
+                    }}
+                    value="Oscuro"
+                    type="checkbox" name="Oscuro" id="" className="mr-2" />
                   Oscuro
                 </label>
 
                 <label>
-                  <input type="checkbox" name="Frances" id="" className="mr-2" />
+                  <input onChange={(e) => {
+                    if (e.target.checked) {
+                      setRoasted((roasters) => ([...roasters, e.target.value]))
+                    } else {
+                      setRoasted((roasters) => (roasters.filter((roaster) => roaster !== e.target.value)))
+                    }
+                  }} value="frances" type="checkbox" name="Frances" id="" className="mr-2" />
                   Francés
                 </label>
               </div>
             </section>
             <section className="flex flex-col">
-              <h2 className="text-xl text-gray-800 font-bold mb-2">Casa Tostadoras</h2>
+              <h2 className="text-xl text-gray-800 font-bold mb-2">Casa Tostadora</h2>
               <div className="w-full">
                 <select
+                  name="toaster"
                   onChange={(e) => {
-                    router.push({ query: { ...query, ...JSON.parse(e.target.value) } }, undefined, {})
+                    if (e.target.value === "") {
+                      setToaster([])
+                    } else {
+                      setToaster((toasters) => ([...toasters, e.target.value]))
+                    }
                   }}
                   className="w-full border border-gray-300 rounded px-4 py-2 mt-2"
                 >
-                  <option selected={!router.query.query} value={JSON.stringify({ query: "" })}>Todas</option>
-                  <option selected={router.query.query === "Zaranda"} value={JSON.stringify({ query: "Zaranda" })}>Zaranda</option>
+                  <option selected={!router.query.query} value="">Todas</option>
+                  <option selected={router.query.query === "Zaranda"} value="Zaranda">Zaranda</option>
                 </select>
               </div>
             </section>
 
           </div>
-        </aside>
-        <section className="md:w-full min-h-screen">
+        </aside >
+        <section className="relative md:w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
             {
               !loading && data?.products?.edges?.map((product, index) => (
@@ -134,12 +189,12 @@ const Productos = ({ query }) => {
           </div>
           {
             loading &&
-            <div className="h-full flex flex-col justify-center items-center">
-              <TbLoader3 size={40} className="animate-spin text-4xl text-primary mx-auto mb-20" />
+            <div className="absolute top-0 left-0 h-full w-full flex flex-col justify-center items-center">
+              <TbLoader3 size={40} className="animate-spin text-4xl text-primary mx-auto" />
             </div>
           }
         </section>
-      </div>
+      </div >
     </>
   )
 }
