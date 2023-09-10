@@ -27,16 +27,15 @@ const RecentProducts = ({ data }: { data: CustomProduct[] }) => {
   const slides = data.map((product) => (
     <div key={product.id} className="w-full sm:w-2/4 lg:w-1/4 sm:px-3 lg:px-5 flicking-panel">
       <SmallProductCard
-        title={product.title}
+        title={product.variants.length > 1 ? product.title + " - " + product.variants[0].title : product.title}
         handle={product.handle}
-        price={product.variants[0].price.amount}
+        price={product.variants[0].price}
         imageUrl={product.variants[0].image.src}
         altText={product.variants[0].image.altText}
+        compareAtPrice={product.variants[0].compareAtPrice}
       />
     </div>
   ))
-  console.log(data);
-
 
   return (
     <section className="relative" onMouseEnter={() => setActiveArrows(true)} onMouseLeave={() => setActiveArrows(false)}>

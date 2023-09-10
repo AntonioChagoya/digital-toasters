@@ -8,3 +8,4 @@ export enum LayoutType {
   SHOPIFY = "Shopify",
   PUBLIC = "Public"
 }
+

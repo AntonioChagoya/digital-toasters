@@ -27,18 +27,3 @@ export const addLineItem = (
       setCheckout(checkout)
     })
 }
-
-export const removeLineItem = (
-  removedId: string,
-  checkoutToUpdate: Checkout,
-  setCheckout: React.Dispatch<React.SetStateAction<Checkout>>
-) => {
-  const lineItemToRemove = checkoutToUpdate.lineItems?.filter((item) => item.id === removedId)
-  console.log("lineItemToRemove", lineItemToRemove);
-
-  // shopifyClient.checkout.removeLineItems(checkoutToUpdate.id, lineItemToUpdate)
-  //   .then((checkout) => {
-  //     setCheckout(checkout)
-  //   })
-
-}

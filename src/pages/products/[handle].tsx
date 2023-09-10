@@ -14,54 +14,114 @@ import { useRouter } from "next/router";
 // Utils
 import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
+// GraphQL
+import { useQuery, useMutation, gql } from "@apollo/client";
+import { GET_PRODUCT_METAFIELDS } from "graphql/queries/products";
+
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
-import { TbStar, TbStarHalfFilled, TbStarFilled, TbLoader3 } from "react-icons/tb";
+import { TbLoader3 } from "react-icons/tb";
 import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Sync, Pagination } from "@egjs/flicking-plugins";
 
+// Utils
+import { calculateAvergaRating } from "utils/rates";
+
+// Shopify  
+import { addLineItem, updateLineItem } from "services/shopify";
+
 // Components
 import Options from "@components/productPage/Options";
 import QuantitySelector from "@components/productPage/QuantitySelector";
+import RatingStars from "@components/global/RatingStars";
 
 // Types
 import { LayoutType } from "types/app";
 import { CustomProduct } from "types/shopify-sdk";
-import { addLineItem, updateLineItem } from "services/shopify";
 import { ProductVariant } from "shopify-buy";
+import { MetaFields, RatesCount } from "types/metafields";
 
-export const getServerSideProps = async ({ params, query }) => {
-  const { handle } = params
-
-  const product = await shopifyClient.product.fetchByHandle(handle);
+export const getServerSideProps = async ({ params }) => {
+  const product = await shopifyClient.product.fetchByHandle(params.handle)
 
   return {
     props: {
       product: parseShopifyResponse(product) || null,
     },
-  };
+  }
 };
 
+
+export const UPDATE_PRODUCT_METAFIELD = gql`
+mutation ( $key: String!, $namespace: String!, $value: String!, $ownerId: ID!, $type: String! ){
+  metafieldsSet(metafields: [
+    {
+      key: $key
+      namespace: $namespace
+      value: $value
+      ownerId: $ownerId
+      type: $type
+    }
+  ]) {
+    metafields {
+        id
+        key
+        namespace
+        value
+        createdAt
+        updatedAt
+    }
+    userErrors {
+      field
+      message
+      code
+    }
+  }
+}
+`
+
 const ProductPage = ({ product }: { product: CustomProduct }) => {
+  const router = useRouter()
+
+  const { variants, options, handle } = product
+
   const flicking0 = useRef();
   const flicking1 = useRef();
-  const router = useRouter()
+  const [plugins, setPlugins] = useState([]);
+
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       ProductAmount: 1
     }
   });
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
-  const [loading, setLoading] = useState(false)
 
-  const { variants, options, handle } = product
+  const { data: productMetadata, error: metafieldErrors } = useQuery(GET_PRODUCT_METAFIELDS, {
+    variables: {
+      handle: router.query.handle, metafields: [
+        { key: "rate", namespace: "custom_metafield" },
+        { key: "reviews", namespace: "custom_metafield" }
+      ]
+    },
+
+  });
+  const metafields = productMetadata?.productByHandle?.metafields || [];
+  const rates: RatesCount = JSON.parse(metafields?.find((metafield) => metafield.key === MetaFields.stars_rating)?.value || 0);
+
+  const [updateRatingMetafield, { data: metafieldUpdated }] = useMutation(UPDATE_PRODUCT_METAFIELD, {
+    context: {
+      clientName: "shopify-admin",
+    }
+  });
+
+  const [loading, setLoading] = useState(false)
   const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
 
-  const [plugins, setPlugins] = useState([]);
 
+  // Carousel plugins
   useEffect(() => {
     setPlugins(
       [new Sync({
@@ -91,6 +151,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     }
   }, [router.query])
 
+  // Add to cart
   const onSubmit = async (data) => {
     setLoading(true)
 
@@ -109,6 +170,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   }
 
+  // Quantity Selectors
   const incrementCounter = () => {
     setLoading(true)
     if (watch('ProductAmount') < 99) {
@@ -127,10 +189,39 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   };
 
-  // console.log("product", product.images);
+  // Update rating
+  const updateRating = (index) => {
+    console.log("index", index);
+    updateRatingMetafield({
+      variables: {
+        key: MetaFields.stars_rating,
+        namespace: "custom_metafield",
+        value: JSON.stringify({ ...rates, [Object.keys(rates)[index]]: parseInt(Object.values(rates)[index]) + 1 }),
+        ownerId: parseIdStorefront(product.id),
+        type: "json"
+      }
+    })
+    // console.log("rates", rates);
+    // console.log("keys", Object.keys(rates));
+    // console.log("values", Object.values(rates)[index]);
+    // const newCount = parseInt(Object.values(rates)[index]) + 1;
+    // console.log("rates after update", newCount);
+
+    // updateRatingMetafield({
+    //   variables: {
+    //     key: MetaFields.stars_rating,
+    //     namespace: "custom_metafield",
+    //     value: JSON.stringify({ ...rates, Object.keys(rates)[index]: 0 }),
+    //     ownerId: parseIdStorefront(product.id),
+    //     type: "json"
+    //   }
+    // })
+  }
+
+  console.log("metafieldUpdated", productMetadata?.productByHandle?.metafields);
 
   return (
-    <section className="container mx-auto p-5 lg:p-20">
+    <section className="container mx-auto p-5 lg:p-20 flex flex-col gap-32">
       <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
         <div className="lg:sticky lg:h-full top-10">
           <div className="lg:max-w-[500px]">
@@ -142,9 +233,9 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
               renderOnlyVisible={true}
             >
               {product.images.map((image, index) => (
-                <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px]">
+                <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px] border">
                   <img
-                    className="panel-image object-cover w-full h-full pointer-events-none"
+                    className="panel-image object-cover w-full h-full pointer-events-none "
                     width={image.width}
                     height={image.height}
                     src={image.src}
@@ -184,15 +275,14 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                 <div className="flex flex-col gap-2">
                   <div>
                     <h1 className="text-3xl font-bold">
-                      {product.title + `${selectedVariant ? " - " + selectedVariant.title : ""}`}
+                      {product.variants.length > 1 ? product.title + " - " + selectedVariant.title : product.title}
+                      {/* {product.title + `${selectedVariant ? " - " + selectedVariant.title : ""}`} */}
                     </h1>
                     <div className="flex gap-2 items-center">
-                      <TbStarFilled className="text-yellow-500" />
-                      <TbStarFilled className="text-yellow-500" />
-                      <TbStarFilled className="text-yellow-500" />
-                      <TbStarHalfFilled className="text-yellow-500" />
-                      <TbStar className="text-yellow-500" />
-                      <span>1 reviews</span>
+                      <RatingStars
+                        currentRating={calculateAvergaRating(rates)}
+                        onSelectRate={updateRating}
+                      />
                     </div>
                     <p className="mb-5 mt-2 text-gray-500">{product.description}</p>
                   </div>
@@ -257,6 +347,14 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
           }
         </div>
       </article >
+
+      <div>
+        <h2 className="text-2xl font-bold mb-5">Más Información</h2>
+      </div>
+
+      <div>
+        <h2 className="text-2xl font-bold mb-5">Productos relacionados</h2>
+      </div>
     </section >
   )
 }

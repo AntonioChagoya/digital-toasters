@@ -49,6 +49,7 @@ const Productos = ({ query }) => {
           sortKey: router.query.sortKey || "TITLE",
           query: router.query.query || "",
           reverse: router.query.reverse === "true" ? true : false,
+          
         }
       });
     }
@@ -57,9 +58,6 @@ const Productos = ({ query }) => {
   useEffect(() => {
     const newQuery = [...roasted, ...toaster].join(" AND ") || router.query.query
 
-    console.log("roasted", roasted);
-    console.log("toaster", toaster);
-
     if (roasted.length < 1 && toaster.length < 1) {
       router.push({ query: { ...query, query: null } }, undefined, {})
     } else {
@@ -67,6 +65,7 @@ const Productos = ({ query }) => {
     }
 
   }, [roasted, toaster])
+  console.log("data", data);
 
   return (
     <>
@@ -94,9 +93,6 @@ const Productos = ({ query }) => {
                 <label>
                   <input
                     onChange={(e) => {
-                      console.log(e.target.checked);
-                      console.log("roasted", roasted.filter((roast) => roast !== e.target.value));
-
                       if (e.target.checked) {
                         setRoasted((roasted) => ([...roasted, e.target.value]))
                       } else {
@@ -180,9 +176,10 @@ const Productos = ({ query }) => {
                   key={index}
                   title={product.node.title}
                   handle={product.node.handle}
-                  price={product.node.priceRange.minVariantPrice.amount}
                   imageUrl={product.node.featuredImage.url}
                   altText={product.node.featuredImage.altText}
+                  priceRange={product.node.priceRange}
+                  price={product.node.variants.edges[0].node.price}
                 />
               ))
             }

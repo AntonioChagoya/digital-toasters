@@ -1,27 +1,11 @@
 // Components
-import SmallProductCard from "@components/productCards/Small"
-import { parseShopifyResponse, shopifyClient } from "libs/shopify"
 import { Collection } from "shopify-buy"
 
 // Types
 import { LayoutType } from "types/app"
 import { CustomProduct } from "types/shopify-sdk";
 
-export async function getStaticProps() {
-  const collections = await shopifyClient.collection.fetchAllWithProducts();
-  const products = await shopifyClient.product.fetchAll();
-
-  return {
-    props: {
-      collections: parseShopifyResponse(collections),
-      products: parseShopifyResponse(products),
-    }
-  }
-}
-
 const CollectionsPage = ({ collections, products }: { collections: Collection[], products: CustomProduct[] }) => {
-  console.log("collections", collections);
-  console.log("products", products);
 
   return (
     <>

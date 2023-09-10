@@ -1,5 +1,19 @@
 import { gql } from "@apollo/client";
 
+export const GET_PRODUCT_METAFIELDS = gql`
+  query getProduct($handle: String!, $metafields: [HasMetafieldsIdentifier!]!) {
+    productByHandle(handle: $handle) {
+      id 
+      handle
+      metafields (identifiers: $metafields) {
+        id
+        key
+        value
+      }
+    }
+  }
+`
+
 export const GET_PRODUCTS = gql`
 query getProductsAndVariants(
   $first: Int!,
@@ -43,6 +57,16 @@ query getProductsAndVariants(
           altText
           width
           height
+        }
+        metafields(first: 10) {
+          edges {
+            node {
+              id
+              namespace
+              key
+              value
+            }
+          }
         }
         variants(first: $variantsQty) {
           edges {

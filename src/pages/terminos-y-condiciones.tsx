@@ -3,7 +3,7 @@ import { LayoutType } from "types/app"
 const TermsAndConditions = () => {
 
   return (
-    <section className="container mx-auto max-w-2xl">
+    <section className="container mx-auto max-w-2xl my-20">
       <h1 className="text-2xl font-bold mb-4 text-center">Términos y condiciones</h1>
 
       <ol>

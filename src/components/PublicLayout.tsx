@@ -1,7 +1,7 @@
 // Components
 import HeaderIndex from "./header"
 import Footer from "./footer"
-import Carousel from "./home/Carousel"
+
 const PublicLayout = ({ children }) => {
 
   return (

@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {
+module.exports = {
   images: {
     domains: ['cdn.shopify.com'],
   },
-}
-
-module.exports = nextConfig
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: "/shopify/:path*",
+          destination: `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/:path*`,
+        },
+      ],
+    };
+  },
+};

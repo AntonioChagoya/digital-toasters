@@ -7,13 +7,17 @@ import { ProductVariant } from 'shopify-buy';
 interface SmallProductCardProps {
   handle: CustomProduct['handle'];
   title: CustomProduct['title'];
-  compareAtPriceRange?: CustomProduct['compareAtPriceRange'];
   imageUrl: ProductVariant['image']['url'] | ProductVariant['image']['originalSrc'] | ProductVariant['image']['src'];
   altText: ProductVariant['image']['altText'];
-  price: ProductVariant['price']['amount'];
+  priceRange?: CustomProduct['priceRange'];
+  price?: ProductVariant['price'];
+  compareAtPrice?: ProductVariant['compareAtPrice'];
 }
 
-const SmallProductCard = ({ handle, title, price, imageUrl, altText }: SmallProductCardProps) => {
+const SmallProductCard = ({ handle, title, priceRange, imageUrl, altText, price, compareAtPrice }: SmallProductCardProps) => {
+
+  console.log(priceRange?.minVariantPrice?.amount);
+  console.log(price.amount);
 
   return (
     <article className='flex flex-col gap-5'>
@@ -24,17 +28,21 @@ const SmallProductCard = ({ handle, title, price, imageUrl, altText }: SmallProd
           className='rounded'
         />
 
-        <h5 className='text-center'>{title}</h5>
-        <div className='flex justify-center items-center gap-2'>
-          <span className='font-bold'>${price}</span>
-
-          {/* {compareAtPriceRange &&
+        <h5 className='text-center pt-3 pb-2'>{title}</h5>
+        <div className='text-center'>
+          {priceRange ?
             <>
-              <span className=' '>${compareAtPriceRange?.maxVariantPrice.amount}</span>
-              <span> - </span>
-              <span className=' '>${compareAtPriceRange?.minVariantPrice.amount}</span>
+              <span className='text-gray-400 mr-2'>Desde</span>
+              <span className='text-primary text-xl font-bold'>MX${priceRange?.minVariantPrice.amount}</span>
             </>
-          } */}
+            :
+            <>
+              {compareAtPrice &&
+                <span className='text-gray-400 line-through my-0 mr-2'>MX${compareAtPrice.amount}</span>
+              }
+              <span className='text-primary font-bold text-xl my-0'>MX${price.amount}</span>
+            </>
+          }
         </div>
       </a>
     </article>
