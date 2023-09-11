@@ -3,7 +3,7 @@ import "@egjs/flicking-plugins/dist/flicking-plugins.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 
 // React
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 // Context
 import { useCartContext } from "context/CartContext";
@@ -15,16 +15,16 @@ import { useRouter } from "next/router";
 import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // GraphQL
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import { GET_PRODUCT_METAFIELDS } from "graphql/queries/products";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
 import { TbLoader3 } from "react-icons/tb";
-import { FaFireBurner, FaBoxesStacked } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
-import Flicking, { ViewportSlot } from "@egjs/react-flicking";
-import { Sync, Pagination } from "@egjs/flicking-plugins";
+import { FaBoxesStacked } from "react-icons/fa6";
+import { TbDots } from "react-icons/tb";
+import parse from 'html-react-parser';
 
 // Utils
 import { calculateAvergaRating } from "utils/rates";
@@ -36,6 +36,7 @@ import { addLineItem, updateLineItem } from "services/shopify";
 import Options from "@components/productPage/Options";
 import QuantitySelector from "@components/productPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
+import ProductPageCarousel from "@components/productPage/ProductPageCarousel";
 
 // Types
 import { LayoutType } from "types/app";
@@ -54,52 +55,56 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 
-export const UPDATE_PRODUCT_METAFIELD = gql`
-mutation ( $key: String!, $namespace: String!, $value: String!, $ownerId: ID!, $type: String! ){
-  metafieldsSet(metafields: [
-    {
-      key: $key
-      namespace: $namespace
-      value: $value
-      ownerId: $ownerId
-      type: $type
-    }
-  ]) {
-    metafields {
-        id
-        key
-        namespace
-        value
-        createdAt
-        updatedAt
-    }
-    userErrors {
-      field
-      message
-      code
-    }
-  }
-}
-`
+// export const UPDATE_PRODUCT_METAFIELD = gql`
+// mutation ( $key: String!, $namespace: String!, $value: String!, $ownerId: ID!, $type: String! ){
+//   metafieldsSet(metafields: [
+//     {
+//       key: $key
+//       namespace: $namespace
+//       value: $value
+//       ownerId: $ownerId
+//       type: $type
+//     }
+//   ]) {
+//     metafields {
+//         id
+//         key
+//         namespace
+//         value
+//         createdAt
+//         updatedAt
+//     }
+//     userErrors {
+//       field
+//       message
+//       code
+//     }
+//   }
+// }
+// `
 
 const ProductPage = ({ product }: { product: CustomProduct }) => {
   const router = useRouter()
 
-  const { variants, options, handle } = product
-
-  const flicking0 = useRef();
-  const flicking1 = useRef();
-  const [plugins, setPlugins] = useState([]);
-
+  // Product general info
+  const { variants, options, handle } = product;
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
-  const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
-  const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
-    defaultValues: {
-      ProductAmount: 1
-    }
-  });
+  const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
 
-  const { data: productMetadata, error: metafieldErrors } = useQuery(GET_PRODUCT_METAFIELDS, {
+  useEffect(() => {
+    if (variants && router.query.variant) {
+      setSelectedVariant(findVariant)
+    } else {
+      setSelectedVariant(variants[0])
+    }
+  }, [router.query])
+
+
+  // Cart info
+  const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
+
+  // Metafields info
+  const { data: productMetadata } = useQuery(GET_PRODUCT_METAFIELDS, {
     variables: {
       handle: router.query.handle, metafields: [
         { key: "rate", namespace: "custom_metafield" },
@@ -109,47 +114,25 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
 
   });
   const metafields = productMetadata?.productByHandle?.metafields || [];
-  const rates: RatesCount = JSON.parse(metafields?.find((metafield) => metafield.key === MetaFields.stars_rating)?.value || 0);
+  const rates: RatesCount = JSON.parse(metafields?.find((metafield) => metafield?.key === MetaFields.stars_rating)?.value || 0);
 
-  const [updateRatingMetafield, { data: metafieldUpdated }] = useMutation(UPDATE_PRODUCT_METAFIELD, {
-    context: {
-      clientName: "shopify-admin",
+  // Form management
+  const [loading, setLoading] = useState(false)
+  const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
+    defaultValues: {
+      ProductAmount: 1
     }
   });
 
-  const [loading, setLoading] = useState(false)
-  const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
+  // const [updateRatingMetafield] = useMutation(UPDATE_PRODUCT_METAFIELD, {
+  //   context: {
+  //     clientName: "shopify-admin",
+  //   }
+  // });
 
-
-  // Carousel plugins
-  useEffect(() => {
-    setPlugins(
-      [new Sync({
-        type: "index",
-        synchronizedFlickingOptions: [
-          {
-            flicking: flicking0.current,
-            isSlidable: true
-          },
-          {
-            flicking: flicking1.current,
-            isClickable: true,
-            activeClass: "custom-selected-thumb",
-          }
-        ]
-      }),
-      new Pagination({ type: 'bullet' })
-      ],
-    );
-  }, []);
-
-  useEffect(() => {
-    if (variants && router.query.variant) {
-      setSelectedVariant(findVariant)
-    } else {
-      setSelectedVariant(variants[0])
-    }
-  }, [router.query])
+  /* 
+    * Product page actions:
+   */
 
   // Add to cart
   const onSubmit = async (data) => {
@@ -189,111 +172,73 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     setLoading(false)
   };
 
-  // Update rating
-  const updateRating = (index) => {
-    console.log("index", index);
-    updateRatingMetafield({
-      variables: {
-        key: MetaFields.stars_rating,
-        namespace: "custom_metafield",
-        value: JSON.stringify({ ...rates, [Object.keys(rates)[index]]: parseInt(Object.values(rates)[index]) + 1 }),
-        ownerId: parseIdStorefront(product.id),
-        type: "json"
-      }
-    })
-    // console.log("rates", rates);
-    // console.log("keys", Object.keys(rates));
-    // console.log("values", Object.values(rates)[index]);
-    // const newCount = parseInt(Object.values(rates)[index]) + 1;
-    // console.log("rates after update", newCount);
+  // // Update rating
+  // const updateRating = (index) => {
+  //   console.log("index", index);
+  //   updateRatingMetafield({
+  //     variables: {
+  //       key: MetaFields.stars_rating,
+  //       namespace: "custom_metafield",
+  //       value: JSON.stringify({ ...rates, [Object.keys(rates)[index]]: parseInt(Object.values(rates)[index]) + 1 }),
+  //       ownerId: parseIdStorefront(product.id),
+  //       type: "json"
+  //     }
+  //   })
+  // }
 
-    // updateRatingMetafield({
-    //   variables: {
-    //     key: MetaFields.stars_rating,
-    //     namespace: "custom_metafield",
-    //     value: JSON.stringify({ ...rates, Object.keys(rates)[index]: 0 }),
-    //     ownerId: parseIdStorefront(product.id),
-    //     type: "json"
-    //   }
-    // })
-  }
+  console.log("product", product);
 
-  console.log("metafieldUpdated", productMetadata?.productByHandle?.metafields);
 
   return (
-    <section className="container mx-auto p-5 lg:p-20 flex flex-col gap-32">
+    <section className="container mx-auto p-5 lg:p-14 flex flex-col gap-20">
       <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
-        <div className="lg:sticky lg:h-full top-10">
-          <div className="lg:max-w-[500px]">
-            <Flicking
-              className="mb-5"
-              ref={flicking0}
-              plugins={plugins}
-              bounce={30}
-              renderOnlyVisible={true}
-            >
-              {product.images.map((image, index) => (
-                <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px] border">
-                  <img
-                    className="panel-image object-cover w-full h-full pointer-events-none "
-                    width={image.width}
-                    height={image.height}
-                    src={image.src}
-                  />
-                </div>
-              ))}
-              <ViewportSlot>
-                <div className="flicking-pagination"></div>
-              </ViewportSlot>
-            </Flicking>
-
-            <Flicking
-              ref={flicking1}
-              moveType="freeScroll"
-              bound={true}
-              bounce={30}
-            >
-              {product.images.map((image, index) => (
-                <div key={index} className="w-[100px] h-[100px] mr-2">
-                  <img
-                    className="thumb-image w-full h-full object-cover rounded"
-                    width={image.width}
-                    height={image.height}
-                    src={image.src}
-                  />
-                </div>
-              ))}
-
-            </Flicking>
-          </div>
-        </div>
-
+        {
+          <ProductPageCarousel product={product} />
+        }
         <div className="lg:w-1/2 lg:pr-36">
-          {selectedVariant &&
+          {
+            selectedVariant &&
             <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-7">
+                <div className="flex flex-col gap-1">
                   <div>
                     <h1 className="text-3xl font-bold">
                       {product.variants.length > 1 ? product.title + " - " + selectedVariant.title : product.title}
-                      {/* {product.title + `${selectedVariant ? " - " + selectedVariant.title : ""}`} */}
                     </h1>
-                    <div className="flex gap-2 items-center">
-                      <RatingStars
-                        currentRating={calculateAvergaRating(rates)}
-                        onSelectRate={updateRating}
-                      />
-                    </div>
-                    <p className="mb-5 mt-2 text-gray-500">{product.description}</p>
                   </div>
+                  <div className="text-accent pointer-events-none">
+                    Tostador: {product.vendor}
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <RatingStars
+                      currentRating={calculateAvergaRating(rates)}
+                      // onSelectRate={updateRating}
+                      onSelectRate={() => { }}
+                    />
+                  </div>
+                  {
+                    product.description &&
 
-                  <div className="flex gap-3">
-                    {
-                      selectedVariant?.compareAtPrice?.amount &&
-                      <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(selectedVariant.compareAtPrice.amount)}</h4>
-                    }
-                    <h4 className="text-2xl text-gray-900">{parseMoneyFormat(selectedVariant?.price.amount)}</h4>
-                  </div>
+                    <div className="group relative max-h-[120px] overflow-hidden transition duration-400 my-2 pb-1">
+                      <p className=" text-gray-500">{product.description}</p>
+                      <div onClick={() => {
+                        document.getElementById("Description")?.scrollIntoView({ behavior: "smooth" })
+                      }} className="absolute top-0 left-0 flex flex-col justify-end items-center w-full h-full bg-gradient-to-t from-white rounded cursor-pointer">
+                        <TbDots className="animate-bounce hidden group-hover:block" size={35} />
+                      </div>
+                    </div>
+                  }
+
+                  {
+                    selectedVariant?.price?.amount &&
+                    <div className="flex gap-3">
+                      {
+                        selectedVariant?.compareAtPrice?.amount &&
+                        <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(selectedVariant.compareAtPrice.amount)}</h4>
+                      }
+                      <h4 className="text-2xl text-gray-900">{parseMoneyFormat(selectedVariant?.price.amount)}</h4>
+                    </div>
+                  }
                 </div>
 
                 <div className="flex flex-col gap-3">
@@ -303,9 +248,9 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
                       <FaBoxesStacked size={30} /><h5>{selectedVariant.sku}</h5>
                     </div>
                   }
-                  <div className="flex gap-2 items-center">
+                  {/* <div className="flex gap-2 items-center">
                     <FaFireBurner size={30} /><h5>{product.vendor}</h5>
-                  </div>
+                  </div> */}
                 </div>
                 {
                   variants.length > 1 &&
@@ -348,9 +293,24 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
         </div>
       </article >
 
-      <div>
-        <h2 className="text-2xl font-bold mb-5">Más Información</h2>
-      </div>
+      {
+        product?.descriptionHtml &&
+        <div id="Description">
+          <h2 className="text-2xl font-bold mb-5">Más Información</h2>
+
+          <p className="prose max-w-6xl lg:prose-lg">
+            {parse(product?.descriptionHtml || "")}
+          </p>
+
+          <table>
+            <th>
+              <h2 className="text-2xl font-bold mb-5">Especificaciones</h2>
+            </th>
+            <tbody></tbody>
+
+          </table>
+        </div>
+      }
 
       <div>
         <h2 className="text-2xl font-bold mb-5">Productos relacionados</h2>

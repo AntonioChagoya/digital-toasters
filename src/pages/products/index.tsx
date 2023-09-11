@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 
 // Apollo
 import { useLazyQuery } from "@apollo/client";
-import { GET_PRODUCTS } from "graphql/queries/getAllProducts";
+import { GET_PRODUCTS } from "graphql/queries/products";
 
 // Components
 import SmallProductCard from "@components/productCards/Small"
@@ -49,7 +49,7 @@ const Productos = ({ query }) => {
           sortKey: router.query.sortKey || "TITLE",
           query: router.query.query || "",
           reverse: router.query.reverse === "true" ? true : false,
-          
+
         }
       });
     }

@@ -58,16 +58,6 @@ query getProductsAndVariants(
           width
           height
         }
-        metafields(first: 10) {
-          edges {
-            node {
-              id
-              namespace
-              key
-              value
-            }
-          }
-        }
         variants(first: $variantsQty) {
           edges {
             cursor
