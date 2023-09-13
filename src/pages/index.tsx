@@ -1,6 +1,6 @@
 // Components
-import Carousel from "@components/home/Carousel"
-import RecentProducts from "@components/home/RecentProducts";
+import Carousel from "@components/Home/Carousel"
+import ProductsCarousel from "@components/global/ProductsCarousel";
 
 // Shopify 
 import { shopifyClient, parseShopifyResponse } from "libs/shopify";
@@ -79,7 +79,7 @@ export default function Home({ products }) {
           </div>
 
           <div className="flex gap-10">
-            <RecentProducts data={products} />
+            <ProductsCarousel data={products} />
           </div>
 
         </section>

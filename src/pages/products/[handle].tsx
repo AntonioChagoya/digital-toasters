@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // GraphQL
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_PRODUCT_METAFIELDS } from "graphql/queries/products";
 
 // Libs
@@ -33,16 +33,17 @@ import { calculateAvergaRating } from "utils/rates";
 import { addLineItem, updateLineItem } from "services/shopify";
 
 // Components
-import Options from "@components/productPage/Options";
-import QuantitySelector from "@components/productPage/QuantitySelector";
+import Options from "@components/ProductPage/Options";
+import QuantitySelector from "@components/ProductPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
-import ProductPageCarousel from "@components/productPage/ProductPageCarousel";
+import ImagesCarousel from "@components/ProductPage/ImagesCarousel";
 
 // Types
 import { LayoutType } from "types/app";
 import { CustomProduct } from "types/shopify-sdk";
 import { ProductVariant } from "shopify-buy";
 import { MetaFields, RatesCount } from "types/metafields";
+import RelatedProducts from "@components/global/RelatedProducts";
 
 export const getServerSideProps = async ({ params }) => {
   const product = await shopifyClient.product.fetchByHandle(params.handle)
@@ -54,34 +55,6 @@ export const getServerSideProps = async ({ params }) => {
   }
 };
 
-
-// export const UPDATE_PRODUCT_METAFIELD = gql`
-// mutation ( $key: String!, $namespace: String!, $value: String!, $ownerId: ID!, $type: String! ){
-//   metafieldsSet(metafields: [
-//     {
-//       key: $key
-//       namespace: $namespace
-//       value: $value
-//       ownerId: $ownerId
-//       type: $type
-//     }
-//   ]) {
-//     metafields {
-//         id
-//         key
-//         namespace
-//         value
-//         createdAt
-//         updatedAt
-//     }
-//     userErrors {
-//       field
-//       message
-//       code
-//     }
-//   }
-// }
-// `
 
 const ProductPage = ({ product }: { product: CustomProduct }) => {
   const router = useRouter()
@@ -193,7 +166,7 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
     <section className="container mx-auto p-5 lg:p-14 flex flex-col gap-20">
       <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
         {
-          <ProductPageCarousel product={product} />
+          <ImagesCarousel product={product} />
         }
         <div className="lg:w-1/2 lg:pr-36">
           {
@@ -221,9 +194,12 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
 
                     <div className="group relative max-h-[120px] overflow-hidden transition duration-400 my-2 pb-1">
                       <p className=" text-gray-500">{product.description}</p>
-                      <div onClick={() => {
-                        document.getElementById("Description")?.scrollIntoView({ behavior: "smooth" })
-                      }} className="absolute top-0 left-0 flex flex-col justify-end items-center w-full h-full bg-gradient-to-t from-white rounded cursor-pointer">
+                      <div
+                        onClick={() => {
+                          document.getElementById("Description")?.scrollIntoView({ behavior: "smooth" })
+                        }}
+                        className="absolute top-0 left-0 flex flex-col justify-end items-center w-full h-full bg-gradient-to-t from-white via-transparent rounded cursor-pointer"
+                      >
                         <TbDots className="animate-bounce hidden group-hover:block" size={35} />
                       </div>
                     </div>
@@ -294,27 +270,19 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
       </article >
 
       {
-        product?.descriptionHtml &&
+        product?.descriptionHtml.trim() &&
         <div id="Description">
           <h2 className="text-2xl font-bold mb-5">Más Información</h2>
 
-          <p className="prose max-w-6xl lg:prose-lg">
-            {parse(product?.descriptionHtml || "")}
-          </p>
-
-          <table>
-            <th>
-              <h2 className="text-2xl font-bold mb-5">Especificaciones</h2>
-            </th>
-            <tbody></tbody>
-
-          </table>
+          <div className="prose max-w-6xl lg:prose-lg">
+            {parse(product?.descriptionHtml)}
+          </div>
         </div>
       }
+      {
+        <RelatedProducts />
+      }
 
-      <div>
-        <h2 className="text-2xl font-bold mb-5">Productos relacionados</h2>
-      </div>
     </section >
   )
 }

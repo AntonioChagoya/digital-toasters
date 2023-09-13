@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Sync, Pagination } from "@egjs/flicking-plugins";
 
-const ProductPageCarousel = ({ product }) => {
+const ImagesCarousel = ({ product }) => {
   const [plugins, setPlugins] = useState([]);
   const flicking0 = useRef();
   const flicking1 = useRef();
@@ -83,4 +83,4 @@ const ProductPageCarousel = ({ product }) => {
   )
 }
 
-export default ProductPageCarousel
+export default ImagesCarousel

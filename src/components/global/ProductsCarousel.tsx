@@ -11,12 +11,12 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 // Components
-import SmallProductCard from "@components/productCards/Small";
+import SmallProductCard from "@components/ProductCards/Small";
 
 // Shopify
 import { CustomProduct } from "types/shopify-sdk";
 
-const RecentProducts = ({ data }: { data: CustomProduct[] }) => {
+const ProductsCarousel = ({ data }: { data: CustomProduct[] }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
@@ -56,4 +56,4 @@ const RecentProducts = ({ data }: { data: CustomProduct[] }) => {
     </section >
   )
 }
-export default RecentProducts
+export default ProductsCarousel
