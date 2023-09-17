@@ -40,7 +40,6 @@ import ImagesCarousel from "@components/ProductPage/ImagesCarousel";
 
 // Types
 import { LayoutType } from "types/app";
-import { CustomProduct } from "types/shopify-sdk";
 import { ProductVariant } from "shopify-buy";
 import { MetaFields, RatesCount } from "types/metafields";
 import RelatedProducts from "@components/global/RelatedProducts";
@@ -56,7 +55,7 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 
-const ProductPage = ({ product }: { product: CustomProduct }) => {
+const ProductPage = ({ product }) => {
   const router = useRouter()
 
   // Product general info
@@ -71,7 +70,6 @@ const ProductPage = ({ product }: { product: CustomProduct }) => {
       setSelectedVariant(variants[0])
     }
   }, [router.query])
-
 
   // Cart info
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()

@@ -10,7 +10,7 @@ import { ProductVariant } from "shopify-buy"
 import { parseIdStorefront } from "utils/stringParse"
 
 // Types
-import { CustomProductOption } from "types/shopify-sdk"
+import { CustomProductOption } from "types/shopify"
 
 interface OptionProps {
   options: CustomProductOption[]

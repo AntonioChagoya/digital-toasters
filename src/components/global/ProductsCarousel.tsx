@@ -13,26 +13,20 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 // Components
 import SmallProductCard from "@components/ProductCards/Small";
 
-// Shopify
-import { CustomProduct } from "types/shopify-sdk";
 
-const ProductsCarousel = ({ data }: { data: CustomProduct[] }) => {
+const ProductsCarousel = ({ data }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
     new AutoPlay({ duration: 1000000, direction: "NEXT", stopOnHover: false }),
     new Arrow()
   ];
+  console.log(data);
 
   const slides = data.map((product) => (
     <div key={product.id} className="w-full sm:w-2/4 lg:w-1/4 sm:px-3 lg:px-5 flicking-panel">
       <SmallProductCard
-        title={product.variants.length > 1 ? product.title + " - " + product.variants[0].title : product.title}
-        handle={product.handle}
-        price={product.variants[0].price}
-        imageUrl={product.variants[0].image.src}
-        altText={product.variants[0].image.altText}
-        compareAtPrice={product.variants[0].compareAtPrice}
+        product={product}
       />
     </div>
   ))

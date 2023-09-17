@@ -3,7 +3,7 @@ import { Collection } from "shopify-buy"
 
 // Types
 import { LayoutType } from "types/app"
-import { CustomProduct } from "types/shopify-sdk";
+import { CustomProduct } from "types/shopify";
 
 const CollectionsPage = ({ collections, products }: { collections: Collection[], products: CustomProduct[] }) => {
 

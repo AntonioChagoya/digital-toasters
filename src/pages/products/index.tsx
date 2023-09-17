@@ -173,13 +173,7 @@ const Productos = ({ query }) => {
             {
               !loading && data?.products?.edges?.map((product, index) => (
                 <SmallProductCard
-                  key={index}
-                  title={product.node.title}
-                  handle={product.node.handle}
-                  imageUrl={product.node.featuredImage.url}
-                  altText={product.node.featuredImage.altText}
-                  priceRange={product.node.priceRange}
-                  price={product.node.variants.edges[0].node.price}
+                  product={product.node}
                 />
               ))
             }

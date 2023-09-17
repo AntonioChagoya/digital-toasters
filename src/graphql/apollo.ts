@@ -1,6 +1,7 @@
-// Apollo Client
 import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
+console.log("NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN", process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 // Shopify Storefront API
 const httpLink = createHttpLink({
@@ -11,6 +12,16 @@ const httpLink = createHttpLink({
 const httpLink2 = createHttpLink({
   uri: `/shopify/admin/api/2023-07/graphql.json`,
 });
+
+// // Shopify Storefront API
+// const ssrHttpLink = createHttpLink({
+//   uri: `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/api/2023-07/graphql.json`,
+// });
+
+// // Shopify Admin API
+// const ssrHttpLink2 = createHttpLink({
+//   uri: `https://${process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN}/admin/api/2023-07/graphql.json`,
+// });
 
 // Authentication headers
 const authLink = setContext((_, { headers }) => {
@@ -24,6 +35,11 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+/* 
+ *  Client Side Rendering (CSR) 
+ *  Apollo Client configuration for Shopify Storefront API and Shopify Admin API 
+ */
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.split(
@@ -31,17 +47,7 @@ const client = new ApolloClient({
     authLink.concat(httpLink2),
     authLink.concat(httpLink),
   ),
-  // defaultOptions: {
-  //   watchQuery: {
-  //     fetchPolicy: "no-cache",
-  //   },
-  //   query: {
-  //     fetchPolicy: "no-cache",
-  //   },
-  //   mutate: {
-  //     errorPolicy: "none",
-  //   },
-  // },
 });
+
 
 export { client };
