@@ -2,40 +2,41 @@
 import Carousel from "@components/Home/Carousel"
 import ProductsCarousel from "@components/global/ProductsCarousel";
 
-// Shopify 
-import { shopifyClient, parseShopifyResponse } from "libs/shopify";
-
 // GraphQL
-import { client } from 'graphql/apollo'
+import { createApolloClient } from "graphql/apolloSSR";
 
 // Types
 import { LayoutType } from "types/app";
 import { GET_PRODUCTS } from "graphql/queries/products";
 
 export async function getStaticProps() {
-
   try {
+    const client = createApolloClient()
+
     const { data } = await client.query({
       query: GET_PRODUCTS,
       variables: {
         first: 12,
         variantsQty: 10,
-        sortKey: "TITLE",
+        sortKey: "CREATED_AT",
         query: "",
         reverse: false,
       }
     });
-    console.log("data SSR", data.products);
-  } catch (error) {
-    console.log("error SSR", error);
-  }
+    return {
+      props: {
+        products: data.products.edges.map(({ node }) => node),
+      },
+    };
 
-  return {
-    props: {
-      // products: parseShopifyResponse(products) || {},
-      products: {},
-    },
-  };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        products: {},
+      },
+    };
+  }
 }
 
 const serviceCards = [
@@ -99,7 +100,7 @@ export default function Home({ products }) {
           </div>
 
           <div className="flex gap-10">
-            {/* <ProductsCarousel data={products} /> */}
+            <ProductsCarousel data={products} />
           </div>
 
         </section>

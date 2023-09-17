@@ -1,19 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_PRODUCT_METAFIELDS = gql`
-  query getProduct($handle: String!, $metafields: [HasMetafieldsIdentifier!]!) {
-    productByHandle(handle: $handle) {
-      id 
-      handle
-      metafields (identifiers: $metafields) {
-        id
-        key
-        value
-      }
-    }
-  }
-`
-
 export const GET_PRODUCTS = gql`
 query getProductsAndVariants(
   $first: Int!,
@@ -94,3 +80,92 @@ query getProductsAndVariants(
 }
 
 `;
+
+export const GET_PRODUCT_BY_HANDLE = gql`
+query getProductByHandle($handle: String!, $variantsQty: Int!, $metafields: [HasMetafieldsIdentifier!]!) {
+  productByHandle(handle: $handle) {
+    id
+    title
+    description
+    handle
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    metafields (identifiers: $metafields) {
+      id
+      key
+      value
+    }
+    compareAtPriceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      src
+      url
+      altText
+      width
+      height
+    }
+    variants(first: $variantsQty) {
+      edges {
+        cursor
+        node {
+          id
+          title
+          price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
+            amount
+            currencyCode
+          }
+          image {
+            id
+            src
+            url
+            altText
+            width
+            height
+          }
+          selectedOptions {
+            name
+            value
+          }
+          sku
+        }
+      }
+    }
+  }
+}
+`
+export const GET_PRODUCT_METAFIELDS = gql`
+  query getProduct($handle: String!, $metafields: [HasMetafieldsIdentifier!]!) {
+    productByHandle(handle: $handle) {
+      id 
+      handle
+      metafields (identifiers: $metafields) {
+        id
+        key
+        value
+      }
+    }
+  }
+`
+
+

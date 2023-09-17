@@ -16,7 +16,8 @@ import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // GraphQL
 import { useQuery } from "@apollo/client";
-import { GET_PRODUCT_METAFIELDS } from "graphql/queries/products";
+import { GET_PRODUCT_METAFIELDS, GET_PRODUCT_BY_HANDLE } from "graphql/queries/products";
+import { createApolloClient } from "graphql/apolloSSR";
 
 // Libs
 import { shopifyClient, parseShopifyResponse } from "libs/shopify"
@@ -45,11 +46,23 @@ import { MetaFields, RatesCount } from "types/metafields";
 import RelatedProducts from "@components/global/RelatedProducts";
 
 export const getServerSideProps = async ({ params }) => {
-  const product = await shopifyClient.product.fetchByHandle(params.handle)
+  const client = createApolloClient()
+
+  const { data } = await client.query({
+    query: GET_PRODUCT_BY_HANDLE,
+    variables: {
+      handle: params.handle,
+      variantsQty: 10,
+      metafields: [
+        { key: "rate", namespace: "custom_metafield" },
+        { key: "reviews", namespace: "custom_metafield" }
+      ]
+    }
+  });
 
   return {
     props: {
-      product: parseShopifyResponse(product) || null,
+      product: data.productByHandle || null,
     },
   }
 };
@@ -58,36 +71,38 @@ export const getServerSideProps = async ({ params }) => {
 const ProductPage = ({ product }) => {
   const router = useRouter()
 
-  // Product general info
-  const { variants, options, handle } = product;
+  // // Product general info
+  const { variants: { edges }, options, handle } = product;
+  const productVariants = edges.map(({ node }) => node);
+
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
-  const findVariant = variants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
+  const findVariant = productVariants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
 
   useEffect(() => {
-    if (variants && router.query.variant) {
+    if (productVariants && router.query.variant) {
       setSelectedVariant(findVariant)
     } else {
-      setSelectedVariant(variants[0])
+      setSelectedVariant(edges[0].node)
     }
   }, [router.query])
 
-  // Cart info
+  // // Cart info
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
 
-  // Metafields info
-  const { data: productMetadata } = useQuery(GET_PRODUCT_METAFIELDS, {
-    variables: {
-      handle: router.query.handle, metafields: [
-        { key: "rate", namespace: "custom_metafield" },
-        { key: "reviews", namespace: "custom_metafield" }
-      ]
-    },
+  // // Metafields info
+  // const { data: productMetadata } = useQuery(GET_PRODUCT_METAFIELDS, {
+  //   variables: {
+  //     handle: router.query.handle, metafields: [
+  //       { key: "rate", namespace: "custom_metafield" },
+  //       { key: "reviews", namespace: "custom_metafield" }
+  //     ]
+  //   },
 
-  });
-  const metafields = productMetadata?.productByHandle?.metafields || [];
-  const rates: RatesCount = JSON.parse(metafields?.find((metafield) => metafield?.key === MetaFields.stars_rating)?.value || 0);
+  // });
+  // const metafields = productMetadata?.productByHandle?.metafields || [];
+  // const rates: RatesCount = JSON.parse(metafields?.find((metafield) => metafield?.key === MetaFields.stars_rating)?.value || 0);
 
-  // Form management
+  // // Form management
   const [loading, setLoading] = useState(false)
   const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
@@ -95,15 +110,17 @@ const ProductPage = ({ product }) => {
     }
   });
 
-  // const [updateRatingMetafield] = useMutation(UPDATE_PRODUCT_METAFIELD, {
-  //   context: {
-  //     clientName: "shopify-admin",
-  //   }
-  // });
+  console.log("product", product);
+  console.log("selectedVariant", selectedVariant);
+  // // const [updateRatingMetafield] = useMutation(UPDATE_PRODUCT_METAFIELD, {
+  // //   context: {
+  // //     clientName: "shopify-admin",
+  // //   }
+  // // });
 
-  /* 
-    * Product page actions:
-   */
+  // /* 
+  //   * Product page actions:
+  //  */
 
   // Add to cart
   const onSubmit = async (data) => {
@@ -143,21 +160,20 @@ const ProductPage = ({ product }) => {
     setLoading(false)
   };
 
-  // // Update rating
-  // const updateRating = (index) => {
-  //   console.log("index", index);
-  //   updateRatingMetafield({
-  //     variables: {
-  //       key: MetaFields.stars_rating,
-  //       namespace: "custom_metafield",
-  //       value: JSON.stringify({ ...rates, [Object.keys(rates)[index]]: parseInt(Object.values(rates)[index]) + 1 }),
-  //       ownerId: parseIdStorefront(product.id),
-  //       type: "json"
-  //     }
-  //   })
-  // }
+  // // // Update rating
+  // // const updateRating = (index) => {
+  // //   console.log("index", index);
+  // //   updateRatingMetafield({
+  // //     variables: {
+  // //       key: MetaFields.stars_rating,
+  // //       namespace: "custom_metafield",
+  // //       value: JSON.stringify({ ...rates, [Object.keys(rates)[index]]: parseInt(Object.values(rates)[index]) + 1 }),
+  // //       ownerId: parseIdStorefront(product.id),
+  // //       type: "json"
+  // //     }
+  // //   })
+  // // }
 
-  console.log("product", product);
 
 
   return (
@@ -181,11 +197,10 @@ const ProductPage = ({ product }) => {
                     Tostador: {product.vendor}
                   </div>
                   <div className="flex gap-2 items-center">
-                    <RatingStars
-                      currentRating={calculateAvergaRating(rates)}
-                      // onSelectRate={updateRating}
+                    {/* <RatingStars
+                      currentRating={calculateAvergaRating(product.metafields)}
                       onSelectRate={() => { }}
-                    />
+                    /> */}
                   </div>
                   {
                     product.description &&
@@ -227,9 +242,9 @@ const ProductPage = ({ product }) => {
                   </div> */}
                 </div>
                 {
-                  variants.length > 1 &&
+                  productVariants .length > 1 &&
                   <Options
-                    variants={variants}
+                    variants={productVariants}
                     options={options}
                     handle={handle}
                     selectedVariant={selectedVariant}
