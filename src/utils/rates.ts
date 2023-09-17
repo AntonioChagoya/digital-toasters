@@ -1,7 +1,9 @@
+import { Metafield } from "@shopify/hydrogen-react/storefront-api-types";
 import { RatesCount } from "types/metafields";
 
-export const calculateAvergaRating = (rates: RatesCount) => {
-  const totalRates = Object.values(rates).reduce((value, acc) => parseInt(value) + parseInt(acc), 0) || 0;
+export const calculateAvergeRating = (rates: Metafield) => {
+  const value: RatesCount = JSON.parse(rates?.value || "{}");
+  const totalRates = Object.values(value).reduce((value, acc) => parseInt(value) + parseInt(acc), 0) || 0;
 
   if (!(totalRates > 0)) {
     return 0;
@@ -12,11 +14,11 @@ export const calculateAvergaRating = (rates: RatesCount) => {
    * Reference: https://calculator.academy/average-rating-calculator-star-rating/
    */
   const ratesCount = (
-    1 * parseInt(rates.one) +
-    2 * parseInt(rates.two) +
-    3 * parseInt(rates.three) +
-    4 * parseInt(rates.four) +
-    5 * parseInt(rates.five)
+    1 * parseInt(value.one) +
+    2 * parseInt(value.two) +
+    3 * parseInt(value.three) +
+    4 * parseInt(value.four) +
+    5 * parseInt(value.five)
   )
 
   return parseFloat((ratesCount / totalRates).toFixed(2));

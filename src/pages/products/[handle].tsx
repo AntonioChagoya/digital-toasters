@@ -28,7 +28,7 @@ import { TbDots } from "react-icons/tb";
 import parse from 'html-react-parser';
 
 // Utils
-import { calculateAvergaRating } from "utils/rates";
+import { calculateAvergeRating } from "utils/rates";
 
 // Shopify  
 import { addLineItem, updateLineItem } from "services/shopify";
@@ -41,40 +41,49 @@ import ImagesCarousel from "@components/ProductPage/ImagesCarousel";
 
 // Types
 import { LayoutType } from "types/app";
-import { ProductVariant } from "shopify-buy";
 import { MetaFields, RatesCount } from "types/metafields";
 import RelatedProducts from "@components/global/RelatedProducts";
+import { Product, ProductVariant } from "@shopify/hydrogen-react/storefront-api-types";
 
 export const getServerSideProps = async ({ params }) => {
-  const client = createApolloClient()
 
-  const { data } = await client.query({
-    query: GET_PRODUCT_BY_HANDLE,
-    variables: {
-      handle: params.handle,
-      variantsQty: 10,
-      metafields: [
-        { key: "rate", namespace: "custom_metafield" },
-        { key: "reviews", namespace: "custom_metafield" }
-      ]
+  try {
+    const client = createApolloClient()
+
+    const { data } = await client.query({
+      query: GET_PRODUCT_BY_HANDLE,
+      variables: {
+        handle: params.handle,
+        variantsQty: 250,
+        metafields: [
+          { key: "rate", namespace: "custom_metafield" },
+          { key: "reviews", namespace: "custom_metafield" }
+        ]
+      }
+    });
+
+    return {
+      props: {
+        product: data.product || null,
+      },
     }
-  });
-
-  return {
-    props: {
-      product: data.productByHandle || null,
-    },
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        product: {},
+      },
+    };
   }
 };
 
 
-const ProductPage = ({ product }) => {
+const ProductPage = ({ product }: { product: Product }) => {
   const router = useRouter()
 
-  // // Product general info
-  const { variants: { edges }, options, handle } = product;
+  // Product general info
+  const { variants: { edges }, images, options, handle, metafields } = product;
   const productVariants = edges.map(({ node }) => node);
-
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant>()
   const findVariant = productVariants.find((variant) => parseIdStorefront(variant.id) === router.query.variant)
 
@@ -86,7 +95,7 @@ const ProductPage = ({ product }) => {
     }
   }, [router.query])
 
-  // // Cart info
+  // // // Cart info
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
 
   // // Metafields info
@@ -110,13 +119,11 @@ const ProductPage = ({ product }) => {
     }
   });
 
-  console.log("product", product);
-  console.log("selectedVariant", selectedVariant);
-  // // const [updateRatingMetafield] = useMutation(UPDATE_PRODUCT_METAFIELD, {
-  // //   context: {
-  // //     clientName: "shopify-admin",
-  // //   }
-  // // });
+  // const [updateRatingMetafield] = useMutation(UPDATE_PRODUCT_METAFIELD, {
+  //   context: {
+  //     clientName: "shopify-admin",
+  //   }
+  // });
 
   // /* 
   //   * Product page actions:
@@ -174,13 +181,13 @@ const ProductPage = ({ product }) => {
   // //   })
   // // }
 
-
+  console.log("product", product);
 
   return (
     <section className="container mx-auto p-5 lg:p-14 flex flex-col gap-20">
       <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
         {
-          <ImagesCarousel product={product} />
+          <ImagesCarousel images={images.edges.map(({ node }) => node)} />
         }
         <div className="lg:w-1/2 lg:pr-36">
           {
@@ -190,17 +197,17 @@ const ProductPage = ({ product }) => {
                 <div className="flex flex-col gap-1">
                   <div>
                     <h1 className="text-3xl font-bold">
-                      {product.variants.length > 1 ? product.title + " - " + selectedVariant.title : product.title}
+                      {edges.length > 1 ? product.title + " - " + selectedVariant.title : product.title}
                     </h1>
                   </div>
                   <div className="text-accent pointer-events-none">
                     Tostador: {product.vendor}
                   </div>
                   <div className="flex gap-2 items-center">
-                    {/* <RatingStars
-                      currentRating={calculateAvergaRating(product.metafields)}
+                    <RatingStars
+                      currentRating={calculateAvergeRating(product?.metafields?.find((metafield) => metafield?.key === MetaFields.stars_rating))}
                       onSelectRate={() => { }}
-                    /> */}
+                    />
                   </div>
                   {
                     product.description &&
@@ -223,9 +230,9 @@ const ProductPage = ({ product }) => {
                     <div className="flex gap-3">
                       {
                         selectedVariant?.compareAtPrice?.amount &&
-                        <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(selectedVariant.compareAtPrice.amount)}</h4>
+                        <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(parseFloat(selectedVariant.compareAtPrice.amount))}</h4>
                       }
-                      <h4 className="text-2xl text-gray-900">{parseMoneyFormat(selectedVariant?.price.amount)}</h4>
+                      <h4 className="text-2xl text-gray-900">{parseMoneyFormat(parseFloat(selectedVariant?.price.amount))}</h4>
                     </div>
                   }
                 </div>
@@ -237,18 +244,14 @@ const ProductPage = ({ product }) => {
                       <FaBoxesStacked size={30} /><h5>{selectedVariant.sku}</h5>
                     </div>
                   }
-                  {/* <div className="flex gap-2 items-center">
-                    <FaFireBurner size={30} /><h5>{product.vendor}</h5>
-                  </div> */}
                 </div>
                 {
-                  productVariants .length > 1 &&
+                  productVariants.length > 1 &&
                   <Options
                     variants={productVariants}
                     options={options}
                     handle={handle}
                     selectedVariant={selectedVariant}
-                    register={register}
                   />
                 }
 
@@ -261,7 +264,7 @@ const ProductPage = ({ product }) => {
                           <TbLoader3 className="animate-spin" size={24} />
                         </div>
                         :
-                        <>Agregar al carrito - {parseMoneyFormat(selectedVariant?.price.amount * watch('ProductAmount'))}</>
+                        <>Agregar al carrito - {parseMoneyFormat(parseFloat(selectedVariant?.price.amount) * watch('ProductAmount'))}</>
                     }
 
                   </button>

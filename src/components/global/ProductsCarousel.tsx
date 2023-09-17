@@ -21,8 +21,6 @@ const ProductsCarousel = ({ data }) => {
     new AutoPlay({ duration: 1000000, direction: "NEXT", stopOnHover: false }),
     new Arrow()
   ];
-  console.log(data);
-
   const slides = data.map((product) => (
     <div key={product.id} className="w-full sm:w-2/4 lg:w-1/5 sm:px-3 lg:px-5 flicking-panel">
       <SmallProductCard

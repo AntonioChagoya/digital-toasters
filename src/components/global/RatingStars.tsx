@@ -6,7 +6,7 @@ interface RatingStarsProps {
   onSelectRate: (starPosition: number) => void
 }
 
-const RatingStars = ({ currentRating, onSelectRate }: RatingStarsProps) => {
+const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
   const stars = []
   let fullStars = Math.floor(currentRating)
   let halfStars = Math.ceil(currentRating - fullStars)

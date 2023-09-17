@@ -83,11 +83,30 @@ query getProductsAndVariants(
 
 export const GET_PRODUCT_BY_HANDLE = gql`
 query getProductByHandle($handle: String!, $variantsQty: Int!, $metafields: [HasMetafieldsIdentifier!]!) {
-  productByHandle(handle: $handle) {
+  product(handle: $handle) {
     id
     title
     description
+    descriptionHtml
     handle
+    vendor
+    options {
+      id
+      name
+      values
+    }
+    images (first: 250) {
+      edges {
+        node {
+          id
+          src
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
     priceRange {
       maxVariantPrice {
         amount
@@ -156,7 +175,7 @@ query getProductByHandle($handle: String!, $variantsQty: Int!, $metafields: [Has
 `
 export const GET_PRODUCT_METAFIELDS = gql`
   query getProduct($handle: String!, $metafields: [HasMetafieldsIdentifier!]!) {
-    productByHandle(handle: $handle) {
+    product(handle: $handle) {
       id 
       handle
       metafields (identifiers: $metafields) {

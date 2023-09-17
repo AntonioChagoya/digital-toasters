@@ -9,7 +9,7 @@
  * References: 
  * (https://stackoverflow.com/questions/60338239/shopify-storefront-api-getting-referenced-variant-with-graphql)
 */
-export const parseIdStorefront = (id: string) => {
+export const parseIdStorefront = (id: string = "") => {
   const storeFrontId = id.replace('gid://shopify/ProductVariant/', "");
 
   return storeFrontId;

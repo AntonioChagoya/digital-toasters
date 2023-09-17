@@ -8,8 +8,9 @@ import { useEffect, useRef, useState } from "react";
 // Libs
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Sync, Pagination } from "@egjs/flicking-plugins";
+import { Image } from "@shopify/hydrogen-react/storefront-api-types";
 
-const ImagesCarousel = ({ product }) => {
+const ImagesCarousel = ({ images }: { images: Image[] }) => {
   const [plugins, setPlugins] = useState([]);
   const flicking0 = useRef();
   const flicking1 = useRef();
@@ -45,7 +46,7 @@ const ImagesCarousel = ({ product }) => {
           bounce={30}
           renderOnlyVisible={true}
         >
-          {product?.images?.map((image, index) => (
+          {images?.map((image, index) => (
             <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px] border">
               <img
                 className="panel-image object-cover w-full h-full pointer-events-none "
@@ -66,7 +67,7 @@ const ImagesCarousel = ({ product }) => {
           bound={true}
           bounce={30}
         >
-          {product?.images?.map((image, index) => (
+          {images?.map((image, index) => (
             <div key={index} className="w-[100px] h-[100px] mr-2">
               <img
                 className="thumb-image w-full h-full object-cover rounded"
