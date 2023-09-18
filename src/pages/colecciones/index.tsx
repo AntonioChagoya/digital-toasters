@@ -1,11 +1,11 @@
 // Components
+import { Product } from "@shopify/hydrogen-react/storefront-api-types"
 import { Collection } from "shopify-buy"
 
 // Types
 import { LayoutType } from "types/app"
-import { CustomProduct } from "types/shopify";
 
-const CollectionsPage = ({ collections, products }: { collections: Collection[], products: CustomProduct[] }) => {
+const CollectionsPage = ({ collections, products }: { collections: Collection[], products: Product[] }) => {
 
   return (
     <>
