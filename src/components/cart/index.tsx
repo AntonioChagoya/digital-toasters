@@ -19,7 +19,7 @@ import { Transition } from '@headlessui/react'
 import { shopifyClient } from 'libs/shopify'
 
 // Components
-import QuantitySelector from '@components/ProductPage/QuantitySelector';
+import QuantitySelector from '@components/productPage/QuantitySelector';
 
 // Utils
 import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';

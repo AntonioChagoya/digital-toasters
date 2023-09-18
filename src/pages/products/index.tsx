@@ -8,7 +8,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GET_PRODUCTS } from "graphql/queries/products";
 
 // Components
-import SmallProductCard from "@components/ProductCards/Small"
+import SmallProductCard from "@components/productCards/Small"
 
 // Libs
 import { TbLoader3 } from 'react-icons/tb'

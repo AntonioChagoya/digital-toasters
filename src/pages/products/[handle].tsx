@@ -33,10 +33,10 @@ import { calculateAvergeRating } from "utils/rates";
 import { addLineItem, updateLineItem } from "services/shopify";
 
 // Components
-import Options from "@components/ProductPage/Options";
-import QuantitySelector from "@components/ProductPage/QuantitySelector";
+import Options from "@components/productPage/Options";
+import QuantitySelector from "@components/productPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
-import ImagesCarousel from "@components/ProductPage/ImagesCarousel";
+import ImagesCarousel from "@components/productPage/ImagesCarousel";
 
 // Types
 import { LayoutType } from "types/app";
