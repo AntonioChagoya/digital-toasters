@@ -1,6 +1,6 @@
 // Components
-import TopBar from "./TopBar"
-import Actions from "./Actions"
+import TopBar from "@components/Header/TopBar"
+import Actions from "@components/Header/Actions"
 
 const HeaderIndex = () => {
 
