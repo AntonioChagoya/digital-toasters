@@ -186,5 +186,73 @@ export const GET_PRODUCT_METAFIELDS = gql`
     }
   }
 `
+export const GET_RELATED_PRODUCTS = gql`
+query productRecommendations {
+  productRecommendations(productId: "gid://shopify/Product/8378676052276", intent: RELATED) {
+    id
+    title
+    description
+    handle
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      src
+      url
+      altText
+      width
+      height
+    }
+    variants(first: 10) {
+      edges {
+        cursor
+        node {
+          id
+          title
+          price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
+            amount
+            currencyCode
+          }
+          image {
+            id
+            src
+            url
+            altText
+            width
+            height
+          }
+          selectedOptions {
+            name
+            value
+          }
+          sku
+        }
+      }
+    }
+  }
+}
 
+`
 

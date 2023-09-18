@@ -72,7 +72,7 @@ export default function Home({ products }) {
   return (
     <>
       <Carousel />
-      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-32">
+      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-20">
 
         <section className="flex flex-col items-center justify-center gap-10 p-5 lg:p-0">
           <div>
@@ -93,15 +93,13 @@ export default function Home({ products }) {
           </div>
         </section>
 
-        <section className="flex flex-col items-center justify-center gap-5 p-5 lg:p-0">
+        <section className="flex flex-col items-center justify-center gap-5 p-5 lg:p-0 max-w-[100vw]">
           <div>
             <p className="text-center text-accent mb-0">Café fresco</p>
             <h4 className="text-center font-bold">Productos Recientes</h4>
           </div>
 
-          <div className="flex gap-10">
-            <ProductsCarousel data={products} />
-          </div>
+          <ProductsCarousel data={products} />
 
         </section>
       </main>

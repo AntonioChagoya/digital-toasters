@@ -15,12 +15,11 @@ import { useRouter } from "next/router";
 import { parseMoneyFormat, parseIdStorefront } from "utils/stringParse";
 
 // GraphQL
-import { useQuery } from "@apollo/client";
-import { GET_PRODUCT_METAFIELDS, GET_PRODUCT_BY_HANDLE } from "graphql/queries/products";
+import { GET_PRODUCT_BY_HANDLE } from "graphql/queries/products";
 import { createApolloClient } from "graphql/apolloSSR";
 
 // Libs
-import { shopifyClient, parseShopifyResponse } from "libs/shopify"
+import { shopifyClient } from "libs/shopify"
 import { TbLoader3 } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import { FaBoxesStacked } from "react-icons/fa6";
@@ -184,12 +183,12 @@ const ProductPage = ({ product }: { product: Product }) => {
   console.log("product", product);
 
   return (
-    <section className="container mx-auto p-5 lg:p-14 flex flex-col gap-20">
-      <article className="flex flex-col lg:flex-row justify-center gap-10 min-h-[100vh]">
+    <section className="container mx-auto md:p-7 lg:p-7 flex flex-col gap-5 lg:gap-20">
+      <article className="flex flex-col md:flex-row justify-center gap-10 min-h-[100vh]">
         {
           <ImagesCarousel images={images.edges.map(({ node }) => node)} />
         }
-        <div className="lg:w-1/2 lg:pr-36">
+        <div className="sm:w-1/2 lg:pr-36 p-5">
           {
             selectedVariant &&
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -287,7 +286,7 @@ const ProductPage = ({ product }: { product: Product }) => {
 
       {
         product?.descriptionHtml.trim() &&
-        <div id="Description">
+        <div id="Description" className="p-5">
           <h2 className="text-2xl font-bold mb-5">Más Información</h2>
 
           <div className="prose max-w-6xl lg:prose-lg">

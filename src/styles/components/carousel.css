@@ -1,6 +1,8 @@
 @layer base {
+
   /* Over-ride defaults 
    * 1. Pagination bullets
+   * 2. Arrows
   */
   .flicking-pagination .flicking-pagination-bullet-active {
     @apply bg-primary
@@ -8,6 +10,12 @@
 
   .flicking-pagination .flicking-pagination-bullet {
     @apply border-gray-400 border-[0.5px] p-1
+  }
+
+  /* 2. Arrows */
+  .flicking-arrow-prev.flicking-arrow-disabled.is-circle,
+  .flicking-arrow-next.flicking-arrow-disabled.is-circle {
+    @apply opacity-50
   }
 
   /* Custom */

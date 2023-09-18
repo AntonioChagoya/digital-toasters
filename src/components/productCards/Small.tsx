@@ -2,7 +2,7 @@
 import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 
 const SmallProductCard = ({ product }: { product: Product }) => {
-  const { title, handle, priceRange, images, compareAtPriceRange, variants } = product;
+  const { title, handle, priceRange, compareAtPriceRange, variants } = product;
   const { price, image } = variants.edges[0].node;
 
   return (

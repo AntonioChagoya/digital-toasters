@@ -37,8 +37,8 @@ const ImagesCarousel = ({ images }: { images: Image[] }) => {
   }, []);
 
   return (
-    <div className="lg:sticky lg:h-full top-10">
-      <div className="lg:max-w-[500px]">
+    <div className="md:sticky md:h-full top-10 p-5">
+      <div className="max-w-[500px]">
         <Flicking
           className="mb-5"
           ref={flicking0}
@@ -47,7 +47,7 @@ const ImagesCarousel = ({ images }: { images: Image[] }) => {
           renderOnlyVisible={true}
         >
           {images?.map((image, index) => (
-            <div key={index} className="w-[500px] h-[500px] max-h-[500px] max-w-[500px] border">
+            <div key={index} className="w-full h-[400px] xs:w-[500px] xs:h-[500px] max-h-[500px] max-w-[500px] border">
               <img
                 className="panel-image object-cover w-full h-full pointer-events-none "
                 width={image.width}
@@ -62,8 +62,10 @@ const ImagesCarousel = ({ images }: { images: Image[] }) => {
         </Flicking>
 
         <Flicking
+          cameraClass="w-full"
           ref={flicking1}
           moveType="freeScroll"
+          align={"prev"}
           bound={true}
           bounce={30}
         >
