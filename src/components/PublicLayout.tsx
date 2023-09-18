@@ -1,6 +1,6 @@
 // Components
-import HeaderIndex from "./Header"
-import Footer from "./Footer"
+import HeaderIndex from "components/Header"
+import Footer from "components/Footer"
 
 const PublicLayout = ({ children }) => {
 
