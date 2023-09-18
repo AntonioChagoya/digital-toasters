@@ -1,5 +1,5 @@
 // Components
-import Carousel from "@components/Home/Carousel"
+import Carousel from "@components/home/Carousel"
 import ProductsCarousel from "@components/global/ProductsCarousel";
 
 // GraphQL
