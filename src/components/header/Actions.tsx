@@ -5,7 +5,7 @@ import Link from "next/link"
 import { TbHeart } from 'react-icons/tb'
 
 // Components
-import Menu from "@components/Header/Menu"
+import Menu from "@components/header/Menu"
 import Cart from "@components/Cart"
 
 const Actions = () => {
