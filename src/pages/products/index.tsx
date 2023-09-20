@@ -16,6 +16,7 @@ import { TbLoader3 } from 'react-icons/tb'
 // Types
 import { LayoutType } from "types/app"
 import { useEffect } from "react";
+import { reduceEachTrailingCommentRange } from "typescript";
 
 export async function getServerSideProps(params) {
   return {
@@ -65,7 +66,29 @@ const Productos = ({ query }) => {
     }
 
   }, [roasted, toaster])
-  console.log("data", data);
+
+  // let mergedArray = [];
+
+  // data?.products?.edges
+  //   .reduce((acc, product) => {
+  //     const filteredOptions = product.node.options.filter((option) => option.name !== "Title")
+
+  //     return [...acc, ...filteredOptions].map((option) => ({ name: option.name, values: option.values }))
+  //   }, [])
+  //   .forEach((item) => {
+  //     const existingItem = mergedArray.find((el) => el.name === item.name);
+
+  //     if (existingItem) {
+  //       existingItem.values = existingItem.values.concat(item.values);
+  //     } else {
+  //       mergedArray.push({ name: item.name, values: item.values });
+  //     }
+  //   });
+
+  // const options = mergedArray.map((option) => ({ name: option.name, values: Array.from(new Set(option.values)) }))
+
+  // console.log("options", options);
+
 
   return (
     <>
@@ -162,6 +185,7 @@ const Productos = ({ query }) => {
                 >
                   <option selected={!router.query.query} value="">Todas</option>
                   <option selected={router.query.query === "Zaranda"} value="Zaranda">Zaranda</option>
+                  <option selected={router.query.query === "DigitalToaster"} value="DigitalToaster">Digital toasters</option>
                 </select>
               </div>
             </section>

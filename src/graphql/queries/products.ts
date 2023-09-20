@@ -16,6 +16,11 @@ query getProductsAndVariants(
         title
         description
         handle
+        options {
+          id
+          name
+          values
+        }
         priceRange {
           maxVariantPrice {
             amount
@@ -79,8 +84,19 @@ query getProductsAndVariants(
   }
 }
 
-`;
-
+`
+export const GET_METAOBJECT_BY_ID = gql`
+query getMetaObject($id: ID!) {
+  metaobject(id: $id) {
+    id
+    handle
+    fields {
+        key
+        value
+    }
+  }   
+}
+`
 export const GET_PRODUCT_BY_HANDLE = gql`
 query getProductByHandle($handle: String!, $variantsQty: Int!, $metafields: [HasMetafieldsIdentifier!]!) {
   product(handle: $handle) {

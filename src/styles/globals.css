@@ -16,49 +16,81 @@
   html {
     @apply font-default duration-200 scroll-smooth;
   }
-  h1{
+
+  /* Text tags */
+  h1 {
     font-size: 5rem;
   }
-  h2{
+
+  h2 {
     font-size: 4rem;
   }
-  h3{
+
+  h3 {
     font-size: 3rem;
   }
-  h4{
+
+  h4 {
     font-size: 2rem;
   }
-  h5{
+
+  h5 {
     font-size: 1rem;
     font-weight: bold;
   }
-  h6{
+
+  h6 {
     font-size: 1rem;
   }
 
-  p{
+  p {
     @apply mb-3
   }
+
   button[type="button"] {
-    @apply duration-200 hover:scale-[1.08] ;
+    @apply duration-200 hover:scale-[1.08];
   }
 
-  input, select{
-    @apply  focus:ring-primary focus:border-primary border-gray-300 duration-200;
+  input,
+  select {
+    @apply focus:ring-primary focus:border-primary border-gray-300 duration-200;
   }
-  input[type="number"]{
+
+  input[type="number"] {
     @apply focus:ring-primary focus:ring-2 duration-200 focus:border-0;
   }
+
   input[type="checkbox"] {
-    @apply rounded ring-primary focus:ring-primary checked:bg-primary hover:checked:bg-primary checked:focus:bg-primary border-gray-300 duration-200; 
+    @apply rounded ring-primary focus:ring-primary checked:bg-primary hover:checked:bg-primary checked:focus:bg-primary border-gray-300 duration-200;
   }
 
   ul li {
-    @apply list-disc	;
+    @apply list-disc;
   }
 
   ol li {
-    @apply list-decimal	;
+    @apply list-decimal;
+  }
+
+  /* Tables */
+  table {
+    @apply border-collapse border border-gray-300 table-fixed;
+  }
+
+  thead {
+    @apply bg-gray-100;
+  }
+
+  tr {
+    @apply rounded;
+  }
+
+  th {
+    @apply border border-gray-300 p-2 font-normal;
+  }
+
+  th h6 {
+    @apply font-bold uppercase text-sm;
   }
 
   /* Chrome, Safari, Edge, Opera */
