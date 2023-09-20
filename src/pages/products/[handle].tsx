@@ -21,7 +21,6 @@ import { Product, ProductVariant } from "@shopify/hydrogen-react/storefront-api-
 // Components
 import ImagesCarousel from "@components/productPage/ImagesCarousel";
 import RelatedProducts from "@components/global/RelatedProducts";
-import RadarChart from "@components/charts/RadarChart";
 
 // Types
 import { LayoutType } from "types/app";
@@ -29,9 +28,9 @@ import LargeDescription from "@components/productPage/LargeDescription";
 import ProductForm from "@components/productPage/ProductForm";
 
 export const getServerSideProps = async ({ params }) => {
-
   try {
-    let metaobject = null
+    let notesMetaobject = null
+    let rateMetaobject = null
     const client = createApolloClient()
 
     const { data } = await client.query({
@@ -40,28 +39,38 @@ export const getServerSideProps = async ({ params }) => {
         handle: params.handle,
         variantsQty: 250,
         metafields: [
-          { key: "rate", namespace: "custom_metafield" },
+          { key: "rate", namespace: "custom" },
           { key: "notas_de_cata", namespace: "custom" }
         ]
       }
     })
-    const metaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "notas_de_cata")
-    // console.log("metaobjectId", metaobjectId);
+    const rateMetafieldId = data?.product?.metafields?.find((metafield) => metafield?.key === "rate")
+    const notesMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "notas_de_cata")
 
-    if (metaobjectId) {
+    if (rateMetafieldId) {
       const { data } = await client.query({
         query: GET_METAOBJECT_BY_ID,
         variables: {
-          id: metaobjectId.value
+          id: rateMetafieldId.value
         }
       })
-      metaobject = data
+      rateMetaobject = data
+    }
+    if (notesMetaobjectId) {
+      const { data } = await client.query({
+        query: GET_METAOBJECT_BY_ID,
+        variables: {
+          id: notesMetaobjectId.value
+        }
+      })
+      notesMetaobject = data
     }
 
     return {
       props: {
         product: data?.product || null,
-        metaobject: metaobject?.metaobject || null
+        notesMetaobject: notesMetaobject?.metaobject || null,
+        rateMetaobject: rateMetaobject?.metaobject || null
       },
     }
   } catch (error) {
@@ -75,7 +84,7 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 
-const ProductPage = ({ product, metaobject }: { product: Product, metaobject }) => {
+const ProductPage = ({ product, notesMetaobject, rateMetaobject }: { product: Product, notesMetaobject, rateMetaobject }) => {
   const router = useRouter()
 
   // Product general info
@@ -92,16 +101,14 @@ const ProductPage = ({ product, metaobject }: { product: Product, metaobject }) 
     }
   }, [router.query])
 
-  console.log("product", product);
-
   return (
     <section className="container mx-auto lg:max-w-7xl  md:p-7 lg:p-7 flex flex-col gap-5 lg:gap-20">
       <article className="flex flex-col lg:flex-row gap-5 flex-wrap justify-evenly">
         <ImagesCarousel images={images.edges.map(({ node }) => node)} />
-        <ProductForm selectedVariant={selectedVariant} productVariants={productVariants} product={product} />
+        <ProductForm rateMetaobject={rateMetaobject} selectedVariant={selectedVariant} productVariants={productVariants} product={product} />
       </article >
 
-      <LargeDescription descriptionHtml={product?.descriptionHtml} metaobject={metaobject} />
+      <LargeDescription descriptionHtml={product?.descriptionHtml} metaobject={notesMetaobject} />
       <RelatedProducts />
     </section >
   )

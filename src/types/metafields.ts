@@ -3,10 +3,10 @@ export enum MetaFields {
   reviews_count = 'reviews',
 }
 
-export interface RatesCount {
-  one: string;
-  two: string;
-  three: string;
-  four: string;
-  five: string;
+export enum RatesCount {
+  'one' = 1,
+  'two' = 2,
+  'three' = 3,
+  'four' = 4,
+  'five' = 5
 }

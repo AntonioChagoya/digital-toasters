@@ -72,7 +72,7 @@ export default function Home({ products }) {
   return (
     <>
       <Carousel />
-      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-20">
+      <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-20 max-w-7xl">
 
         <section className="flex flex-col items-center justify-center gap-10 p-5 lg:p-0">
           <div>

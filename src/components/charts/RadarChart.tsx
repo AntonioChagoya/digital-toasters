@@ -33,8 +33,16 @@ const options = {
       tension: 0.1,
     },
     point: {
-      radius: 3,
+      radius: 2,
+      hitRadius: 20,
+      hoverRadius: 4,
     }
+  },
+  plugins: {
+    legend: {
+      position: "bottom",
+      align: "start"
+    },
   },
 };
 
@@ -48,9 +56,9 @@ const RadarChart = ({ metaobject }) => {
   const averageData = metaobjectValues?.map(() => metaobjectValues.reduce((acc, value) => acc + value, 0) / metaobjectValues.length)
   const comertialCoffees = metaobjectValues?.map((value, index) => {
     if (index > 7) {
-      return 5
+      return 1
     } else if (index > 5) {
-      return 6
+      return 5
     } else {
       return 7
     }
@@ -59,6 +67,13 @@ const RadarChart = ({ metaobject }) => {
   const data = {
     labels: metaobjectLabels,
     datasets: [
+      {
+        label: 'Este Café',
+        data: metaobjectValues,
+        backgroundColor: 'rgba(251, 146 , 60, 0.2)',
+        borderColor: 'rgba(251, 146 , 60, 1)',
+        borderWidth: 1,
+      },
       {
         label: 'Cafés Comerciales',
         data: comertialCoffees,
@@ -72,13 +87,6 @@ const RadarChart = ({ metaobject }) => {
         backgroundColor: 'rgba(63, 116, 220, 0.2)',
         borderColor: 'rgba(63, 116, 220, 0.7)',
         borderWidth: 0.5,
-      },
-      {
-        label: 'Este Café',
-        data: metaobjectValues,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
       },
     ],
   };
