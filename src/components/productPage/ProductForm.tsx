@@ -29,8 +29,13 @@ import ProductPageDescription from "@components/productPage/Description";
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
   const { variants: { edges }, options, handle } = product;
   const { fields } = relevantInfoMetaobject
-  const fieldsWithCols = fields.flatMap((w, i) => (i + 1) % 3 === 0 ? [w, { key: "col" }] : w)
-  console.log("fieldsWithCols", fieldsWithCols);
+
+  const groupedFields = fields.reduce((acc, field, index) => {
+    if (index % 3 === 0) {
+      return [...acc, [fields[index], fields[index + 1], fields[index + 2]]]
+    }
+    return acc;
+  }, [])
 
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
 
@@ -84,6 +89,9 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
     setLoading(false)
   };
 
+  console.log("groupedFields", groupedFields);
+  console.log("fields", fields);
+
   return (
     <section className="lg:w-1/2 p-5">
       {
@@ -127,15 +135,33 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
                 <div className="flex flex-wrap justify-end gap-1">
                   <table className="table-fixed">
                     <tbody className="text-left">
-                      {fields.map((field, index) => {
+                      {
+                        groupedFields.map((group, index) => {
+                          return (
+                            <tr key={index}>
+                              {group.map((field, index) => {
+                                if (field.key === "altura") {
+                                  return (
+                                    <td key={index}>
+                                      <h6>{field.key}</h6>
+                                      <p className="mb-0">{JSON.parse(field.value).value} m s. n. m.</p>
+                                    </td>
+                                  )
+                                } else {
+                                  return (
+                                    <td key={index}>
+                                      <h6>{field.key}</h6>
+                                      <p className="mb-0">{field.value}</p>
+                                    </td>
+                                  )
+                                }
 
-                        return (
-                          <td>
-                            <h6>{field.key}</h6>
-                            <p className="mb-0">{field.value}</p>
-                          </td>
-                        )
-                      })}
+                              })}
+                            </tr>
+                          )
+                        })
+                      }
+
                     </tbody>
                   </table>
                   <span

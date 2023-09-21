@@ -18,7 +18,7 @@ const ProductsCarousel = ({ data }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
-    new AutoPlay({ duration: 5000, direction: "NEXT" }),
+    // new AutoPlay({ duration: 5000, direction: "NEXT" }),
     new Arrow()
   ];
   const slides = data.map((product) => (
