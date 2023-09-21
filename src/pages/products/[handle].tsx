@@ -31,6 +31,8 @@ export const getServerSideProps = async ({ params }) => {
   try {
     let notesMetaobject = null
     let rateMetaobject = null
+    let relevantInfoMetaobject = null
+
     const client = createApolloClient()
 
     const { data } = await client.query({
@@ -40,12 +42,15 @@ export const getServerSideProps = async ({ params }) => {
         variantsQty: 250,
         metafields: [
           { key: "rate", namespace: "custom" },
-          { key: "notas_de_cata", namespace: "custom" }
+          { key: "notas_de_cata", namespace: "custom" },
+          { key: "informacion_relevante", namespace: "custom" }
         ]
       }
     })
     const rateMetafieldId = data?.product?.metafields?.find((metafield) => metafield?.key === "rate")
     const notesMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "notas_de_cata")
+    const relevantInfoMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "informacion_relevante")
+    console.log("data?.product?.metafields", relevantInfoMetaobjectId);
 
     if (rateMetafieldId) {
       const { data } = await client.query({
@@ -65,12 +70,22 @@ export const getServerSideProps = async ({ params }) => {
       })
       notesMetaobject = data
     }
+    if (relevantInfoMetaobjectId) {
+      const { data } = await client.query({
+        query: GET_METAOBJECT_BY_ID,
+        variables: {
+          id: relevantInfoMetaobjectId.value
+        }
+      })
+      relevantInfoMetaobject = data
+    }
 
     return {
       props: {
         product: data?.product || null,
         notesMetaobject: notesMetaobject?.metaobject || null,
-        rateMetaobject: rateMetaobject?.metaobject || null
+        rateMetaobject: rateMetaobject?.metaobject || null,
+        relevantInfoMetaobject: relevantInfoMetaobject?.metaobject || null
       },
     }
   } catch (error) {
@@ -84,7 +99,11 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 
-const ProductPage = ({ product, notesMetaobject, rateMetaobject }: { product: Product, notesMetaobject, rateMetaobject }) => {
+const ProductPage = ({
+  product, notesMetaobject, rateMetaobject, relevantInfoMetaobject
+}: {
+  product: Product, notesMetaobject, rateMetaobject, relevantInfoMetaobject
+}) => {
   const router = useRouter()
 
   // Product general info
@@ -105,7 +124,13 @@ const ProductPage = ({ product, notesMetaobject, rateMetaobject }: { product: Pr
     <section className="container mx-auto lg:max-w-7xl  md:p-7 lg:p-7 flex flex-col gap-5 lg:gap-20">
       <article className="flex flex-col lg:flex-row gap-5 flex-wrap justify-evenly">
         <ImagesCarousel images={images.edges.map(({ node }) => node)} />
-        <ProductForm rateMetaobject={rateMetaobject} selectedVariant={selectedVariant} productVariants={productVariants} product={product} />
+        <ProductForm
+          rateMetaobject={rateMetaobject}
+          relevantInfoMetaobject={relevantInfoMetaobject}
+          selectedVariant={selectedVariant}
+          productVariants={productVariants}
+          product={product}
+        />
       </article >
 
       <LargeDescription descriptionHtml={product?.descriptionHtml} metaobject={notesMetaobject} />
