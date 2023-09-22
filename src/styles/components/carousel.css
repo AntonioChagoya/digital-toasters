@@ -13,8 +13,8 @@
   }
 
   /* 2. Arrows */
-  .flicking-arrow-prev.flicking-arrow-disabled.is-circle,
-  .flicking-arrow-next.flicking-arrow-disabled.is-circle {
+  .custom-active.flicking-arrow-prev.flicking-arrow-disabled.is-circle,
+  .custom-active.flicking-arrow-next.flicking-arrow-disabled.is-circle {
     @apply opacity-50
   }
 

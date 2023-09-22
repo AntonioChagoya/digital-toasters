@@ -32,6 +32,7 @@ export const getServerSideProps = async ({ params }) => {
     let notesMetaobject = null
     let rateMetaobject = null
     let relevantInfoMetaobject = null
+    let generalInfoMetaobject = null
 
     const client = createApolloClient()
 
@@ -43,14 +44,15 @@ export const getServerSideProps = async ({ params }) => {
         metafields: [
           { key: "rate", namespace: "custom" },
           { key: "notas_de_cata", namespace: "custom" },
-          { key: "informacion_relevante", namespace: "custom" }
+          { key: "informacion_relevante", namespace: "custom" },
+          { key: "informacion_general", namespace: "custom" }
         ]
       }
     })
     const rateMetafieldId = data?.product?.metafields?.find((metafield) => metafield?.key === "rate")
     const notesMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "notas_de_cata")
     const relevantInfoMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "informacion_relevante")
-    console.log("data?.product?.metafields", relevantInfoMetaobjectId);
+    const generalInfoMetaobjectId = data?.product?.metafields?.find((metafield) => metafield?.key === "informacion_general")
 
     if (rateMetafieldId) {
       const { data } = await client.query({
@@ -79,13 +81,24 @@ export const getServerSideProps = async ({ params }) => {
       })
       relevantInfoMetaobject = data
     }
+    if (generalInfoMetaobjectId) {
+      const { data } = await client.query({
+        query: GET_METAOBJECT_BY_ID,
+        variables: {
+          id: generalInfoMetaobjectId.value
+        }
+      })
+      relevantInfoMetaobject = data
+    }
+
 
     return {
       props: {
         product: data?.product || null,
         notesMetaobject: notesMetaobject?.metaobject || null,
         rateMetaobject: rateMetaobject?.metaobject || null,
-        relevantInfoMetaobject: relevantInfoMetaobject?.metaobject || null
+        relevantInfoMetaobject: relevantInfoMetaobject?.metaobject || null,
+        generalInfoMetaobject: generalInfoMetaobject?.metaobject || null,
       },
     }
   } catch (error) {
@@ -100,9 +113,9 @@ export const getServerSideProps = async ({ params }) => {
 
 
 const ProductPage = ({
-  product, notesMetaobject, rateMetaobject, relevantInfoMetaobject
+  product, notesMetaobject, rateMetaobject, relevantInfoMetaobject, generalInfoMetaobject
 }: {
-  product: Product, notesMetaobject, rateMetaobject, relevantInfoMetaobject
+  product: Product, notesMetaobject, rateMetaobject, relevantInfoMetaobject, generalInfoMetaobject
 }) => {
   const router = useRouter()
 
@@ -125,15 +138,19 @@ const ProductPage = ({
       <article className="flex flex-col lg:flex-row gap-5 flex-wrap justify-evenly">
         <ImagesCarousel images={images.edges.map(({ node }) => node)} />
         <ProductForm
+          product={product}
           rateMetaobject={rateMetaobject}
           relevantInfoMetaobject={relevantInfoMetaobject}
           selectedVariant={selectedVariant}
           productVariants={productVariants}
-          product={product}
         />
       </article >
 
-      <LargeDescription descriptionHtml={product?.descriptionHtml} metaobject={notesMetaobject} />
+      <LargeDescription
+        descriptionHtml={product?.descriptionHtml}
+        metaobject={notesMetaobject}
+        generalInfoMetaobject={generalInfoMetaobject}
+      />
       <RelatedProducts />
     </section >
   )

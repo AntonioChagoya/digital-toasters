@@ -39,8 +39,8 @@ const ProductsCarousel = ({ data }) => {
       >
         {slides}
         <ViewportSlot>
-          <FaAngleLeft className={`${activeArrows ? "opacity-100" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
-          <FaAngleRight className={`${activeArrows ? "opacity-100" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
+          <FaAngleLeft className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
+          <FaAngleRight className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
         </ViewportSlot>
       </Flicking>
     </section >

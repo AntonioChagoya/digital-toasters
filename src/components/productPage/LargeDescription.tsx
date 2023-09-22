@@ -1,7 +1,12 @@
 import parse from 'html-react-parser';
 import RadarChart from '@components/charts/RadarChart';
 
-const LargeDescription = ({ descriptionHtml, metaobject }: { descriptionHtml: string, metaobject }) => {
+const LargeDescription = ({
+  descriptionHtml, metaobject, generalInfoMetaobject
+}:
+  {
+    descriptionHtml: string, metaobject, generalInfoMetaobject
+  }) => {
 
   if (!descriptionHtml && !metaobject) {
     return <></>

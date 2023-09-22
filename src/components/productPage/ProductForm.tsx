@@ -25,18 +25,12 @@ import RatingStars from "@components/global/RatingStars";
 
 // Types
 import ProductPageDescription from "@components/productPage/Description";
+import { groupArrayObjectsByGroupSize } from "@utils/arrays";
 
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
   const { variants: { edges }, options, handle } = product;
-  const { fields } = relevantInfoMetaobject
-
-  const groupedFields = fields.reduce((acc, field, index) => {
-    if (index % 3 === 0) {
-      return [...acc, [fields[index], fields[index + 1], fields[index + 2]]]
-    }
-    return acc;
-  }, [])
-
+  const { fields } = relevantInfoMetaobject || [];
+  const groupedFields = groupArrayObjectsByGroupSize(fields, 3)
   const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
 
   // Form management
@@ -88,9 +82,6 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
     }
     setLoading(false)
   };
-
-  console.log("groupedFields", groupedFields);
-  console.log("fields", fields);
 
   return (
     <section className="lg:w-1/2 p-5">
