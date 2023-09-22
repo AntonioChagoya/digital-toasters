@@ -74,7 +74,7 @@ export default function Home({ products }) {
       <Carousel />
       <main className="flex flex-col gap-16 items-center justify-between container mx-auto pb-20 max-w-7xl">
 
-        <section className="flex flex-col items-center justify-center gap-10 p-5 lg:p-0">
+        <section className="flex flex-col items-center justify-center gap-10 ">
           <div>
             <p className="text-center text-accent mb-0">Area de Servicio</p>
             <h4 className="text-center font-bold">¿Cómo funciona DigitalToasters.com?</h4>
