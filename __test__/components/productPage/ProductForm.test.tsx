@@ -18,7 +18,7 @@ const dataSetArray = [
   { key: "key7", value: "value7" },
 ]
 
-const dataSetGroupSize = [{ groupSize: 3 }, { groupSize: 4 }, { groupSize: 5 }, { groupSize: 6 }, { groupSize: 7 }]
+const dataSetGroupSize = [{ groupSize: 3 }, { groupSize: 3 }, { groupSize: 4 }, { groupSize: 5 }, { groupSize: 6 }, { groupSize: 7 }]
 
 describe("Array grouping function - Array.reduce {...spread}", () => {
   it.each(dataSetGroupSize)('Should return an array grouped with $groupSize number of objects each', () => {

@@ -152,7 +152,6 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
                           )
                         })
                       }
-
                     </tbody>
                   </table>
                   <span

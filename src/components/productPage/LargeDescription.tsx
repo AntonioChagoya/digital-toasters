@@ -1,80 +1,78 @@
-import parse from 'html-react-parser';
+// Components
 import RadarChart from '@components/charts/RadarChart';
+
+// Utils
+import { groupArrayObjectsByGroupSize } from '@utils/arrays';
+
+// Libs
+import parse from 'html-react-parser';
+import { TbFileSpreadsheet } from 'react-icons/tb';
 
 const LargeDescription = ({
   descriptionHtml, metaobject, generalInfoMetaobject
-}:
-  {
-    descriptionHtml: string, metaobject, generalInfoMetaobject
-  }) => {
+}: {
+  descriptionHtml: string, metaobject, generalInfoMetaobject
+}) => {
+  const { fields } = generalInfoMetaobject || []
+  const groupedGeneralFields = groupArrayObjectsByGroupSize(fields, 3)
 
   if (!descriptionHtml && !metaobject) {
     return <></>
   }
+
+  console.log("fields", fields);
+
 
   return (
     <div id="Description" className="p-5">
       <h2 className="text-2xl font-bold mb-5">Más Información</h2>
       <div className='flex flex-col gap-5 lg:gap-10'>
         <div className='flex flex-col-reverse items-center xl:flex-row gap-10 justify-between '>
-          <table className='w-full lg:w-3/5'>
-            <tbody >
-              <tr>
-                <td>
-                  <h6>Región</h6>
-                  <p>Monte Verde, Ocotlán, Oaxaca</p>
-                </td>
-                <td>
-                  <h6>Altura</h6>
-                  <p>1,600 MSNM</p>
-                </td>
-                <td>
-                  <h6>Productora</h6>
-                  <p>Isabel Dolores</p>
-                </td>
-              </tr>
+          {
+            groupedGeneralFields?.length > 0 &&
+            <table className="table-fixed">
+              <tbody className="text-left">
+                {
+                  groupedGeneralFields?.map((group, index) => {
+                    if (!group) {
+                      return <></>
+                    }
 
-              <tr>
-                <td>
-                  <h6>Varietal</h6>
-                  <p>Bourbon</p>
-                </td>
+                    return (
+                      <tr key={index}>
+                        {group.map((field, index) => {
+                          if (!field) {
+                            return <></>
+                          }
+                          if (field.key === "altura") {
+                            return (
+                              <td key={index}>
+                                <h6>{field.key}</h6>
+                                <p className="mb-0">{JSON.parse(field.value).value} m s. n. m.</p>
+                              </td>
+                            )
+                          }
+                          else {
+                            return (
+                              <td key={index}>
+                                <h6>{field.key}</h6>
+                                <p className="mb-0">{field.value}</p>
+                              </td>
+                            )
+                          }
 
-                <td>
-                  <h6>Proceso</h6>
-                  <p>Lavado tradicional</p>
-                </td>
+                        })}
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
 
-                <td>
-                  <h6>Notas</h6>
-                  <p>Chocolate, nuez</p>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h6>Aroma</h6>
-                  <p>Caramelo, zacate limón, miel, clavo de olor</p>
-                </td>
-                <td>
-                  <h6>Acidez</h6>
-                  <p>Cítrica viva, maracuyá</p>
-                </td>
-                <td>
-                  <h6>Cosecha</h6>
-                  <p>2023 | Lote #9</p>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h6>Puntaje de catador</h6>
-                  <p>87.75 puntos</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
+              <caption className='caption-bottom text-right cursor-pointer'>
+                <p className='text-accent'>Saber más <TbFileSpreadsheet size={18} className="inline-block mb-1" /></p>
+              </caption>
+            </table>
+          }
           {
             metaobject &&
             <div className='w-full lg:w-2/5 max-w-[400px]'>
@@ -88,7 +86,6 @@ const LargeDescription = ({
             {parse(descriptionHtml)}
           </div>
         }
-
       </div>
     </div>
   )

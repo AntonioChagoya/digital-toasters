@@ -88,9 +88,8 @@ export const getServerSideProps = async ({ params }) => {
           id: generalInfoMetaobjectId.value
         }
       })
-      relevantInfoMetaobject = data
+      generalInfoMetaobject = data
     }
-
 
     return {
       props: {
@@ -147,9 +146,9 @@ const ProductPage = ({
       </article >
 
       <LargeDescription
-        descriptionHtml={product?.descriptionHtml}
         metaobject={notesMetaobject}
         generalInfoMetaobject={generalInfoMetaobject}
+        descriptionHtml={product?.descriptionHtml}
       />
       <RelatedProducts />
     </section >
