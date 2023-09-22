@@ -134,14 +134,14 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
                                 if (field.key === "altura") {
                                   return (
                                     <td key={index}>
-                                      <h6>{field.key}</h6>
+                                      <h6>{field.key.replaceAll("_", " ")}</h6>
                                       <p className="mb-0">{JSON.parse(field.value).value} m s. n. m.</p>
                                     </td>
                                   )
                                 } else {
                                   return (
                                     <td key={index}>
-                                      <h6>{field.key}</h6>
+                                      <h6>{field.key.replaceAll("_", " ")}</h6>
                                       <p className="mb-0">{field.value}</p>
                                     </td>
                                   )

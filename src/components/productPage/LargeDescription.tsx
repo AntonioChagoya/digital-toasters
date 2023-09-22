@@ -19,9 +19,7 @@ const LargeDescription = ({
   if (!descriptionHtml && !metaobject) {
     return <></>
   }
-
-  console.log("fields", fields);
-
+  console.log("generalInfoMetaobject", generalInfoMetaobject);
 
   return (
     <div id="Description" className="p-5">
@@ -30,7 +28,7 @@ const LargeDescription = ({
         <div className='flex flex-col-reverse items-center xl:flex-row gap-10 justify-between '>
           {
             groupedGeneralFields?.length > 0 &&
-            <table className="table-fixed">
+            <table className="table-fixed ">
               <tbody className="text-left">
                 {
                   groupedGeneralFields?.map((group, index) => {
@@ -47,7 +45,7 @@ const LargeDescription = ({
                           if (field.key === "altura") {
                             return (
                               <td key={index}>
-                                <h6>{field.key}</h6>
+                                <h6>{field.key.replaceAll("_", " ")}</h6>
                                 <p className="mb-0">{JSON.parse(field.value).value} m s. n. m.</p>
                               </td>
                             )
@@ -55,7 +53,7 @@ const LargeDescription = ({
                           else {
                             return (
                               <td key={index}>
-                                <h6>{field.key}</h6>
+                                <h6>{field.key.replaceAll("_", " ")}</h6>
                                 <p className="mb-0">{field.value}</p>
                               </td>
                             )
@@ -75,7 +73,7 @@ const LargeDescription = ({
           }
           {
             metaobject &&
-            <div className='w-full lg:w-2/5 max-w-[400px]'>
+            <div className='w-full min-w-[300px] max-w-[450px]'>
               <RadarChart metaobject={metaobject} />
             </div>
           }
