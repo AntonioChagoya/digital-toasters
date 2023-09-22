@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+import { LayoutPosition } from 'chart.js';
 
 ChartJS.register(
   RadialLinearScale,
@@ -40,8 +41,9 @@ const options = {
   },
   plugins: {
     legend: {
-      position: "bottom",
-      align: "start"
+      display: true,
+      position: "bottom" as LayoutPosition,
+      // align: "start"
     },
   },
 };
