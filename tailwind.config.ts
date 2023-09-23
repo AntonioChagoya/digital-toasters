@@ -14,12 +14,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      // gridTemaplateColumns: {
-      //   '8': 'repeat(8, minmax(0, 1fr))',
-      // },
-      // gridTemaplateRows: {
-      //   '8': 'repeat(8, minmax(0, 1fr))',
-      // },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -27,7 +21,7 @@ module.exports = {
       fontFamily: {
         default: ["Lato", ...defaultTheme.fontFamily.mono],
       },
-      colors:{
+      colors: {
         "primary": colors.orange[400],
         "secondary": colors.gray[600],
         "accent": "#CA9528",
@@ -38,7 +32,7 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms')({ strategy: 'base'}),
+    require('@tailwindcss/forms')({ strategy: 'base' }),
     require('@tailwindcss/typography'),
   ],
 }

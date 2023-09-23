@@ -1,12 +1,15 @@
 // Icons
 import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
 
+// Components
+import Box from "@components/global/Box";
+
 interface RatingStarsProps {
   currentRating: number
   onSelectRate: (starPosition: number) => void
 }
 
-const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
+const calculateStarsCount = (currentRating: number, onSelectRate) => {
   const stars = []
   let fullStars = Math.floor(currentRating)
   let halfStars = Math.ceil(currentRating - fullStars)
@@ -24,14 +27,18 @@ const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
       i++
     }
   }
+  return stars.slice(0, 5).map((star, index) => <span key={index} aria-description="Rating star">{star}</span>)
+}
+
+const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
 
   return (
-    <div className="flex items-center gap-1">
-      <div className="flex gap-1 items-center">
-        {stars.slice(0, 5).map((star) => star)}
-      </div>
+    <Box className="flex items-center gap-1">
+      <Box className="inline-block">
+        {calculateStarsCount(currentRating, onSelectRate)}
+      </Box>
       <p className="mb-0 font-bold">{currentRating.toFixed(1)}</p>
-    </div>
+    </Box>
   )
 }
 

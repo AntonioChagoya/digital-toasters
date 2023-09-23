@@ -1,5 +1,6 @@
 // Components
 import RadarChart from '@components/charts/RadarChart';
+import Box from '@components/global/Box';
 
 // Utils
 import { groupArrayObjectsByGroupSize } from '@utils/arrays';
@@ -8,7 +9,7 @@ import { groupArrayObjectsByGroupSize } from '@utils/arrays';
 import parse from 'html-react-parser';
 import { TbFileSpreadsheet } from 'react-icons/tb';
 
-const LargeDescription = ({
+const MoreInfo = ({
   descriptionHtml, metaobject, generalInfoMetaobject
 }: {
   descriptionHtml: string, metaobject, generalInfoMetaobject
@@ -22,10 +23,10 @@ const LargeDescription = ({
   console.log("generalInfoMetaobject", generalInfoMetaobject);
 
   return (
-    <div id="Description" className="p-5">
-      <h2 className="text-2xl font-bold mb-5">Más Información</h2>
-      <div className='flex flex-col gap-5 lg:gap-10'>
-        <div className='flex flex-col-reverse items-center xl:flex-row gap-10 justify-between '>
+    <Box id="Description" className="p-5 flex flex-col gap-10">
+      <h4>Más Información</h4>
+      <Box className='flex flex-col gap-5 lg:gap-10'>
+        <div className='flex flex-col-reverse items-start xl:flex-row gap-10 justify-between '>
           {
             groupedGeneralFields?.length > 0 &&
             <table className="table-fixed ">
@@ -84,9 +85,9 @@ const LargeDescription = ({
             {parse(descriptionHtml)}
           </div>
         }
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
-export default LargeDescription
+export default MoreInfo

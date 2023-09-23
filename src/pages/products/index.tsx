@@ -67,29 +67,6 @@ const Productos = ({ query }) => {
 
   }, [roasted, toaster])
 
-  // let mergedArray = [];
-
-  // data?.products?.edges
-  //   .reduce((acc, product) => {
-  //     const filteredOptions = product.node.options.filter((option) => option.name !== "Title")
-
-  //     return [...acc, ...filteredOptions].map((option) => ({ name: option.name, values: option.values }))
-  //   }, [])
-  //   .forEach((item) => {
-  //     const existingItem = mergedArray.find((el) => el.name === item.name);
-
-  //     if (existingItem) {
-  //       existingItem.values = existingItem.values.concat(item.values);
-  //     } else {
-  //       mergedArray.push({ name: item.name, values: item.values });
-  //     }
-  //   });
-
-  // const options = mergedArray.map((option) => ({ name: option.name, values: Array.from(new Set(option.values)) }))
-
-  // console.log("options", options);
-
-
   return (
     <>
       <div className="container mx-auto flex gap-10 p-10 lg:py-16 lg:px-0">

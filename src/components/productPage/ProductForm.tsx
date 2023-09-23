@@ -22,10 +22,11 @@ import { addLineItem, updateLineItem } from "services/shopify";
 import Options from "@components/productPage/Options";
 import QuantitySelector from "@components/productPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
+import ProductPageDescription from "@components/productPage/Description";
 
 // Types
-import ProductPageDescription from "@components/productPage/Description";
 import { groupArrayObjectsByGroupSize } from "@utils/arrays";
+import Box from "@components/global/Box";
 
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
   const { variants: { edges }, options, handle } = product;
@@ -40,10 +41,6 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
       ProductAmount: 1
     }
   });
-
-  /* 
-    * Product page actions:
-   */
 
   // Add to cart
   const onSubmit = async (data) => {
@@ -84,7 +81,7 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
   };
 
   return (
-    <section className="lg:w-1/2 p-5">
+    <Box className="lg:max-w-[35rem]">
       {
         selectedVariant &&
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -200,14 +197,12 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
                     :
                     <p className="uppercase mb-0 font-bold">Agregar al carrito</p>
                 }
-
               </button>
-
             </div>
           </div>
         </form>
       }
-    </section>
+    </Box>
   )
 }
 

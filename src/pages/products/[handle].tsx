@@ -21,10 +21,12 @@ import { Product, ProductVariant } from "@shopify/hydrogen-react/storefront-api-
 // Components
 import ImagesCarousel from "@components/productPage/ImagesCarousel";
 import RelatedProducts from "@components/global/RelatedProducts";
+import Section from "@components/global/Section";
+import Box from "@components/global/Box";
 
 // Types
 import { LayoutType } from "types/app";
-import LargeDescription from "@components/productPage/LargeDescription";
+import MoreInfo from "@components/productPage/MoreInfo";
 import ProductForm from "@components/productPage/ProductForm";
 
 export const getServerSideProps = async ({ params }) => {
@@ -133,25 +135,31 @@ const ProductPage = ({
   }, [router.query])
 
   return (
-    <section className="container mx-auto lg:max-w-7xl  md:p-7 lg:p-7 flex flex-col gap-5 lg:gap-20">
-      <article className="flex flex-col lg:flex-row gap-5 flex-wrap justify-evenly">
-        <ImagesCarousel images={images.edges.map(({ node }) => node)} />
-        <ProductForm
-          product={product}
-          rateMetaobject={rateMetaobject}
-          relevantInfoMetaobject={relevantInfoMetaobject}
-          selectedVariant={selectedVariant}
-          productVariants={productVariants}
-        />
-      </article >
+    <>
+      <Section>
+        <Box className="flex flex-col md:flex-row justify-start">
+          <ImagesCarousel images={images.edges.map(({ node }) => node)} />
+          <ProductForm
+            product={product}
+            rateMetaobject={rateMetaobject}
+            relevantInfoMetaobject={relevantInfoMetaobject}
+            selectedVariant={selectedVariant}
+            productVariants={productVariants}
+          />
+        </Box >
+      </Section >
 
-      <LargeDescription
-        metaobject={notesMetaobject}
-        generalInfoMetaobject={generalInfoMetaobject}
-        descriptionHtml={product?.descriptionHtml}
-      />
-      <RelatedProducts />
-    </section >
+      <Section>
+        <MoreInfo
+          metaobject={notesMetaobject}
+          generalInfoMetaobject={generalInfoMetaobject}
+          descriptionHtml={product?.descriptionHtml}
+        />
+      </Section>
+      <Section>
+        <RelatedProducts />
+      </Section>
+    </>
   )
 }
 

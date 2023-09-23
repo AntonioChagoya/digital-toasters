@@ -9,8 +9,8 @@ const SmallProductCard = ({ product }: { product: Product }) => {
     <article className='flex flex-col gap-5'>
       <a href={`/products/${handle}`} className='block '>
         <img
-          src={image.src}
-          alt={image.altText}
+          src={image?.url}
+          alt={image?.altText || "Product image"}
           className='rounded'
         />
 

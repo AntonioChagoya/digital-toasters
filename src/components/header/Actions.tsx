@@ -13,7 +13,7 @@ const Actions = () => {
   return (
     <section className="px-4 sticky z-50">
       <div className="container mx-auto flex justify-between py-5 max-w-7xl">
-        <Link className="flex items-center" href={"/"}>
+        <Link className="flex items-center" href={"/"} aria-label="Go to digitaltoasters.com">
           <img width={120} src="/digital-toasters-logo.svg" alt="" />
         </Link>
 

@@ -4,8 +4,12 @@ import "@egjs/flicking-plugins/dist/pagination.css";
 
 // Next
 import Image from "next/image";
+
 // React
 import { useEffect, useRef, useState } from "react";
+
+// Components
+import Box from "@components/global/Box";
 
 // Libs
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
@@ -39,8 +43,8 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
   }, []);
 
   return (
-    <div className="mx-auto p-5">
-      <div className="max-w-[300px] lg:max-w-[500px]">
+    <Box>
+      <Box className="max-w-[300px] lg:max-w-[500px]">
         <Flicking
           className="mb-5"
           ref={flicking0}
@@ -48,7 +52,7 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
           bounce={30}
         >
           {images?.map((image, index) => (
-            <div key={index} className="max-w-[300px] lg:max-w-[500px] lg:w-[500px] lg:h-[500px]">
+            <picture key={index} className="max-w-[300px] lg:max-w-[500px] lg:w-[500px] lg:h-[500px]">
               <Image
                 src={image.url}
                 width={image.width}
@@ -58,7 +62,7 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
                 draggable="false"
                 priority
               />
-            </div>
+            </picture>
           ))}
           <ViewportSlot>
             <div className="flicking-pagination"></div>
@@ -75,7 +79,7 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
           renderOnlyVisible={true}
         >
           {images?.map((image, index) => (
-            <div key={index} className="w-[100px] h-[100px] mr-2">
+            <picture key={index} className="w-[100px] h-[100px] mr-2">
               <Image
                 src={image.url}
                 width={image.width}
@@ -85,12 +89,12 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
                 draggable="false"
                 priority
               />
-            </div>
+            </picture>
           ))}
 
         </Flicking>
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

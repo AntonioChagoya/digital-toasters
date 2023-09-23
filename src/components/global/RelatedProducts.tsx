@@ -16,7 +16,7 @@ const RelatedProducts = () => {
 
   return (
     <div className="p-5">
-      <h2 className="text-2xl font-bold mb-5">Productos relacionados</h2>
+      <h3>Productos relacionados</h3>
       {
         loading &&
         <div className="w-full h-[200px] flex justify-center items-center">
