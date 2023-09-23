@@ -3,7 +3,7 @@ import Link from "next/link"
 const Footer = () => {
 
   return (
-    <footer className="bg-slate-900 p-5">
+    <footer className="bg-secondary p-5">
       <section className="flex flex-col justify-center items-center container mx-auto max-w-xl gap-5">
         <div className="flex gap-10 gap-y-2 justify-evenly w-full flex-wrap">
           <Link href={"/terminos-y-condiciones"} className="text-white">

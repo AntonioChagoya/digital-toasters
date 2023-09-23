@@ -14,20 +14,17 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
       fontFamily: {
         default: ["Lato", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         "primary": colors.orange[400],
-        "secondary": colors.gray[600],
-        "accent": "#CA9528",
-        "info": "",
-        "warning": "",
-        "error": "",
+        "ligth": colors.gray[500],
+        "secondary": colors.gray[900],
+        "accent": colors.yellow[500],
+        "info": colors.blue[600],
+        "warning": colors.red[500],
+        "error": colors.red[800],
       }
     },
   },

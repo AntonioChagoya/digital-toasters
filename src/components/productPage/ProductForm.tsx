@@ -187,17 +187,20 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
             </section>
 
             <div className="flex flex-col-reverse lg:gap-10 gap-5 items-start justify-start">
-              <button disabled={loading} type="submit" className="disabled:opacity-50 disabled:pointer-events-none border rounded p-3 bg-orange-400 text-white w-full shadow-md">
-                {
-                  loading
-                    ?
-                    <div className="flex w-full justify-center items-center">
-                      <TbLoader3 className="animate-spin" size={24} />
-                    </div>
-                    :
-                    <p className="uppercase mb-0 font-bold">Agregar al carrito</p>
-                }
-              </button>
+              <Box>
+                <span className="text-xs text-ligth italic">El costo de envío se calcula en el momento de pagar*</span>
+                <button disabled={loading} type="submit" className="disabled:opacity-50 disabled:pointer-events-none border rounded p-3 bg-primary text-white w-full shadow-md">
+                  {
+                    loading
+                      ?
+                      <div className="flex w-full justify-center items-center">
+                        <TbLoader3 className="animate-spin" size={24} />
+                      </div>
+                      :
+                      <p className="uppercase mb-0 font-bold">Agregar al carrito</p>
+                  }
+                </button>
+              </Box>
             </div>
           </div>
         </form>
