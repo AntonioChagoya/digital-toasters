@@ -20,12 +20,12 @@ import { createApolloClient } from "graphql/apolloSSR";
 import { Product, ProductVariant } from "@shopify/hydrogen-react/storefront-api-types";
 
 // Components
-const ImagesCarousel = dynamic(() => import("@components/views/productPage/ImagesCarousel"));
-const RelatedProducts = dynamic(() => import("@components/global/RelatedProducts"));
-const MoreInfo = dynamic(() => import("@components/views/productPage/MoreInfo"));
+import ImagesCarousel from "@components/views/productPage/ImagesCarousel";
 import ProductForm from "@components/views/productPage/ProductForm";
 import Section from "@components/global/Section";
 import Box from "@components/global/Box";
+const RelatedProducts = dynamic(() => import("@components/global/RelatedProducts"));
+const MoreInfo = dynamic(() => import("@components/views/productPage/MoreInfo"));
 
 // Types
 import { LayoutType } from "types/app";
@@ -138,7 +138,7 @@ const ProductPage = ({
     <>
       <Section
         renderSection={() => (
-          <Box className="flex flex-col md:flex-row justify-start">
+          <Box className="flex flex-col gap-5 lg:gap-10 md:flex-row justify-start">
             <ImagesCarousel images={images.edges.map(({ node }) => node)} />
             <ProductForm
               product={product}

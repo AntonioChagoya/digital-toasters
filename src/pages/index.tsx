@@ -6,7 +6,7 @@ import Image from "next/image";
 import coffe from "@assets/images/cup.png";
 
 // Components
-const Carousel = dynamic(() => import("@components/views/home/Carousel"));
+import Carousel from "@components/views/home/Carousel";
 const ProductsCarousel = dynamic(() => import("@components/global/ProductsCarousel"));
 const Section = dynamic(() => import("@components/global/Section"));
 const Box = dynamic(() => import("@components/global/Box"));
