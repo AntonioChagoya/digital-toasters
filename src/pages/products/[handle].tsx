@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 // Next
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
 // Utils
 import { parseIdStorefront } from "utils/stringParse";
@@ -19,15 +20,15 @@ import { createApolloClient } from "graphql/apolloSSR";
 import { Product, ProductVariant } from "@shopify/hydrogen-react/storefront-api-types";
 
 // Components
-import ImagesCarousel from "@components/productPage/ImagesCarousel";
-import RelatedProducts from "@components/global/RelatedProducts";
+const ImagesCarousel = dynamic(() => import("@components/views/productPage/ImagesCarousel"));
+const RelatedProducts = dynamic(() => import("@components/global/RelatedProducts"));
+const MoreInfo = dynamic(() => import("@components/views/productPage/MoreInfo"));
+import ProductForm from "@components/views/productPage/ProductForm";
 import Section from "@components/global/Section";
 import Box from "@components/global/Box";
 
 // Types
 import { LayoutType } from "types/app";
-import MoreInfo from "@components/productPage/MoreInfo";
-import ProductForm from "@components/productPage/ProductForm";
 
 export const getServerSideProps = async ({ params }) => {
   try {
@@ -112,7 +113,6 @@ export const getServerSideProps = async ({ params }) => {
   }
 };
 
-
 const ProductPage = ({
   product, notesMetaobject, rateMetaobject, relevantInfoMetaobject, generalInfoMetaobject
 }: {
@@ -136,29 +136,34 @@ const ProductPage = ({
 
   return (
     <>
-      <Section>
-        <Box className="flex flex-col md:flex-row justify-start">
-          <ImagesCarousel images={images.edges.map(({ node }) => node)} />
-          <ProductForm
-            product={product}
-            rateMetaobject={rateMetaobject}
-            relevantInfoMetaobject={relevantInfoMetaobject}
-            selectedVariant={selectedVariant}
-            productVariants={productVariants}
+      <Section
+        renderSection={() => (
+          <Box className="flex flex-col md:flex-row justify-start">
+            <ImagesCarousel images={images.edges.map(({ node }) => node)} />
+            <ProductForm
+              product={product}
+              rateMetaobject={rateMetaobject}
+              relevantInfoMetaobject={relevantInfoMetaobject}
+              selectedVariant={selectedVariant}
+              productVariants={productVariants}
+            />
+          </Box >
+        )}
+      />
+      <Section
+        renderSection={() => (
+          <MoreInfo
+            metaobject={notesMetaobject}
+            generalInfoMetaobject={generalInfoMetaobject}
+            descriptionHtml={product?.descriptionHtml}
           />
-        </Box >
-      </Section >
-
-      <Section>
-        <MoreInfo
-          metaobject={notesMetaobject}
-          generalInfoMetaobject={generalInfoMetaobject}
-          descriptionHtml={product?.descriptionHtml}
-        />
-      </Section>
-      <Section>
-        <RelatedProducts />
-      </Section>
+        )}
+      />
+      <Section
+        renderSection={() => (
+          <RelatedProducts />
+        )}
+      />
     </>
   )
 }

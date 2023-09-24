@@ -8,7 +8,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GET_PRODUCTS } from "graphql/queries/products";
 
 // Components
-import SmallProductCard from "@components/productCards/Small"
+import ProductCard from "@components/global/ProductCard"
 
 // Libs
 import { TbLoader3 } from 'react-icons/tb'
@@ -173,7 +173,7 @@ const Productos = ({ query }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
             {
               !loading && data?.products?.edges?.map((product, index) => (
-                <SmallProductCard
+                <ProductCard
                   product={product.node}
                 />
               ))

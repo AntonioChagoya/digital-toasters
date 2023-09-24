@@ -25,3 +25,15 @@ export const parseMoneyFormat = (amount: number, currency = "MXN") => {
 
   return formatter.format(Number(amount))
 };
+
+/* 
+ * Parse string to be:
+ * - Each first letter capitalized
+ * - Remove underscores
+ * - Remove dashes
+ */
+export const parseString = (string: string = "") => {
+  const parsedString = string.replace(/_/g, " ").replace(/-/g, " ");
+
+  return parsedString.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+}

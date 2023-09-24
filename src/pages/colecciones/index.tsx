@@ -16,9 +16,7 @@ const CollectionsPage = ({ collections, products }: { collections: Collection[],
         <section>
           <div className="grid grid-cols-3 gap-10">
             <div className="flex flex-col gap-5">
-              {/* <SmallProductCard
-                product={product}
-              /> */}
+
             </div>
           </div>
         </section>

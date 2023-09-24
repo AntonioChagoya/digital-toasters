@@ -11,7 +11,8 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 // Components
-import SmallProductCard from "@components/productCards/Small";
+import ProductCard from "@components/global/ProductCard";
+import Section from "./Section";
 
 
 const ProductsCarousel = ({ data }) => {
@@ -23,27 +24,31 @@ const ProductsCarousel = ({ data }) => {
   ];
   const slides = data.map((product) => (
     <div key={product.id} className="w-full sm:w-2/4 lg:w-1/4 px-5">
-      <SmallProductCard
+      <ProductCard
         product={product}
       />
     </div>
   ))
 
   return (
-    <section className="relative overflow-hidden max-w-[100vw]" onMouseEnter={() => setActiveArrows(true)} onMouseLeave={() => setActiveArrows(false)}>
-      <Flicking
-        plugins={plugins}
-        align={"prev"}
-        circular={true}
-        autoResize
-      >
-        {slides}
-        <ViewportSlot>
-          <FaAngleLeft className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
-          <FaAngleRight className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
-        </ViewportSlot>
-      </Flicking>
-    </section >
+    <Section
+      renderSection={() => (
+        <Flicking
+          plugins={plugins}
+          align={"prev"}
+          circular={true}
+          autoResize
+          onMouseEnter={() => setActiveArrows(true)}
+          onMouseLeave={() => setActiveArrows(false)}
+        >
+          {slides}
+          <ViewportSlot>
+            <FaAngleLeft className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
+            <FaAngleRight className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
+          </ViewportSlot>
+        </Flicking>
+      )}
+    />
   )
 }
 export default ProductsCarousel

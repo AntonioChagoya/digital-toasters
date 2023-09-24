@@ -33,12 +33,17 @@ const calculateStarsCount = (currentRating: number, onSelectRate) => {
 const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
 
   return (
-    <div className="flex items-center gap-2">
-      <ul className="flex gap-2">
-        {calculateStarsCount(currentRating, onSelectRate)}
-      </ul>
-      <p className="mb-0 font-bold text-secondary">({currentRating.toFixed(1)})</p>
-    </div>
+    <>
+    {
+      
+    }
+      <Box className="flex items-center gap-2">
+        <ul className="flex gap-2">
+          {calculateStarsCount(currentRating, onSelectRate)}
+        </ul>
+        <p className="mb-0 font-bold text-secondary">({currentRating.toFixed(1)})</p>
+      </Box>
+    </>
   )
 }
 

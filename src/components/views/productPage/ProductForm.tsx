@@ -19,10 +19,10 @@ import { calculateAvergeRating } from "utils/rates";
 import { addLineItem, updateLineItem } from "services/shopify";
 
 // Components
-import Options from "@components/productPage/Options";
-import QuantitySelector from "@components/productPage/QuantitySelector";
+import Options from "@components/views/productPage/Options";
+import QuantitySelector from "@components/views/productPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
-import ProductPageDescription from "@components/productPage/Description";
+import ProductPageDescription from "@components/views/productPage/Description";
 
 // Types
 import { groupArrayObjectsByGroupSize } from "@utils/arrays";

@@ -5,7 +5,7 @@
    * 2. Arrows
   */
   .flicking-pagination .flicking-pagination-bullet-active {
-    @apply bg-primary
+    @apply bg-accent
   }
 
   .flicking-pagination .flicking-pagination-bullet {
@@ -27,6 +27,6 @@
   }
 
   .custom-selected-thumb {
-    @apply border-2 border-primary p-1 rounded duration-200
+    @apply border-2 border-accent p-1 rounded duration-200
   }
 }

@@ -1,19 +1,23 @@
+// Next
+import dynamic from "next/dynamic";
+import Image from "next/image";
+
 // Images
 import coffe from "@assets/images/cup.png";
 
 // Components
-import Carousel from "@components/home/Carousel"
-import ProductsCarousel from "@components/global/ProductsCarousel";
-import Section from "@components/global/Section";
-import Box from "@components/global/Box";
+const Carousel = dynamic(() => import("@components/views/home/Carousel"));
+const ProductsCarousel = dynamic(() => import("@components/global/ProductsCarousel"));
+const Section = dynamic(() => import("@components/global/Section"));
+const Box = dynamic(() => import("@components/global/Box"));
+const Heading = dynamic(() => import("@components/views/Heading"));
 
 // GraphQL
 import { createApolloClient } from "graphql/apolloSSR";
+import { GET_PRODUCTS } from "graphql/queries/products";
 
 // Types
 import { LayoutType } from "types/app";
-import { GET_PRODUCTS } from "graphql/queries/products";
-import Image from "next/image";
 
 export async function getStaticProps() {
   try {
@@ -79,37 +83,48 @@ export default function Home({ products }) {
     <>
       <Carousel />
       <Section
-        title="¿Cómo funciona DigitalToasters.com?"
-        subTitle="Area de Servicio"
-        className="lg:flex-col"
-      >
-        <Box className="grid grid-cols-1 lg:grid-rows-2 lg:grid-cols-3">
-          {
-            serviceCards.map((card, index) => (
-              <Box key={index} className="flex items-center border-[0.5px] border-gray-300 p-5 rounded shadow hover:scale-[1.05]">
-                <Box className="w-1/3">
-                  <Image
-                    src={card.image}
-                    alt={""}
-                  />
-                </Box>
-                <Box className="w-2/3">
-                  <h5>{card.title}</h5>
-                  <p>{card.description}</p>
-                </Box>
-              </Box>
-            ))
-          }
-        </Box>
-      </Section>
+        renderSection={() => (
+          <Box className="flex flex-col gap-5 lg:gap-10">
+            <Heading
+              title="¿Cómo funciona DigitalToasters.com?"
+              subTitle="Conoce Digital Toasters"
+            />
+            <Box className="grid grid-cols-1 lg:grid-rows-2 lg:grid-cols-3 gap-5">
+              {
+                serviceCards.map((card, index) => (
+                  <Box
+                    key={index}
+                    className="flex items-center border-[0.5px] border-gray-300 p-5 rounded shadow hover:scale-[1.05] gap-5"
+                  >
+                    <Box className="w-1/3">
+                      <Image
+                        src={card.image}
+                        alt={""}
+                      />
+                    </Box>
+                    <Box className="w-2/3">
+                      <h5 className="font-bold pb-1">{card.title}</h5>
+                      <p className="text-secondary">{card.description}</p>
+                    </Box>
+                  </Box>
+                ))
+              }
+            </Box>
+          </Box>
+        )}
+      />
 
       <Section
-        title="Productos Recientes"
-        subTitle="Café fresco"
-        className="lg:flex-col"
-      >
-        <ProductsCarousel data={products} />
-      </Section>
+        renderSection={() => (
+          <Box className="flex flex-col gap-5 lg:gap-10">
+            <Heading
+              title="¿Cómo funciona DigitalToasters.com?"
+              subTitle="Productos Recientes"
+            />
+            <ProductsCarousel data={products} />
+          </Box>
+        )}
+      />
     </>
   )
 }

@@ -5,10 +5,10 @@ interface BoxProps {
 }
 
 
-const Box = ({ children, className = "", id }: BoxProps) => {
+const Box = ({ id, children, className = "" }: BoxProps) => {
 
   return (
-    <div id={id} className={`duration-200 gap-5 lg:gap-10 ${className}`}>
+    <div id={id} className={`duration-200 ${className}`}>
       {children}
     </div>
   )

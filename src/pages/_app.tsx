@@ -101,8 +101,8 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
           openGraph={{
             type: "website",
             locale: "en_IE",
-            url: "https://coffee-shop.com",
-            site_name: "Coffee Shop",
+            url: "https://digitaltoasters.com",
+            site_name: "Digital Toasters",
           }}
         />
         <CartContextProvider>
@@ -110,8 +110,6 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
             <Component {...pagePropsWithAppAnalytics} />
           </CustomLayout>
         </CartContextProvider>
-
-        {/* <Cart /> */}
       </>
     </ApolloProvider>
   );
