@@ -118,8 +118,8 @@ export default function Home({ products }) {
         renderSection={() => (
           <Box className="flex flex-col gap-5 lg:gap-10">
             <Heading
-              title="¿Cómo funciona DigitalToasters.com?"
-              subTitle="Productos Recientes"
+              title="Productos Recientes"
+              subTitle="Café Fresco de Especialidad"
             />
             <ProductsCarousel data={products} />
           </Box>

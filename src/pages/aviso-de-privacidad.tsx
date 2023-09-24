@@ -3,7 +3,7 @@ import { LayoutType } from "types/app"
 const PrivacyPolicy = () => {
 
   return (
-    <section className="container mx-auto max-w-2xl my-20">
+    <section className="container mx-auto max-w-2xl my-20 p-10">
       <h1 className="text-2xl font-bold mb-4 text-center">Aviso de Privacidad</h1>
 
       <p>En cumplimiento con la legislación vigente en materia de protección de datos personales, ponemos a tu disposición el siguiente aviso de privacidad:</p>

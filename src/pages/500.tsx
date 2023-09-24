@@ -3,7 +3,7 @@ import { LayoutType } from "types/app"
 const page404 = () => {
 
   return (
-    <div className="bg-gray-900 flex flex-col items-center justify-center h-[90vh] gap-10">
+    <div className="bg-gray-900 flex flex-col items-center justify-center h-[90vh] gap-10 p-10">
       <div className="text-center">
         <h1 className="text-7xl  text-center font-bold text-gray-100 mb-2">404</h1>
         <p className="text-2xl font-medium mb-4">Page not found</p>
