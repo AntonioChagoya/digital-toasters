@@ -15,13 +15,8 @@
 @layer base {
   html {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
     scroll-behavior: smooth;
     font-family: Lato;
-  }
-  button[type="button"] {
-    @apply duration-200 hover:scale-[1.08];
   }
   input,
   select {

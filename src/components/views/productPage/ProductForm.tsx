@@ -23,10 +23,12 @@ import Options from "@components/views/productPage/Options";
 import QuantitySelector from "@components/views/productPage/QuantitySelector";
 import RatingStars from "@components/global/RatingStars";
 import ProductPageDescription from "@components/views/productPage/Description";
+import Button from "@components/global/Button";
 
 // Types
 import { groupArrayObjectsByGroupSize } from "@utils/arrays";
 import Box from "@components/global/Box";
+import { ButtonSize, ButtonColor } from "theme";
 
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
   const { variants: { edges }, options, handle } = product;
@@ -186,22 +188,17 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
               />
             </section>
 
-            <div className="flex flex-col-reverse lg:gap-10 gap-5 items-start justify-start">
-              <Box>
-                <span className="text-xs text-ligth italic">El costo de envío se calcula en el momento de pagar*</span>
-                <button disabled={loading} type="submit" className="disabled:opacity-50 disabled:pointer-events-none border rounded p-3 bg-primary text-white w-full shadow-md">
-                  {
-                    loading
-                      ?
-                      <div className="flex w-full justify-center items-center">
-                        <TbLoader3 className="animate-spin" size={24} />
-                      </div>
-                      :
-                      <p className="uppercase mb-0 font-bold">Agregar al carrito</p>
-                  }
-                </button>
-              </Box>
-            </div>
+            <Box className="flex flex-col gap-1 items-start justify-start">
+              <span className="text-xs text-ligth italic">El costo de envío se calcula en el momento de pagar*</span>
+              <Button
+                loading={loading}
+                color="primary"
+                size="md"
+                wide="full"
+              >
+                Agregar al carrito
+              </Button>
+            </Box>
           </div>
         </form>
       }

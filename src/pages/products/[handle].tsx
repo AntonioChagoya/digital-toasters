@@ -24,8 +24,8 @@ import ImagesCarousel from "@components/views/productPage/ImagesCarousel";
 import ProductForm from "@components/views/productPage/ProductForm";
 import Section from "@components/global/Section";
 import Box from "@components/global/Box";
+import MoreInfo from "@components/views/productPage/MoreInfo";
 const RelatedProducts = dynamic(() => import("@components/global/RelatedProducts"));
-const MoreInfo = dynamic(() => import("@components/views/productPage/MoreInfo"));
 
 // Types
 import { LayoutType } from "types/app";
