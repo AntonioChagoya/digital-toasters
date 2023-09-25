@@ -16,7 +16,7 @@ import { client } from "graphql/apollo";
 import { CartContextProvider } from "context/CartContext";
 
 // Components
-import PublicLayout from "@components/layouts/PublicLayout";
+import PublicLayout from "@layouts/PublicLayout";
 
 // Libs
 import { DefaultSeo } from "next-seo";

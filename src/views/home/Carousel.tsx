@@ -9,8 +9,8 @@ import { useState } from "react";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { AutoPlay, Arrow, Fade } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import Section from "@components/global/Section";
-import Box from "@components/global/Box";
+import Section from "@components/Section";
+import Box from "@components/Box";
 
 // Types
 interface CarouselItem {

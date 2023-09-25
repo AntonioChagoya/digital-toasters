@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client"
 import { GET_RELATED_PRODUCTS } from "graphql/queries/products"
 
 // Components
-import ProductsCarousel from "./ProductsCarousel"
+import ProductsCarousel from "../../../components/carousells/ProductsCarousel"
 
 // Libs
 import { TbLoader3 } from "react-icons/tb";

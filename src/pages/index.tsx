@@ -1,20 +1,20 @@
 // Next
-import dynamic from "next/dynamic";
 import Image from "next/image";
 
 // Images
 import coffe from "@assets/images/cup.png";
 
 // Components
-import Carousel from "@components/views/home/Carousel";
-const ProductsCarousel = dynamic(() => import("@components/global/ProductsCarousel"));
-const Section = dynamic(() => import("@components/global/Section"));
-const Box = dynamic(() => import("@components/global/Box"));
-const Heading = dynamic(() => import("@components/views/Heading"));
+import Carousel from "@views/home/Carousel";
+import ProductsCarousel from "@components/carousells/ProductsCarousel";
+import Section from "@components/Section";
+import Box from "@components/Box";
+import Heading from "@components/headings/Heading";
+
 
 // GraphQL
-import { createApolloClient } from "graphql/apolloSSR";
-import { GET_PRODUCTS } from "graphql/queries/products";
+import { createApolloClient } from "@graphql/apolloSSR";
+import { GET_PRODUCTS } from "@graphql/queries/products";
 
 // Types
 import { LayoutType } from "types/app";

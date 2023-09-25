@@ -11,8 +11,8 @@ import { AutoPlay, Arrow } from "@egjs/flicking-plugins";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 
 // Components
-import ProductCard from "@components/global/ProductCard";
-import Section from "./Section";
+import ProductCard from "@components/cards/ProductCard";
+import Section from "../Section";
 
 
 const ProductsCarousel = ({ data }) => {

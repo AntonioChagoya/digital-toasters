@@ -2,7 +2,7 @@
 import { TbStar, TbStarHalfFilled, TbStarFilled } from "react-icons/tb";
 
 // Components
-import Box from "@components/global/Box";
+import Box from "@components/Box";
 
 interface RatingStarsProps {
   currentRating: number
@@ -34,9 +34,9 @@ const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
 
   return (
     <>
-    {
-      
-    }
+      {
+
+      }
       <Box className="flex items-center gap-2">
         <ul className="flex gap-2">
           {calculateStarsCount(currentRating, onSelectRate)}

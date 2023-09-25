@@ -1,7 +1,10 @@
 /* 
-  This is the type definition for the app globals.
-  - Layout: The choosed layout of the app.
-    Layout implementation will change when migrating to Next13 App directory.
+ *
+ * This are the type definitions for the app globals.
+ * - Layout: The choosed layout of the app.
+ * 
+ * 
+ * Layout implementation may change when migrating to Next13 App directory.
  */
 
 export enum LayoutType {

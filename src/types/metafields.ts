@@ -1,6 +1,13 @@
-export enum MetaFields {
-  stars_rating = 'rate',
-  reviews_count = 'reviews',
+export enum MetaFieldsKeys {
+  stars_rating = "rate",
+  reviews_count = "reviews",
+  notes = "notas_de_cata",
+  info_relevant = "informacion_relevante",
+  info_general = "informacion_general",
+}
+
+export enum MetaFieldsNamespaces {
+  default = "custom",
 }
 
 export enum RatesCount {

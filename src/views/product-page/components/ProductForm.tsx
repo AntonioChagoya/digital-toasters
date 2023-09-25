@@ -2,33 +2,33 @@
 import { useState } from "react";
 
 // Context
-import { useCartContext } from "context/CartContext";
+import { useCartContext } from "@context/CartContext";
 
 // Utils
-import { parseMoneyFormat } from "utils/stringParse";
+import { parseMoneyFormat } from "@utils/stringParse";
 
 // Libs
-import { shopifyClient } from "libs/shopify"
-import { TbLoader3, TbCircleArrowRightFilled, TbArrowBadgeDown } from "react-icons/tb";
+import { shopifyClient } from "@libs/shopify"
+import { TbCircleArrowRightFilled } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 
 // Utils
-import { calculateAvergeRating } from "utils/rates";
+import { calculateAvergeRating } from "@utils/rates";
+import { groupArrayObjectsByGroupSize } from "@utils/arrays";
 
 // Shopify  
-import { addLineItem, updateLineItem } from "services/shopify";
+import { addLineItem, updateLineItem } from "@services/shopify";
 
 // Components
-import Options from "@components/views/productPage/Options";
-import QuantitySelector from "@components/views/productPage/QuantitySelector";
-import RatingStars from "@components/global/RatingStars";
-import ProductPageDescription from "@components/views/productPage/Description";
-import Button from "@components/global/Button";
+import Box from "@components/Box";
+import Button from "@components/buttons/Button";
+import Options from "@views/product-page/components/Options";
+import RatingStars from "@views/product-page/components/RatingStars";
+import QuantitySelector from "@views/product-page/components/QuantitySelector";
+import ProductPageDescription from "@views/product-page/components/Description";
 
 // Types
-import { groupArrayObjectsByGroupSize } from "@utils/arrays";
-import Box from "@components/global/Box";
-import { ButtonSize, ButtonColor } from "theme";
+import { ButtonColor, ButtonSize, ButtonWide } from "theme";
 
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
   const { variants: { edges }, options, handle } = product;
@@ -192,9 +192,9 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
               <span className="text-xs text-ligth italic">El costo de envío se calcula en el momento de pagar*</span>
               <Button
                 loading={loading}
-                color="primary"
-                size="md"
-                wide="full"
+                color={ButtonColor.primary}
+                size={ButtonSize.lg}
+                wide={ButtonWide.full}
               >
                 Agregar al carrito
               </Button>

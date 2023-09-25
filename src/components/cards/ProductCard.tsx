@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Product } from '@shopify/hydrogen-react/storefront-api-types';
 
 // Components
-import Box from '@components/global/Box';
+import Box from '@components/Box';
 
 interface ProductCardProps {
   product: Product

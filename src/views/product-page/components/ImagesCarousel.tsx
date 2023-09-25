@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 // Components
-import Box from "@components/global/Box";
+import Box from "@components/Box";
 
 // Libs
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
@@ -44,7 +44,7 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
 
   return (
     <Box>
-      <Box className="max-w-[300px] lg:max-w-[500px]">
+      <Box className="w-full mx-auto max-w-[400px] xs:max-w-[500px] xl:max-w-[550px]">
         <Flicking
           className="mb-5"
           ref={flicking0}
@@ -52,7 +52,7 @@ const ImagesCarousel = ({ images }: { images: ImageType[] }) => {
           bounce={30}
         >
           {images?.map((image, index) => (
-            <picture key={index} className="max-w-[300px] lg:max-w-[500px] lg:w-[500px] lg:h-[500px]">
+            <picture key={index} className="max-w-[400px] xs:max-w-[500px] xl:max-w-[550px] xl:h-[550px]">
               <Image
                 src={image.url}
                 width={image.width}

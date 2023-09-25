@@ -8,7 +8,7 @@ interface BoxProps {
 const Box = ({ id, children, className = "" }: BoxProps) => {
 
   return (
-    <div id={id} className={`duration-200 ${className}`}>
+    <div id={id} className={`${className}`}>
       {children}
     </div>
   )

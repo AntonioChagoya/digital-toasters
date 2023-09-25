@@ -2,7 +2,7 @@
 import { parseString } from "@utils/stringParse"
 
 // Components
-import Box from "@components/global/Box"
+import Box from "@components/Box"
 
 interface HeadingProps {
   title: string

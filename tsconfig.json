@@ -19,7 +19,31 @@
       ],
       "@assets/*": [
         "assets/*"
-      ]
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@views/*": [
+        "views/*"
+      ],
+      "@layouts/*": [
+        "layouts/*"
+      ],
+      "@libs/*": [
+        "libs/*"
+      ],
+      "@services/*": [
+        "services/*"
+      ],
+      "@context/*": [
+        "context/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ],
+      "@graphql/*": [
+        "graphql/*"
+      ],
     },
     "target": "ES6",
     "lib": [

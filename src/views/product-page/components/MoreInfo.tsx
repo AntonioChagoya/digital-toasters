@@ -1,6 +1,6 @@
 // Components
 import RadarChart from '@components/charts/RadarChart';
-import Box from '@components/global/Box';
+import Box from '@components/Box';
 
 // Utils
 import { groupArrayObjectsByGroupSize } from '@utils/arrays';
@@ -20,16 +20,15 @@ const MoreInfo = ({
   if (!descriptionHtml && !metaobject) {
     return <></>
   }
-  console.log("generalInfoMetaobject", generalInfoMetaobject);
 
   return (
     <Box id="Description" className="p-5 flex flex-col gap-10">
       <h4>Más Información</h4>
       <Box className='flex flex-col gap-5 lg:gap-10'>
-        <div className='flex flex-col-reverse items-start xl:flex-row gap-10 justify-between '>
+        <Box className='flex flex-col items-center md:flex-row-reverse gap-10 justify-between '>
           {
             groupedGeneralFields?.length > 0 &&
-            <table className="table-fixed ">
+            <table className="table-auto">
               <tbody className="text-left">
                 {
                   groupedGeneralFields?.map((group, index) => {
@@ -41,7 +40,7 @@ const MoreInfo = ({
                       <tr key={index}>
                         {group.map((field, index) => {
                           if (!field) {
-                            return <></>
+                            return <td key={index}></td>
                           }
                           if (field.key === "altura") {
                             return (
@@ -74,16 +73,16 @@ const MoreInfo = ({
           }
           {
             metaobject &&
-            <div className='w-full min-w-[300px] max-w-[450px]'>
+            <div className='min-h-[400px] min-w-[400px]'>
               <RadarChart metaobject={metaobject} />
             </div>
           }
-        </div>
+        </Box>
         {
           descriptionHtml &&
-          <div className="prose w-full  max-w-full">
+          <Box className="prose w-full  max-w-full">
             {parse(descriptionHtml)}
-          </div>
+          </Box>
         }
       </Box>
     </Box>

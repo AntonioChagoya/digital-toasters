@@ -5,24 +5,24 @@ import { TbLoader3 } from "react-icons/tb";
 import { ButtonSize, ButtonColor, ButtonTextTransform, ButtonWide } from "theme";
 
 interface ButtonProps {
-  children?: React.ReactNode,
-  color?: string,
-  size?: string,
-  transform?: string,
-  wide?: string,
+  children: React.ReactNode,
+  color?: ButtonColor,
+  size?: ButtonSize,
+  transform?: ButtonTextTransform,
+  wide?: ButtonWide,
   loading?: boolean,
 }
 
 const Button = ({
   children = <></>,
-  color = "primary",
-  size = "sm",
-  transform = "uppercase",
-  wide = "auto",
+  color = ButtonColor.primary,
+  size = ButtonSize.md,
+  transform = ButtonTextTransform.uppercase,
+  wide = ButtonWide.auto,
   loading = false
 }: ButtonProps) => {
   const defaults = "rounded font-bold text-white duration-200 hover:opacity-80"
-  const classNames = defaults + " " + ButtonSize[size] + " " + ButtonColor[color] + " " + ButtonTextTransform[transform] + " " + ButtonWide[wide]
+  const classNames = defaults + " " + size + " " + color + " " + transform + " " + wide
 
   return (
     <button
@@ -31,7 +31,7 @@ const Button = ({
     >
       {
         loading
-          ? <TbLoader3 className="animate-spin" size={24} />
+          ? <TbLoader3 className={`animate-spin ${color} text-primary`} size={24} />
           : <>{children}</>
       }
     </button>
