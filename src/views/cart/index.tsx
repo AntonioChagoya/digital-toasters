@@ -16,13 +16,15 @@ import { FaXmark } from "react-icons/fa6";
 // Libs
 import { useForm } from 'react-hook-form'
 import { Transition } from '@headlessui/react'
-import { shopifyClient } from 'libs/shopify'
+import { shopifyClient } from '@libs/shopify'
 
 // Components
-import QuantitySelector from 'views/product-page/components/QuantitySelector';
+import QuantitySelector from '@components/QuantitySelector';
+import Button from "@components/buttons/Button";
 
 // Utils
 import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';
+import { ButtonSize, ButtonWide } from "theme";
 
 const Cart = () => {
   const { checkout, setCheckout, isCartOpen, setIsCartOpen, isDataLoading } = useCartContext()
@@ -117,7 +119,7 @@ const Cart = () => {
               <aside className="flex flex-col h-full">
                 {!isDataLoading
                   ?
-                  <form className='flex flex-col justify-between lg:gap-5 h-screen min-h-[100vh]' onSubmit={handleSubmit(onSubmit)}>
+                  <form className='flex flex-col justify-between lg:gap-5 h-screen min-h-[100vh] pb-10' onSubmit={handleSubmit(onSubmit)}>
                     <div className='flex justify-between gap-20 mb-2 p-2 lg:py-4 border-b'>
                       <h4 className='font-bold text-lg text-secondary'>Mi Carrito</h4>
                       <FaXmark onClick={() => setIsCartOpen(false)} size={20} className="hover:scale-[1.1] cursor-pointer text-secondary" />
@@ -220,21 +222,13 @@ const Cart = () => {
                       </section>
                     </div>
 
-                    <section className="mb-6">
-                      <button
-                        disabled={loading.status || checkout?.lineItems.length <= 0 || false}
-                        type="submit"
-                        className="bg-primary hover:opacity-70 p-4 w-full text-white rounded shadow text-sm lg:text-lg disabled:opacity-50"
-                      >
-                        {
-                          loading.status
-                            ? <div className="flex justify-center items-center">
-                              <TbLoader3 className='animate-spin' size={30} />
-                            </div>
-                            : <>Proceder al pago - {parseMoneyFormat(checkout?.totalPrice?.amount)}</>
-                        }
-                      </button>
-                    </section>
+                    <Button
+                      loading={loading.status ? true : false}
+                      wide={ButtonWide.full}
+                      size={ButtonSize.lg}
+                    >
+                      Proceder al pago - {parseMoneyFormat(checkout?.totalPrice?.amount)}
+                    </Button>
                   </form>
                   :
                   <div className="flex justify-center items-center w-full h-full">

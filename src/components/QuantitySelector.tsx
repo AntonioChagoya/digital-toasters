@@ -1,5 +1,3 @@
-
-
 // Libs
 import { FaMinus, FaPlus } from "react-icons/fa6";
 

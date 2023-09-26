@@ -31,7 +31,7 @@ const Button = ({
     >
       {
         loading
-          ? <TbLoader3 className={`animate-spin ${color} text-primary`} size={24} />
+          ? <TbLoader3 className={`animate-spin ${color} text-white mx-auto`} size={28} />
           : <>{children}</>
       }
     </button>

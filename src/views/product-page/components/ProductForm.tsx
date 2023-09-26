@@ -24,7 +24,7 @@ import Box from "@components/Box";
 import Button from "@components/buttons/Button";
 import Options from "@views/product-page/components/Options";
 import RatingStars from "@views/product-page/components/RatingStars";
-import QuantitySelector from "@views/product-page/components/QuantitySelector";
+import QuantitySelector from "@components/QuantitySelector";
 import ProductPageDescription from "@views/product-page/components/Description";
 
 // Types

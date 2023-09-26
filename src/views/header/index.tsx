@@ -5,7 +5,7 @@ import Actions from "@views/header/components/Actions"
 const HeaderIndex = () => {
 
   return (
-    <header>
+    <header className="shadow">
       <TopBar />
       <Actions />
     </header>
