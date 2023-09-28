@@ -19,7 +19,7 @@ module.exports = {
       },
       colors: {
         "primary": colors.orange[400],
-        "ligth": colors.gray[500],
+        "ligth": colors.gray[400],
         "secondary": colors.gray[900],
         "accent": colors.yellow[500],
         "info": colors.blue[600],

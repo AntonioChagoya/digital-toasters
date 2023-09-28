@@ -38,7 +38,7 @@
       "@context/*": [
         "context/*"
       ],
-      "@types/*": [
+      "@appTypes/*": [
         "types/*"
       ],
       "@graphql/*": [

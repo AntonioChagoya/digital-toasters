@@ -6,28 +6,36 @@ import { ButtonSize, ButtonColor, ButtonTextTransform, ButtonWide } from "theme"
 
 interface ButtonProps {
   children: React.ReactNode,
+  type: "button" | "submit" | "reset",
   color?: ButtonColor,
   size?: ButtonSize,
   transform?: ButtonTextTransform,
   wide?: ButtonWide,
-  loading?: boolean,
+  loading: boolean,
+  action?: () => void,
 }
 
 const Button = ({
-  children = <></>,
+  children,
+  type = "button",
   color = ButtonColor.primary,
   size = ButtonSize.md,
-  transform = ButtonTextTransform.uppercase,
   wide = ButtonWide.auto,
-  loading = false
+  loading,
+  action,
 }: ButtonProps) => {
   const defaults = "rounded font-bold text-white duration-200 hover:opacity-80"
-  const classNames = defaults + " " + size + " " + color + " " + transform + " " + wide
+  const classNames = defaults + " " + size + " " + color + " " + " " + wide
+  console.log("Button -> loading", loading);
 
   return (
     <button
+      type={type}
       disabled={loading}
       className={classNames}
+      onClick={() => {
+        action && action()
+      }}
     >
       {
         loading

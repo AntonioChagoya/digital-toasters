@@ -16,7 +16,6 @@ import { TbLoader3 } from 'react-icons/tb'
 // Types
 import { LayoutType } from "types/app"
 import { useEffect } from "react";
-import { reduceEachTrailingCommentRange } from "typescript";
 
 export async function getServerSideProps(params) {
   return {

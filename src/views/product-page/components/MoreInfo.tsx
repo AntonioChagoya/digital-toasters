@@ -15,7 +15,7 @@ const MoreInfo = ({
   descriptionHtml: string, metaobject, generalInfoMetaobject
 }) => {
   const { fields } = generalInfoMetaobject || []
-  const groupedGeneralFields = groupArrayObjectsByGroupSize(fields, 3)
+  const groupedGeneralFields = groupArrayObjectsByGroupSize(fields, 4)
 
   if (!descriptionHtml && !metaobject) {
     return <></>

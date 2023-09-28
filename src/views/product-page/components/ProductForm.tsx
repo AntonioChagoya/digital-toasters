@@ -31,14 +31,14 @@ import ProductPageDescription from "@views/product-page/components/Description";
 import { ButtonColor, ButtonSize, ButtonWide } from "theme";
 
 const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject, relevantInfoMetaobject }) => {
+  const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
   const { variants: { edges }, options, handle } = product;
   const { fields } = relevantInfoMetaobject || [];
   const groupedFields = groupArrayObjectsByGroupSize(fields, 3)
-  const { setIsCartOpen, checkout, setCheckout, } = useCartContext()
 
   // Form management
   const [loading, setLoading] = useState(false)
-  const { getValues, setValue, register, handleSubmit, watch, formState: { errors } } = useForm({
+  const { getValues, setValue, register, handleSubmit, watch } = useForm({
     defaultValues: {
       ProductAmount: 1
     }
@@ -47,7 +47,6 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
   // Add to cart
   const onSubmit = async (data) => {
     setLoading(true)
-
     const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id)
     const lineItemToAdd = { variantId: selectedVariant.id, quantity: data.ProductAmount }
 
@@ -70,7 +69,9 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
       const currentValue = getValues('ProductAmount') || 0;
       setValue('ProductAmount', currentValue + 1);
     }
-    setLoading(false)
+    setTimeout(() => {
+      setLoading(false)
+    }, 500);
   };
 
   const decrementCounter = () => {
@@ -79,14 +80,16 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
       const currentValue = getValues('ProductAmount') || 0;
       setValue('ProductAmount', currentValue - 1);
     }
-    setLoading(false)
+    setTimeout(() => {
+      setLoading(false)
+    }, 500);
   };
 
   return (
     <Box className="lg:max-w-[35rem]">
       {
         selectedVariant &&
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="flex flex-col gap-7">
             <div className="flex flex-col gap-5">
               <div>
@@ -108,11 +111,11 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
               {
                 selectedVariant?.price?.amount &&
                 <div className="flex gap-3">
+                  <h4 className="text-secondary">{parseMoneyFormat(parseFloat(selectedVariant?.price.amount))}</h4>
                   {
                     selectedVariant?.compareAtPrice?.amount &&
-                    <h4 className="text-2xl text-gray-400 line-through">{parseMoneyFormat(parseFloat(selectedVariant.compareAtPrice.amount))}</h4>
+                    <h4 className="text-ligth line-through">{parseMoneyFormat(parseFloat(selectedVariant.compareAtPrice.amount))}</h4>
                   }
-                  <h4 className="text-2xl text-gray-900">{parseMoneyFormat(parseFloat(selectedVariant?.price.amount))}</h4>
                 </div>
               }
               {
@@ -191,12 +194,14 @@ const ProductForm = ({ selectedVariant, product, productVariants, rateMetaobject
             <Box className="flex flex-col gap-1 items-start justify-start">
               <span className="text-xs text-ligth italic">El costo de envío se calcula en el momento de pagar*</span>
               <Button
+                type="submit"
                 loading={loading}
+                action={handleSubmit(onSubmit)}
                 color={ButtonColor.primary}
                 size={ButtonSize.lg}
                 wide={ButtonWide.full}
               >
-                Agregar al carrito
+                Agregar al carrito - {parseMoneyFormat(parseFloat(selectedVariant?.price.amount))}
               </Button>
             </Box>
           </div>
