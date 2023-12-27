@@ -11,36 +11,17 @@ import Section from "@components/Section";
 import Box from "@components/Box";
 import Heading from "@components/headings/Heading";
 
-
-// GraphQL
-import { createApolloClient } from "@graphql/apolloSSR";
-import { GET_PRODUCTS } from "@graphql/queries/products";
-
 // Types
 import { LayoutType } from "types/app";
 
 export async function getStaticProps() {
   try {
-    const client = createApolloClient()
-
-    const { data } = await client.query({
-      query: GET_PRODUCTS,
-      variables: {
-        first: 12,
-        variantsQty: 10,
-        sortKey: "CREATED_AT",
-        query: "",
-        reverse: false,
-      }
-    });
     return {
       props: {
-        products: data.products.edges.map(({ node }) => node),
+        products: [],
       },
     };
-
   } catch (error) {
-    console.log(error);
     return {
       props: {
         products: {},
@@ -52,36 +33,40 @@ export async function getStaticProps() {
 const serviceCards = [
   {
     title: "Subscripción",
-    description: "Suscribete a uno de nuestros planes y recibe tu café de especialidad favorito recurrentemete.",
-    image: coffe
+    description:
+      "Suscribete a uno de nuestros planes y recibe tu café de especialidad favorito recurrentemete.",
+    image: coffe,
   },
   {
     title: "Café a domicilio",
-    description: "Adquiere café de especialidad recién tostado en la puerta de tu casa.",
-    image: coffe
+    description:
+      "Adquiere café de especialidad recién tostado en la puerta de tu casa.",
+    image: coffe,
   },
   {
     title: "Toasters Ranking",
-    description: "Puntúa todas nuestras casas tostadoras despues de probarlas y recibe 1/2kg gratis de tu favorita.",
-    image: coffe
+    description:
+      "Puntúa todas nuestras casas tostadoras despues de probarlas y recibe 1/2kg gratis de tu favorita.",
+    image: coffe,
   },
   {
     title: "Barista Lover",
-    description: "Suscribete a una o más cafeterías y recibe descuentos exclusivos en tiendas físicas.",
-    image: coffe
+    description:
+      "Suscribete a una o más cafeterías y recibe descuentos exclusivos en tiendas físicas.",
+    image: coffe,
   },
   {
     title: "Soporte productores",
-    description: "Suscribete a una o más cafeterías y recibe descuentos exclusivos en tiendas físicas.",
-    image: coffe
+    description:
+      "Suscribete a una o más cafeterías y recibe descuentos exclusivos en tiendas físicas.",
+    image: coffe,
   },
-]
+];
 
 export default function Home({ products }) {
-
   return (
     <>
-      <Carousel />
+      {/* <Carousel /> */}
       <Section
         renderSection={() => (
           <Box className="flex flex-col gap-5 lg:gap-10">
@@ -90,31 +75,26 @@ export default function Home({ products }) {
               subTitle="Conoce Digital Toasters"
             />
             <Box className="grid grid-cols-1 lg:grid-rows-2 lg:grid-cols-3 gap-5">
-              {
-                serviceCards.map((card, index) => (
-                  <Box
-                    key={index}
-                    className="flex items-center border-[0.5px] border-gray-300 p-5 rounded shadow hover:scale-[1.05] gap-5"
-                  >
-                    <Box className="w-1/3">
-                      <Image
-                        src={card.image}
-                        alt={""}
-                      />
-                    </Box>
-                    <Box className="w-2/3">
-                      <h5 className="font-bold pb-1">{card.title}</h5>
-                      <p className="text-secondary">{card.description}</p>
-                    </Box>
+              {serviceCards.map((card, index) => (
+                <Box
+                  key={index}
+                  className="flex items-center border-[0.5px] border-gray-300 p-5 rounded shadow hover:scale-[1.05] gap-5"
+                >
+                  <Box className="w-1/3">
+                    <Image src={card.image} alt={""} />
                   </Box>
-                ))
-              }
+                  <Box className="w-2/3">
+                    <h5 className="font-bold pb-1">{card.title}</h5>
+                    <p className="text-secondary">{card.description}</p>
+                  </Box>
+                </Box>
+              ))}
             </Box>
           </Box>
         )}
       />
 
-      <Section
+      {/* <Section
         renderSection={() => (
           <Box className="flex flex-col gap-5 lg:gap-10">
             <Heading
@@ -124,9 +104,9 @@ export default function Home({ products }) {
             <ProductsCarousel data={products} />
           </Box>
         )}
-      />
+      /> */}
     </>
-  )
+  );
 }
 
-Home.layout = LayoutType.PUBLIC
+Home.layout = LayoutType.PUBLIC;

@@ -14,21 +14,18 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import ProductCard from "@components/cards/ProductCard";
 import Section from "../Section";
 
-
-const ProductsCarousel = ({ data }) => {
+const ProductsCarousel = ({ data = [] }) => {
   const [activeArrows, setActiveArrows] = useState(false);
 
   const plugins = [
     // new AutoPlay({ duration: 5000, direction: "NEXT" }),
-    new Arrow()
+    new Arrow(),
   ];
-  const slides = data.map((product) => (
+  const slides = data?.map((product) => (
     <div key={product.id} className="w-full sm:w-2/4 lg:w-1/4 px-5">
-      <ProductCard
-        product={product}
-      />
+      <ProductCard product={product} />
     </div>
-  ))
+  ));
 
   return (
     <Section
@@ -43,12 +40,24 @@ const ProductsCarousel = ({ data }) => {
         >
           {slides}
           <ViewportSlot>
-            <FaAngleLeft className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-prev is-circle text-white`} />
-            <FaAngleRight className={`${activeArrows ? "opacity-100 custom-active" : "opacity-100 lg:opacity-0"} duration-150 custom-arrow flicking-arrow-next is-circle text-white`} />
+            <FaAngleLeft
+              className={`${
+                activeArrows
+                  ? "opacity-100 custom-active"
+                  : "opacity-100 lg:opacity-0"
+              } duration-150 custom-arrow flicking-arrow-prev is-circle text-white`}
+            />
+            <FaAngleRight
+              className={`${
+                activeArrows
+                  ? "opacity-100 custom-active"
+                  : "opacity-100 lg:opacity-0"
+              } duration-150 custom-arrow flicking-arrow-next is-circle text-white`}
+            />
           </ViewportSlot>
         </Flicking>
       )}
     />
-  )
-}
-export default ProductsCarousel
+  );
+};
+export default ProductsCarousel;

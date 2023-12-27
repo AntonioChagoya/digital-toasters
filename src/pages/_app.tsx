@@ -2,15 +2,15 @@
 import "../styles/globals.css";
 
 // React
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 // Next
-import { useRouter } from 'next/router';
-import { AppProps } from 'next/app';
+import { useRouter } from "next/router";
+import { AppProps } from "next/app";
 
 // Apollo
 import { ApolloProvider } from "@apollo/client";
-import { client } from "graphql/apollo";
+import { createApolloClient } from "graphql/apollo";
 
 // Contexts
 import { CartContextProvider } from "context/CartContext";
@@ -27,7 +27,7 @@ import {
   getClientBrowserParameters,
   AnalyticsEventName,
   useShopifyCookies,
-} from '@shopify/hydrogen-react';
+} from "@shopify/hydrogen-react";
 
 // Types
 import { LayoutType } from "types/app";
@@ -48,19 +48,20 @@ function sendPageView(analyticsPageData) {
 }
 
 const analyticsShopData = {
-  shopId: 'gid://shopify/Shop/8f5ec6-2',
-  currency: 'MXN',
-  acceptedLanguage: 'es',
+  shopId: "gid://shopify/Shop/8f5ec6-2",
+  currency: "MXN",
+  acceptedLanguage: "es",
 };
 
 const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
+  const client = createApolloClient();
   const CustomLayout = getLayout();
 
   function getLayout() {
     if (Component?.layout === LayoutType.PUBLIC) {
       return PublicLayout || ((children) => <>{children}</>);
     } else {
-      return ((children) => <>{children}</>);
+      return (children) => <>{children}</>;
     }
   }
 
@@ -83,10 +84,10 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
       sendPageView(analytics);
     };
 
-    router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteChange);
 
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [analytics, router.events]);
 
@@ -113,6 +114,6 @@ const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
       </>
     </ApolloProvider>
   );
-}
+};
 
 export default App;

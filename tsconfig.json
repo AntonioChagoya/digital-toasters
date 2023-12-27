@@ -2,55 +2,23 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@pages": [
-        "pages/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ],
-      "@public": [
-        "public/*"
-      ],
-      "@utils/*": [
-        "utils/*"
-      ],
-      "@assets/*": [
-        "assets/*"
-      ],
-      "@hooks/*": [
-        "hooks/*"
-      ],
-      "@views/*": [
-        "views/*"
-      ],
-      "@layouts/*": [
-        "layouts/*"
-      ],
-      "@libs/*": [
-        "libs/*"
-      ],
-      "@services/*": [
-        "services/*"
-      ],
-      "@context/*": [
-        "context/*"
-      ],
-      "@appTypes/*": [
-        "types/*"
-      ],
-      "@graphql/*": [
-        "graphql/*"
-      ],
+      "@pages": ["pages/*"],
+      "@components/*": ["components/*"],
+      "@styles/*": ["styles/*"],
+      "@public": ["public/*"],
+      "@utils/*": ["utils/*"],
+      "@assets/*": ["assets/*"],
+      "@hooks/*": ["hooks/*"],
+      "@views/*": ["views/*"],
+      "@layouts/*": ["layouts/*"],
+      "@libs/*": ["libs/*"],
+      "@services/*": ["services/*"],
+      "@context/*": ["context/*"],
+      "@appTypes/*": ["types/*"],
+      "@graphql/*": ["graphql/*"]
     },
     "target": "ES6",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -64,13 +32,6 @@
     "allowJs": true,
     "strict": false
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "tailwind.config.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tailwind.config.ts"],
+  "exclude": ["node_modules"]
 }

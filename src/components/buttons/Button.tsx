@@ -2,17 +2,22 @@
 import { TbLoader3 } from "react-icons/tb";
 
 // Theme
-import { ButtonSize, ButtonColor, ButtonTextTransform, ButtonWide } from "theme";
+import {
+  ButtonSize,
+  ButtonColor,
+  ButtonTextTransform,
+  ButtonWide,
+} from "theme";
 
 interface ButtonProps {
-  children: React.ReactNode,
-  type: "button" | "submit" | "reset",
-  color?: ButtonColor,
-  size?: ButtonSize,
-  transform?: ButtonTextTransform,
-  wide?: ButtonWide,
-  loading: boolean,
-  action?: () => void,
+  children: React.ReactNode;
+  type?: "button" | "submit" | "reset";
+  color?: ButtonColor;
+  size?: ButtonSize;
+  transform?: ButtonTextTransform;
+  wide?: ButtonWide;
+  loading: boolean;
+  action?: () => void;
 }
 
 const Button = ({
@@ -24,8 +29,8 @@ const Button = ({
   loading,
   action,
 }: ButtonProps) => {
-  const defaults = "rounded font-bold text-white duration-200 hover:opacity-80"
-  const classNames = defaults + " " + size + " " + color + " " + " " + wide
+  const defaults = "rounded font-bold text-white duration-200 hover:opacity-80";
+  const classNames = defaults + " " + size + " " + color + " " + " " + wide;
   console.log("Button -> loading", loading);
 
   return (
@@ -34,16 +39,19 @@ const Button = ({
       disabled={loading}
       className={classNames}
       onClick={() => {
-        action && action()
+        action && action();
       }}
     >
-      {
-        loading
-          ? <TbLoader3 className={`animate-spin ${color} text-white mx-auto`} size={28} />
-          : <>{children}</>
-      }
+      {loading ? (
+        <TbLoader3
+          className={`animate-spin ${color} text-white mx-auto`}
+          size={28}
+        />
+      ) : (
+        <>{children}</>
+      )}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;
