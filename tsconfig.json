@@ -29,8 +29,8 @@
 		"jsx": "preserve",
 		"incremental": true,
 		"skipLibCheck": true,
-		"allowJs": true,
-		"strict": false
+		"allowJs": false,
+		"strict": true
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tailwind.config.ts"],
 	"exclude": ["node_modules"]

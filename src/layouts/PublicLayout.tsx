@@ -1,8 +1,9 @@
+import React from 'react';
 // Components
 import HeaderIndex from '@views/header';
 import Footer from '@views/footer';
 
-const PublicLayout = ({ children }) => {
+const PublicLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			<HeaderIndex />

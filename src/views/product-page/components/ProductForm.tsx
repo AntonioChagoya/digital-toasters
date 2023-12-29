@@ -1,116 +1,116 @@
 // React
-import { useState } from 'react';
+// import { useState } from 'react';
 
 // Context
-import { useCartContext } from '@context/CartContext';
+// import { useCartContext } from '@context/CartContext';
 
 // Utils
-import { parseMoneyFormat } from '@utils/stringParse';
+// import { parseMoneyFormat } from '@utils/stringParse';
 
 // Libs
-import { shopifyClient } from '@libs/shopify';
-import { TbCircleArrowRightFilled } from 'react-icons/tb';
-import { useForm } from 'react-hook-form';
+// import { shopifyClient } from '@libs/shopify';
+// import { TbCircleArrowRightFilled } from 'react-icons/tb';
+// import { useForm } from 'react-hook-form';
 
 // Utils
-import { calculateAvergeRating } from '@utils/rates';
-import { groupArrayObjectsByGroupSize } from '@utils/arrays';
-
-// Shopify
-import { addLineItem, updateLineItem } from '@services/shopify';
+// import { calculateAvergeRating } from '@utils/rates';
+// import { groupArrayObjectsByGroupSize } from '@utils/arrays';
 
 // Components
 import Box from '@components/Box';
-import Button from '@components/buttons/Button';
-import Options from '@views/product-page/components/Options';
-import RatingStars from '@views/product-page/components/RatingStars';
-import QuantitySelector from '@components/QuantitySelector';
-import ProductPageDescription from '@views/product-page/components/Description';
+// import Button from '@components/buttons/Button';
+// import Options from '@views/product-page/components/Options';
+// import RatingStars from '@views/product-page/components/RatingStars';
+// import QuantitySelector from '@components/QuantitySelector';
+// import ProductPageDescription from '@views/product-page/components/Description';
 
 // Types
-import { ButtonColor, ButtonSize, ButtonWide } from 'theme';
+// import { ButtonColor, ButtonSize, ButtonWide } from 'theme';
 
-const ProductForm = ({
-	selectedVariant,
-	product,
-	productVariants,
-	rateMetaobject,
-	relevantInfoMetaobject,
-}) => {
-	const { setIsCartOpen, checkout, setCheckout } = useCartContext();
-	const {
-		variants: { edges },
-		options,
-		handle,
-	} = product;
-	const { fields } = relevantInfoMetaobject || [];
-	const groupedFields = groupArrayObjectsByGroupSize(fields, 3);
+const ProductForm = () =>
+	// {
+	// selectedVariant,
+	// product,
+	// productVariants,
+	// rateMetaobject,
+	// relevantInfoMetaobject,
+	// }
+	{
+		// const { setIsCartOpen, checkout, setCheckout } = useCartContext();
+		// const {
+		// 	variants: { edges },
+		// 	options,
+		// 	handle,
+		// } = product;
+		// const { fields } = relevantInfoMetaobject || [];
+		// const groupedFields = groupArrayObjectsByGroupSize(fields, 3);
 
-	// Form management
-	const [loading, setLoading] = useState(false);
-	const { getValues, setValue, register, handleSubmit, watch } = useForm({
-		defaultValues: {
-			ProductAmount: 1,
-		},
-	});
+		// Form management
+		// const [loading, setLoading] = useState(false);
+		// const { getValues, setValue, register, handleSubmit, watch } = useForm({
+		// 	defaultValues: {
+		// 		ProductAmount: 1,
+		// 	},
+		// });
 
-	// Add to cart
-	const onSubmit = async data => {
-		setLoading(true);
-		const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id);
-		const lineItemToAdd = {
-			variantId: selectedVariant.id,
-			quantity: data.ProductAmount,
-		};
+		// Add to cart
+		// const onSubmit = async data => {
+		// 	setLoading(true);
+		// 	const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id);
+		// 	const lineItemToAdd = {
+		// 		variantId: selectedVariant.id,
+		// 		quantity: data.ProductAmount,
+		// 	};
 
-		const getLineItemInCheckout = currentCheckout.lineItems.find(
-			item => item.id === lineItemToAdd.variantId
-		);
+		// 	const getLineItemInCheckout = currentCheckout.lineItems.find(
+		// 		item => item.id === lineItemToAdd.variantId
+		// 	);
 
-		if (getLineItemInCheckout) {
-			updateLineItem(
-				[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
-				currentCheckout,
-				setCheckout
-			);
-		} else {
-			addLineItem(
-				[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
-				currentCheckout,
-				setCheckout
-			);
-		}
+		// 	if (getLineItemInCheckout) {
+		// 		updateLineItem(
+		// 			[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
+		// 			currentCheckout,
+		// 			setCheckout
+		// 		);
+		// 	} else {
+		// 		addLineItem(
+		// 			[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
+		// 			currentCheckout,
+		// 			setCheckout
+		// 		);
+		// 	}
 
-		setIsCartOpen(true);
-		setLoading(false);
-	};
+		// 	setIsCartOpen(true);
+		// 	setLoading(false);
+		// };
 
-	// Quantity Selectors
-	const incrementCounter = () => {
-		setLoading(true);
-		if (watch('ProductAmount') < 99) {
-			const currentValue = getValues('ProductAmount') || 0;
-			setValue('ProductAmount', currentValue + 1);
-		}
-		setTimeout(() => {
-			setLoading(false);
-		}, 500);
-	};
+		// Quantity Selectors
+		// const incrementCounter = () => {
+		// 	setLoading(true);
+		// 	if (watch('ProductAmount') < 99) {
+		// 		const currentValue = getValues('ProductAmount') || 0;
+		// 		setValue('ProductAmount', currentValue + 1);
+		// 	}
+		// 	setTimeout(() => {
+		// 		setLoading(false);
+		// 	}, 500);
+		// };
 
-	const decrementCounter = () => {
-		setLoading(true);
-		if (watch('ProductAmount') > 1) {
-			const currentValue = getValues('ProductAmount') || 0;
-			setValue('ProductAmount', currentValue - 1);
-		}
-		setTimeout(() => {
-			setLoading(false);
-		}, 500);
-	};
+		// const decrementCounter = () => {
+		// 	setLoading(true);
+		// 	if (watch('ProductAmount') > 1) {
+		// 		const currentValue = getValues('ProductAmount') || 0;
+		// 		setValue('ProductAmount', currentValue - 1);
+		// 	}
+		// 	setTimeout(() => {
+		// 		setLoading(false);
+		// 	}, 500);
+		// };
 
-	return (
-		<Box className='lg:max-w-[35rem]'>
-			{selectedVariant && (
+		return (
+			<Box className='lg:max-w-[35rem]'>
+				<></>
+				{/* {selectedVariant && (
 				<form>
 					<div className='flex flex-col gap-7'>
 						<div className='flex flex-col gap-5'>
@@ -240,9 +240,9 @@ const ProductForm = ({
 						</Box>
 					</div>
 				</form>
-			)}
-		</Box>
-	);
-};
+			)} */}
+			</Box>
+		);
+	};
 
 export default ProductForm;

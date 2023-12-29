@@ -1,10 +1,4 @@
-import {
-	ApolloClient,
-	InMemoryCache,
-	createHttpLink,
-	ApolloLink,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 
 const ssrHttpLink = createHttpLink({
 	uri: `${process.env.NEXT_PUBLIC_STRAPI_API_URL}/graphql`,

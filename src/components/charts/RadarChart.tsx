@@ -48,13 +48,20 @@ const options = {
 	},
 };
 
-const parseKey = key => {
+const parseKey = (key: string) => {
 	return key.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, function (key) {
 		return key.toUpperCase();
 	});
 };
 
-const RadarChart = ({ metaobject }) => {
+type RadarChartProps = {
+	fields: {
+		key: string;
+		value: string;
+	}[];
+};
+
+const RadarChart = ({ metaobject }: { metaobject: RadarChartProps }) => {
 	const metaobjectValues = metaobject?.fields
 		?.filter(field => parseFloat(field.value) !== 0)
 		.map(metafield => parseFloat(metafield?.value));

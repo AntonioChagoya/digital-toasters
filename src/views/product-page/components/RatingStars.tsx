@@ -9,9 +9,12 @@ interface RatingStarsProps {
 	onSelectRate: (starPosition: number) => void;
 }
 
-const calculateStarsCount = (currentRating: number, onSelectRate) => {
+const calculateStarsCount = ({
+	currentRating,
+	onSelectRate,
+}: RatingStarsProps) => {
 	const stars = [];
-	let fullStars = Math.floor(currentRating);
+	const fullStars = Math.floor(currentRating);
 	let halfStars = Math.ceil(currentRating - fullStars);
 
 	for (let i = 0; i < 6; ) {
@@ -61,7 +64,7 @@ const RatingStars = ({ currentRating = 0, onSelectRate }: RatingStarsProps) => {
 			{}
 			<Box className='flex items-center gap-2'>
 				<ul className='flex gap-2'>
-					{calculateStarsCount(currentRating, onSelectRate)}
+					{calculateStarsCount({ currentRating, onSelectRate })}
 				</ul>
 				<p className='mb-0 font-bold text-secondary'>
 					({currentRating.toFixed(1)})

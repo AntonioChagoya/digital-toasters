@@ -1,42 +1,34 @@
-import { useState } from 'react';
-
 // Next
-import { useRouter } from 'next/router';
+import type { GetServerSideProps } from 'next';
 
 // Apollo
-import { useLazyQuery } from '@apollo/client';
-import { GET_PRODUCTS } from 'graphql/queries/products';
+// import { useLazyQuery } from '@apollo/client';
+// import { GET_PRODUCTS } from 'graphql/queries/products';
 
 // Components
-import ProductCard from '@components/cards/ProductCard';
+// import ProductCard from '@components/cards/ProductCard';
 
 // Libs
-import { TbLoader3 } from 'react-icons/tb';
+// import { TbLoader3 } from 'react-icons/tb';
 
 // Types
 import { LayoutType } from 'types/app';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
-export async function getServerSideProps(params) {
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
 		props: {
-			query: params?.query || null,
+			// query: params?.query || null,
 		},
 	};
-}
+};
 
-const Productos = ({ query }) => {
-	const router = useRouter();
+const Productos = () => {
+	// const router = useRouter();
 
-	const defaultQuery = {
-		first: 12,
-		variantsQty: 1,
-		sortKey: 'TITLE',
-		reverse: false,
-	};
 	// const [getProducts, { data, loading }] = useLazyQuery(GET_PRODUCTS);
-	const [roasted, setRoasted] = useState([]);
-	const [toaster, setToaster] = useState([]);
+	// const [roasted, setRoasted] = useState([]);
+	// const [toaster, setToaster] = useState([]);
 
 	// useEffect(() => {
 	//   if (Object.keys(router.query).length === 0) {

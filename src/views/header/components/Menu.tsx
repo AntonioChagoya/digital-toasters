@@ -1,10 +1,4 @@
 import Link from 'next/link';
-import {
-	TbPaperBag,
-	TbCategory2,
-	TbFlame,
-	TbBuildingStore,
-} from 'react-icons/tb';
 
 const Menu = () => {
 	return (

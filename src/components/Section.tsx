@@ -1,5 +1,6 @@
+import { ReactNode } from 'react';
 interface SectionProps {
-	renderSection?: () => React.ReactNode;
+	renderSection?: () => ReactNode;
 }
 
 const Section = ({ renderSection }: SectionProps) => {

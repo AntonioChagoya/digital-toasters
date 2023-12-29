@@ -5,8 +5,8 @@ import Image from 'next/image';
 import coffe from '@assets/images/cup.png';
 
 // Components
-import Carousel from '@views/home/Carousel';
-import ProductsCarousel from '@components/carousells/ProductsCarousel';
+// import Carousel from '@views/home/Carousel';
+// import ProductsCarousel from '@components/carousells/ProductsCarousel';
 import Section from '@components/Section';
 import Box from '@components/Box';
 import Heading from '@components/headings/Heading';
@@ -24,7 +24,7 @@ export async function getStaticProps() {
 	} catch (error) {
 		return {
 			props: {
-				products: {},
+				products: [],
 			},
 		};
 	}
@@ -63,7 +63,7 @@ const serviceCards = [
 	},
 ];
 
-export default function Home({ products }) {
+export default function Home() {
 	return (
 		<>
 			{/* <Carousel /> */}

@@ -1,88 +1,41 @@
 import '@egjs/flicking-plugins/dist/pagination.css';
 
 // Next
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 // React
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 
 // Context
-import { useCartContext } from 'context/CartContext';
+// import { useCartContext } from 'context/CartContext';
 
 // Icons
-import { TbShoppingCart, TbLoader3 } from 'react-icons/tb';
-import { FaXmark } from 'react-icons/fa6';
+import { TbShoppingCart } from 'react-icons/tb';
+// import { FaXmark } from 'react-icons/fa6';
 
 // Libs
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 import { Transition } from '@headlessui/react';
 
 // Components
-import QuantitySelector from '@components/QuantitySelector';
-import Button from '@components/buttons/Button';
+// import QuantitySelector from '@components/QuantitySelector';
+// import Button from '@components/buttons/Button';
 
-// Utils
-import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';
-import { ButtonSize, ButtonWide } from 'theme';
+// // Utils
+// import { parseIdStorefront, parseMoneyFormat } from 'utils/stringParse';
+// import { ButtonSize, ButtonWide } from 'theme';
 
 const Cart = () => {
-	const { checkout, setCheckout, isCartOpen, setIsCartOpen, isDataLoading } =
-		useCartContext();
-	const { setValue, register, watch, getValues, handleSubmit } = useForm();
-	const [itemToUpdate, setItemToUpdate] = useState(null);
-	const [itemToRemove, setItemToRemove] = useState(null);
-
-	const [loading, setLoading] = useState({
-		id: null,
-		status: false,
-	});
-	const router = useRouter();
-
-	useEffect(() => {
-		if (checkout?.lineItems.length > 0) {
-			checkout?.lineItems.forEach(item => {
-				const uniqueId = parseIdStorefront(item.variant.id);
-				setValue(uniqueId, item.quantity);
-			});
-		}
-	}, [checkout?.lineItems]);
-
-	useEffect(() => {
-		if (itemToUpdate && checkout) {
-			const getData = setTimeout(() => {
-				setLoading({ id: itemToUpdate.variant.id, status: true });
-				const uniqueId = parseIdStorefront(itemToUpdate.variant.id);
-			}, 1000);
-
-			return () => {
-				clearTimeout(getData);
-			};
-		}
-	}, [itemToUpdate]);
-
-	useEffect(() => {
-		if (itemToRemove && checkout) {
-			setLoading({ id: itemToRemove.variant.id, status: true });
-		}
-	}, [itemToRemove]);
-
-	const onSubmit = data => {
-		setLoading({ id: null, status: true });
-		if (checkout?.lineItems.length > 0) {
-			router.push(checkout.webUrl);
-		}
-	};
-
 	return (
 		<>
 			<TbShoppingCart
 				size={25}
-				onClick={() => setIsCartOpen(true)}
+				// onClick={() => setIsCartOpen(true)}
 				className='cursor-pointer hover:text-primary'
 			/>
 
 			<Transition
-				show={isCartOpen}
+				show={false}
 				appear
 				enter='duration-100'
 				enterFrom='opacity-0'
@@ -95,7 +48,7 @@ const Cart = () => {
 				<>
 					<div className='z-100 fixed left-0 top-0 h-full w-full bg-black/30'>
 						<section
-							onClick={() => setIsCartOpen(false)}
+							// onClick={() => setIsCartOpen(false)}
 							className='relative z-0 h-full w-full'
 						></section>
 						<Transition.Child
@@ -107,7 +60,7 @@ const Cart = () => {
 							leaveTo='opacity-0 translate-x-24'
 							className='fixed right-0 top-0 z-50 h-full w-full max-w-[90vw] bg-white p-2 shadow-xl md:max-w-[50vw] lg:max-w-[35vw] lg:px-3 lg:pb-4 lg:pt-2 xl:max-w-[25vw] 2xl:max-w-[22vw]'
 						>
-							<aside className='flex h-full flex-col'>
+							{/* <aside className='flex h-full flex-col'>
 								{!isDataLoading ? (
 									<form
 										className='flex h-screen min-h-[100vh] flex-col justify-between pb-10 lg:gap-5'
@@ -118,7 +71,7 @@ const Cart = () => {
 												Mi Carrito
 											</h4>
 											<FaXmark
-												onClick={() => setIsCartOpen(false)}
+												// onClick={() => setIsCartOpen(false)}
 												size={20}
 												className='cursor-pointer text-secondary hover:scale-[1.1]'
 											/>
@@ -223,23 +176,8 @@ const Cart = () => {
 																					);
 
 																					if (watch(nameId) < 99) {
-																						const currentValue =
-																							getValues(nameId) || 0;
-
-																						// shopifyClient.checkout
-																						//   .updateLineItems(checkout.id, [
-																						//     {
-																						//       id: item.id,
-																						//       quantity: currentValue + 1,
-																						//     },
-																						//   ])
-																						//   .then((checkout) => {
-																						//     setCheckout(checkout);
-																						//     setLoading({
-																						//       id: null,
-																						//       status: false,
-																						//     });
-																						//   });
+																						// const currentValue =
+																						// 	getValues(nameId) || 0;
 																					}
 																				}}
 																			/>
@@ -276,7 +214,7 @@ const Cart = () => {
 										/>
 									</div>
 								)}
-							</aside>
+							</aside> */}
 						</Transition.Child>
 					</div>
 				</>

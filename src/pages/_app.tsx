@@ -1,11 +1,7 @@
 // Styles
 import '../styles/globals.css';
 
-// React
-import { useEffect } from 'react';
-
 // Next
-import { useRouter } from 'next/router';
 import { AppProps } from 'next/app';
 
 // Apollo
@@ -15,8 +11,9 @@ import { createApolloClient } from 'graphql/apollo';
 // Contexts
 import { CartContextProvider } from 'context/CartContext';
 
-// Components
+// Layouts
 import PublicLayout from '@layouts/PublicLayout';
+import DefaultLayout from '@layouts/DefaultLayout';
 
 // Libs
 import { DefaultSeo } from 'next-seo';
@@ -28,15 +25,15 @@ interface CustomAppProps extends AppProps {
 	Component: AppProps['Component'] & { layout: string };
 }
 
-const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
+const App = ({ Component }: CustomAppProps) => {
 	const client = createApolloClient();
 	const CustomLayout = getLayout();
 
 	function getLayout() {
 		if (Component?.layout === LayoutType.PUBLIC) {
-			return PublicLayout || (children => <>{children}</>);
+			return PublicLayout || DefaultLayout;
 		} else {
-			return children => <>{children}</>;
+			return DefaultLayout;
 		}
 	}
 

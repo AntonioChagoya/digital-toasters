@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 // Libs
 import { TbLoader3 } from 'react-icons/tb';
 
@@ -10,7 +12,7 @@ import {
 } from 'theme';
 
 interface ButtonProps {
-	children: React.ReactNode;
+	children: ReactNode;
 	type?: 'button' | 'submit' | 'reset';
 	color?: ButtonColor;
 	size?: ButtonSize;
@@ -31,7 +33,6 @@ const Button = ({
 }: ButtonProps) => {
 	const defaults = 'rounded font-bold text-white duration-200 hover:opacity-80';
 	const classNames = defaults + ' ' + size + ' ' + color + ' ' + ' ' + wide;
-	console.log('Button -> loading', loading);
 
 	return (
 		<button
