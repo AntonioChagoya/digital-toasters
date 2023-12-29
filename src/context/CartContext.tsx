@@ -1,5 +1,4 @@
-// React
-import React, { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext } from 'react';
 
 // Hooks
 import { useLocalStorage } from 'hooks/useLocalStorage';
@@ -10,37 +9,19 @@ export interface Props {
 }
 
 export interface CartProviderProps {
-	// checkout: Checkout;
 	isCartOpen: boolean;
 	isDataLoading?: boolean;
 	setIsDataLoading?: (isDataLoading: boolean) => void;
 	setIsCartOpen?: (isCartOpen: boolean) => void;
-	// setCheckout?: (checkout: Checkout) => void;
 }
 
 const CartContext = createContext<CartProviderProps>({
-	// checkout: null,
 	isCartOpen: false,
 });
 
 export const useCartContext = () => {
 	return useContext(CartContext);
 };
-
-// export const removeDuplicatedItemsFromVariantObjectsArray = items => {
-// 	return items.reduce((acc, obj) => {
-// 		if (acc.has(obj.variantId)) {
-// 			acc.set(obj.variantId, {
-// 				...obj,
-// 				quantity: acc.get(obj.variantId).quantity + obj.quantity,
-// 			});
-// 		} else {
-// 			acc.set(obj.variantId, obj);
-// 		}
-
-// 		return acc;
-// 	}, new Map());
-// };
 
 export const CartContextProvider = ({ children }: Props) => {
 	const [checkout, setCheckout] = useLocalStorage('checkout', null);

@@ -1,9 +1,7 @@
-import { ReactNode } from 'react';
-
 interface BoxProps {
 	id?: string;
 	className?: string;
-	children: ReactNode;
+	children: React.ReactNode;
 }
 
 const Box = ({ id, children, className = '' }: BoxProps) => {

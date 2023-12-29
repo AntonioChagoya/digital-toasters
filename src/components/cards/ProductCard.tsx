@@ -1,25 +1,14 @@
 // Next
-import Link from 'next/link';
-import Image from 'next/image';
-
-// Shopify
-import { Product } from '@shopify/hydrogen-react/storefront-api-types';
+// import Link from 'next/link';
+// import Image from 'next/image';
 
 // Components
-import Box from '@components/Box';
+// import Box from '@components/Box';
 
-interface ProductCardProps {
-	product: Product;
-	renderCard?: (product: Product) => React.ReactNode;
-}
-
-const ProductCard = ({ product, renderCard }: ProductCardProps) => {
-	const { title, handle, priceRange, compareAtPriceRange, variants } = product;
-	const { price, image } = variants.edges[0].node;
-
+const ProductCard = () => {
 	return (
 		<>
-			{renderCard && renderCard(product)}
+			{/* {renderCard && renderCard(product)}
 
 			{!renderCard && (
 				<article className='flex flex-col gap-5'>
@@ -59,7 +48,7 @@ const ProductCard = ({ product, renderCard }: ProductCardProps) => {
 						</Box>
 					</Link>
 				</article>
-			)}
+			)} */}
 		</>
 	);
 };

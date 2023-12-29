@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 // Libs
 import { TbLoader3 } from 'react-icons/tb';
 
@@ -12,7 +10,7 @@ import {
 } from 'theme';
 
 interface ButtonProps {
-	children: ReactNode;
+	children: React.ReactNode;
 	type?: 'button' | 'submit' | 'reset';
 	color?: ButtonColor;
 	size?: ButtonSize;

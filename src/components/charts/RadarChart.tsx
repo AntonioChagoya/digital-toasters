@@ -43,7 +43,6 @@ const options = {
 		legend: {
 			display: true,
 			position: 'bottom' as LayoutPosition,
-			// align: "start"
 		},
 	},
 };

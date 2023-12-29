@@ -9,4 +9,5 @@
 
 export enum LayoutType {
 	PUBLIC = 'Public',
+	DEFAULT = 'Default',
 }
