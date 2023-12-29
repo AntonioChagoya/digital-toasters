@@ -1,119 +1,66 @@
 // Styles
-import "../styles/globals.css";
+import '../styles/globals.css';
 
 // React
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 // Next
-import { useRouter } from "next/router";
-import { AppProps } from "next/app";
+import { useRouter } from 'next/router';
+import { AppProps } from 'next/app';
 
 // Apollo
-import { ApolloProvider } from "@apollo/client";
-import { createApolloClient } from "graphql/apollo";
+import { ApolloProvider } from '@apollo/client';
+import { createApolloClient } from 'graphql/apollo';
 
 // Contexts
-import { CartContextProvider } from "context/CartContext";
+import { CartContextProvider } from 'context/CartContext';
 
 // Components
-import PublicLayout from "@layouts/PublicLayout";
+import PublicLayout from '@layouts/PublicLayout';
 
 // Libs
-import { DefaultSeo } from "next-seo";
-
-// Shopify
-import {
-  sendShopifyAnalytics,
-  getClientBrowserParameters,
-  AnalyticsEventName,
-  useShopifyCookies,
-} from "@shopify/hydrogen-react";
+import { DefaultSeo } from 'next-seo';
 
 // Types
-import { LayoutType } from "types/app";
+import { LayoutType } from 'types/app';
 
 interface CustomAppProps extends AppProps {
-  Component: AppProps["Component"] & { layout: string };
+	Component: AppProps['Component'] & { layout: string };
 }
-
-function sendPageView(analyticsPageData) {
-  const payload = {
-    ...getClientBrowserParameters(),
-    ...analyticsPageData,
-  };
-  sendShopifyAnalytics({
-    eventName: AnalyticsEventName.PAGE_VIEW,
-    payload,
-  });
-}
-
-const analyticsShopData = {
-  shopId: "gid://shopify/Shop/8f5ec6-2",
-  currency: "MXN",
-  acceptedLanguage: "es",
-};
 
 const App = ({ Component, pageProps, ...rest }: CustomAppProps) => {
-  const client = createApolloClient();
-  const CustomLayout = getLayout();
+	const client = createApolloClient();
+	const CustomLayout = getLayout();
 
-  function getLayout() {
-    if (Component?.layout === LayoutType.PUBLIC) {
-      return PublicLayout || ((children) => <>{children}</>);
-    } else {
-      return (children) => <>{children}</>;
-    }
-  }
+	function getLayout() {
+		if (Component?.layout === LayoutType.PUBLIC) {
+			return PublicLayout || (children => <>{children}</>);
+		} else {
+			return children => <>{children}</>;
+		}
+	}
 
-  const router = useRouter();
-
-  const hasUserConsent = true;
-
-  const analytics = {
-    hasUserConsent,
-    ...analyticsShopData,
-    ...pageProps.analytics,
-  };
-  const pagePropsWithAppAnalytics = {
-    ...pageProps,
-    analytics,
-  };
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      sendPageView(analytics);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [analytics, router.events]);
-
-  useShopifyCookies();
-
-  return (
-    <ApolloProvider client={client}>
-      <>
-        <DefaultSeo
-          title="Digital Toasters | Coffee Shop"
-          description="Coffee Shop"
-          openGraph={{
-            type: "website",
-            locale: "en_IE",
-            url: "https://digitaltoasters.com",
-            site_name: "Digital Toasters",
-          }}
-        />
-        <CartContextProvider>
-          <CustomLayout>
-            <Component {...pagePropsWithAppAnalytics} />
-          </CustomLayout>
-        </CartContextProvider>
-      </>
-    </ApolloProvider>
-  );
+	return (
+		<ApolloProvider client={client}>
+			<>
+				<DefaultSeo
+					title='Digital Toasters | Coffee Shop'
+					description='Coffee Shop'
+					openGraph={{
+						type: 'website',
+						locale: 'en_IE',
+						url: 'https://digitaltoasters.com',
+						site_name: 'Digital Toasters',
+					}}
+				/>
+				<CartContextProvider>
+					<CustomLayout>
+						<Component />
+					</CustomLayout>
+				</CartContextProvider>
+			</>
+		</ApolloProvider>
+	);
 };
 
 export default App;

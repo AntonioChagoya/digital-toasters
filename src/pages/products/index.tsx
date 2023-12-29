@@ -1,74 +1,74 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 // Next
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 // Apollo
-import { useLazyQuery } from "@apollo/client";
-import { GET_PRODUCTS } from "graphql/queries/products";
+import { useLazyQuery } from '@apollo/client';
+import { GET_PRODUCTS } from 'graphql/queries/products';
 
 // Components
-import ProductCard from "@components/cards/ProductCard";
+import ProductCard from '@components/cards/ProductCard';
 
 // Libs
-import { TbLoader3 } from "react-icons/tb";
+import { TbLoader3 } from 'react-icons/tb';
 
 // Types
-import { LayoutType } from "types/app";
-import { useEffect } from "react";
+import { LayoutType } from 'types/app';
+import { useEffect } from 'react';
 
 export async function getServerSideProps(params) {
-  return {
-    props: {
-      query: params?.query || null,
-    },
-  };
+	return {
+		props: {
+			query: params?.query || null,
+		},
+	};
 }
 
 const Productos = ({ query }) => {
-  const router = useRouter();
+	const router = useRouter();
 
-  const defaultQuery = {
-    first: 12,
-    variantsQty: 1,
-    sortKey: "TITLE",
-    reverse: false,
-  };
-  // const [getProducts, { data, loading }] = useLazyQuery(GET_PRODUCTS);
-  const [roasted, setRoasted] = useState([]);
-  const [toaster, setToaster] = useState([]);
+	const defaultQuery = {
+		first: 12,
+		variantsQty: 1,
+		sortKey: 'TITLE',
+		reverse: false,
+	};
+	// const [getProducts, { data, loading }] = useLazyQuery(GET_PRODUCTS);
+	const [roasted, setRoasted] = useState([]);
+	const [toaster, setToaster] = useState([]);
 
-  // useEffect(() => {
-  //   if (Object.keys(router.query).length === 0) {
-  //     getProducts({ variables: defaultQuery });
-  //   } else {
-  //     getProducts({
-  //       variables: {
-  //         first: 12,
-  //         variantsQty: 10,
-  //         sortKey: router.query.sortKey || "TITLE",
-  //         query: router.query.query || "",
-  //         reverse: router.query.reverse === "true" ? true : false,
+	// useEffect(() => {
+	//   if (Object.keys(router.query).length === 0) {
+	//     getProducts({ variables: defaultQuery });
+	//   } else {
+	//     getProducts({
+	//       variables: {
+	//         first: 12,
+	//         variantsQty: 10,
+	//         sortKey: router.query.sortKey || "TITLE",
+	//         query: router.query.query || "",
+	//         reverse: router.query.reverse === "true" ? true : false,
 
-  //       }
-  //     });
-  //   }
-  // }, [router.query]);
+	//       }
+	//     });
+	//   }
+	// }, [router.query]);
 
-  // useEffect(() => {
-  //   const newQuery = [...roasted, ...toaster].join(" AND ") || router.query.query
+	// useEffect(() => {
+	//   const newQuery = [...roasted, ...toaster].join(" AND ") || router.query.query
 
-  //   if (roasted.length < 1 && toaster.length < 1) {
-  //     router.push({ query: { ...query, query: null } }, undefined, {})
-  //   } else {
-  //     router.push({ query: { ...query, query: newQuery } }, undefined, {})
-  //   }
+	//   if (roasted.length < 1 && toaster.length < 1) {
+	//     router.push({ query: { ...query, query: null } }, undefined, {})
+	//   } else {
+	//     router.push({ query: { ...query, query: newQuery } }, undefined, {})
+	//   }
 
-  // }, [roasted, toaster])
+	// }, [roasted, toaster])
 
-  return (
-    <>
-      {/* <div className="container mx-auto flex gap-10 p-10 lg:py-16 lg:px-0">
+	return (
+		<>
+			{/* <div className="container mx-auto flex gap-10 p-10 lg:py-16 lg:px-0">
         <aside className="relative hidden lg:flex flex-col min-w-[20%]">
           <div className="flex flex-col gap-10 bg-gray-100 p-10 rounded-lg sticky top-5">
             <section className="flex flex-col">
@@ -186,8 +186,8 @@ const Productos = ({ query }) => {
           }
         </section>
       </div > */}
-    </>
-  );
+		</>
+	);
 };
 Productos.layout = LayoutType.PUBLIC;
 export default Productos;

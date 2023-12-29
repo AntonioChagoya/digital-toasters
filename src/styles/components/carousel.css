@@ -1,32 +1,31 @@
 @layer base {
-
-  /* Over-ride defaults 
+	/* Over-ride defaults 
    * 1. Pagination bullets
    * 2. Arrows
   */
-  .flicking-pagination .flicking-pagination-bullet-active {
-    @apply bg-accent
-  }
+	.flicking-pagination .flicking-pagination-bullet-active {
+		@apply bg-accent;
+	}
 
-  .flicking-pagination .flicking-pagination-bullet {
-    @apply border-gray-400 border-[0.5px] p-1
-  }
+	.flicking-pagination .flicking-pagination-bullet {
+		@apply border-[0.5px] border-gray-400 p-1;
+	}
 
-  /* 2. Arrows */
-  .custom-active.flicking-arrow-prev.flicking-arrow-disabled.is-circle,
-  .custom-active.flicking-arrow-next.flicking-arrow-disabled.is-circle {
-    @apply opacity-50
-  }
+	/* 2. Arrows */
+	.custom-active.flicking-arrow-prev.flicking-arrow-disabled.is-circle,
+	.custom-active.flicking-arrow-next.flicking-arrow-disabled.is-circle {
+		@apply opacity-50;
+	}
 
-  /* Custom */
-  .custom-arrow.flicking-arrow-prev.is-circle,
-  .custom-arrow.flicking-arrow-next.is-circle {
-    @apply bg-primary;
-    width: 2rem;
-    height: 2rem;
-  }
+	/* Custom */
+	.custom-arrow.flicking-arrow-prev.is-circle,
+	.custom-arrow.flicking-arrow-next.is-circle {
+		@apply bg-primary;
+		width: 2rem;
+		height: 2rem;
+	}
 
-  .custom-selected-thumb {
-    @apply border-2 border-accent p-1 rounded duration-200
-  }
+	.custom-selected-thumb {
+		@apply rounded border-2 border-accent p-1 duration-200;
+	}
 }

@@ -1,45 +1,45 @@
 @layer base {
-  @import url("/fonts/lato/LatoRegular.ttf");
-  @import url("/fonts/lato/LatoBold.ttf");
+	@import url('/fonts/lato/LatoRegular.ttf');
+	@import url('/fonts/lato/LatoBold.ttf');
 
-  @font-face {
-    font-family: "Lato";
-    src: url("/fonts/lato/LatoRegular.ttf");
-    font-style: normal;
-    font-weight: 400;
-  }
+	@font-face {
+		font-family: 'Lato';
+		src: url('/fonts/lato/LatoRegular.ttf');
+		font-style: normal;
+		font-weight: 400;
+	}
 
-  @font-face {
-    font-family: "Lato";
-    src: url("/fonts/lato/LatoBold.ttf");
-    font-style: bold;
-    font-weight: 500;
-  }
+	@font-face {
+		font-family: 'Lato';
+		src: url('/fonts/lato/LatoBold.ttf');
+		font-style: bold;
+		font-weight: 500;
+	}
 
-  /* Text tags */
-  h1 {
-    font-size: 4rem;
-  }
+	/* Text tags */
+	h1 {
+		font-size: 4rem;
+	}
 
-  h2 {
-    font-size: 3rem;
-  }
+	h2 {
+		font-size: 3rem;
+	}
 
-  h3 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
+	h3 {
+		font-size: 2rem;
+		font-weight: bold;
+	}
 
-  h4 {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
+	h4 {
+		font-size: 1.5rem;
+		font-weight: bold;
+	}
 
-  h5 {
-    font-size: 1.1rem;
-  }
+	h5 {
+		font-size: 1.1rem;
+	}
 
-  h6 {
-    font-size: 0.8rem;
-  }
+	h6 {
+		font-size: 0.8rem;
+	}
 }

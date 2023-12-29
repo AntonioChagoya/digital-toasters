@@ -13,56 +13,56 @@
 */
 
 @layer base {
-  html {
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-    font-family: Lato;
-  }
-  input,
-  select {
-    @apply focus:ring-primary focus:border-primary border-gray-300 duration-200;
-  }
-  input[type="number"] {
-    @apply focus:ring-primary focus:ring-2 duration-200 focus:border-0;
-  }
-  input[type="checkbox"] {
-    @apply rounded ring-primary focus:ring-primary checked:bg-primary hover:checked:bg-primary checked:focus:bg-primary border-gray-300 duration-200;
-  }
-  ul li {
-    @apply list-disc;
-  }
-  ol li {
-    @apply list-decimal;
-  }
-  table {
-    @apply border-collapse border border-gray-300 table-fixed w-full;
-  }
-  thead {
-    @apply bg-gray-100;
-  }
-  tr {
-    @apply rounded;
-  }
-  th,
-  td {
-    @apply border border-gray-300 p-2 align-top text-left;
-  }
-  th h6,
-  td h6 {
-    @apply font-bold uppercase text-sm mb-2;
-  }
-  th p,
-  td p {
-    @apply mb-0 font-normal;
-  }
-  /* Chrome, Safari, Edge, Opera */
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  /* Firefox */
-  input[type=number] {
-    -moz-appearance: textfield;
-  }
+	html {
+		box-sizing: border-box;
+		scroll-behavior: smooth;
+		font-family: Lato;
+	}
+	input,
+	select {
+		@apply border-gray-300 duration-200 focus:border-primary focus:ring-primary;
+	}
+	input[type='number'] {
+		@apply duration-200 focus:border-0 focus:ring-2 focus:ring-primary;
+	}
+	input[type='checkbox'] {
+		@apply rounded border-gray-300 ring-primary duration-200 checked:bg-primary hover:checked:bg-primary focus:ring-primary checked:focus:bg-primary;
+	}
+	ul li {
+		@apply list-disc;
+	}
+	ol li {
+		@apply list-decimal;
+	}
+	table {
+		@apply w-full table-fixed border-collapse border border-gray-300;
+	}
+	thead {
+		@apply bg-gray-100;
+	}
+	tr {
+		@apply rounded;
+	}
+	th,
+	td {
+		@apply border border-gray-300 p-2 text-left align-top;
+	}
+	th h6,
+	td h6 {
+		@apply mb-2 text-sm font-bold uppercase;
+	}
+	th p,
+	td p {
+		@apply mb-0 font-normal;
+	}
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	/* Firefox */
+	input[type='number'] {
+		-moz-appearance: textfield;
+	}
 }
