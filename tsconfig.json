@@ -32,6 +32,12 @@
 		"allowJs": false,
 		"strict": true
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tailwind.config.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"tailwind.config.ts"
+	],
 	"exclude": ["node_modules"]
 }

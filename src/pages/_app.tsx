@@ -17,6 +17,8 @@ import DefaultLayout from '@layouts/DefaultLayout';
 
 // Libs
 import { DefaultSeo } from 'next-seo';
+// import axios from 'axios';
+// import { SWRConfig } from 'swr';
 
 // Types
 import { LayoutType } from 'types/app';
@@ -25,7 +27,7 @@ interface CustomAppProps extends AppProps {
 	Component: AppProps['Component'] & { layout: string };
 }
 
-const App = ({ Component }: CustomAppProps) => {
+const App = ({ Component, pageProps }: CustomAppProps) => {
 	const client = createApolloClient();
 	const CustomLayout = getLayout();
 
@@ -39,23 +41,29 @@ const App = ({ Component }: CustomAppProps) => {
 
 	return (
 		<ApolloProvider client={client}>
-			<>
-				<DefaultSeo
-					title='Digital Toasters | Coffee Shop'
-					description='Coffee Shop'
-					openGraph={{
-						type: 'website',
-						locale: 'en_IE',
-						url: 'https://digitaltoasters.com',
-						site_name: 'Digital Toasters',
-					}}
-				/>
-				<CartContextProvider>
-					<CustomLayout>
-						<Component />
-					</CustomLayout>
-				</CartContextProvider>
-			</>
+			{/* <SWRConfig
+				value={{
+					fetcher: (url: string) => axios.get(url).then(res => res.data),
+					refreshInterval: 1000,
+					revalidateOnReconnect: true,
+				}}
+			> */}
+			<DefaultSeo
+				title='Digital Toasters | Coffee Shop'
+				description='Coffee Shop'
+				openGraph={{
+					type: 'website',
+					locale: 'en_IE',
+					url: 'https://digitaltoasters.com',
+					site_name: 'Digital Toasters',
+				}}
+			/>
+			<CartContextProvider>
+				<CustomLayout>
+					<Component {...pageProps} />
+				</CustomLayout>
+			</CartContextProvider>
+			{/* </SWRConfig> */}
 		</ApolloProvider>
 	);
 };

@@ -11,3 +11,8 @@ export enum LayoutType {
 	PUBLIC = 'Public',
 	DEFAULT = 'Default',
 }
+
+export enum Locale {
+	'en' = 'en',
+	'es-MX' = 'es-MX',
+}

@@ -1,11 +1,11 @@
 import { LayoutType } from 'types/app';
 
-const page404 = () => {
+const Page500 = () => {
 	return (
 		<div className='flex h-[90vh] flex-col items-center justify-center gap-10 bg-gray-900 p-10'>
 			<div className='text-center'>
 				<h1 className='mb-2  text-center text-7xl font-bold text-gray-100'>
-					404
+					400
 				</h1>
 				<p className='mb-4 text-2xl font-medium'>Page not found</p>
 			</div>
@@ -19,5 +19,5 @@ const page404 = () => {
 	);
 };
 
-page404.layout = LayoutType.PUBLIC;
-export default page404;
+Page500.layout = LayoutType.PUBLIC;
+export default Page500;
