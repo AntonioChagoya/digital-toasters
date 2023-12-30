@@ -3,15 +3,16 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
 		"build": "next build",
-		"start": "next start",
-		"lint": "next lint",
-		"test": "jest",
+		"copytypes": "node ./src/services/generateTypes.js",
+		"coverage": "jest --coverage",
+		"dev": "next dev",
 		"format": "prettier --check --ignore-path .gitignore .",
 		"format:fix": "prettier --write --ignore-path .gitignore .",
-		"test:watch": "jest --watchAll",
-		"coverage": "jest --coverage"
+		"lint": "next lint",
+		"start": "next start",
+		"test": "jest",
+		"test:watch": "jest --watchAll"
 	},
 	"dependencies": {
 		"@apollo/client": "3.7.17",
@@ -41,6 +42,7 @@
 	},
 	"devDependencies": {
 		"@heroicons/react": "2.0.18",
+		"@strapi/strapi": "^4.16.2",
 		"@tailwindcss/forms": "0.5.4",
 		"@tailwindcss/typography": "0.5.10",
 		"@testing-library/jest-dom": "6.1.3",

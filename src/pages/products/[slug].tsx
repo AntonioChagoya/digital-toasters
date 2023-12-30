@@ -7,9 +7,10 @@ import { getArticleBySlug } from '@services/articles/getArticleBySlug';
 
 // Types
 import { Locale, LayoutType } from '@appTypes/app';
+import { ApiArticleArticle } from '@appTypes/contentTypes';
 
 type Props = {
-	product: IProduct;
+	product: ApiArticleArticle;
 };
 
 export const getServerSideProps = (async ({ params, locale, query }) => {
@@ -35,7 +36,7 @@ export const getServerSideProps = (async ({ params, locale, query }) => {
 	}
 }) satisfies GetServerSideProps<Props>;
 
-const ProductPage = ({ product }: { product: IProduct }) => {
+const ProductPage = ({ product }: { product: ApiArticleArticle }) => {
 	console.log('product', product.attributes);
 
 	return <>test</>;
