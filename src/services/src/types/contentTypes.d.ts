@@ -23,12 +23,12 @@ export interface AdminPermission extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 1;
       }>;
-    actionParameters: Attribute.JSON & Attribute.DefaultTo<object>;
+    actionParameters: Attribute.JSON & Attribute.DefaultTo<{}>;
     subject: Attribute.String &
       Attribute.SetMinMaxLength<{
         minLength: 1;
       }>;
-    properties: Attribute.JSON & Attribute.DefaultTo<object>;
+    properties: Attribute.JSON & Attribute.DefaultTo<{}>;
     conditions: Attribute.JSON & Attribute.DefaultTo<[]>;
     role: Attribute.Relation<'admin::permission', 'manyToOne', 'admin::role'>;
     createdAt: Attribute.DateTime;
@@ -773,6 +773,47 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface PluginPublisherAction extends Schema.CollectionType {
+  collectionName: 'actions';
+  info: {
+    singularName: 'action';
+    pluralName: 'actions';
+    displayName: 'actions';
+  };
+  options: {
+    draftAndPublish: false;
+    comment: '';
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    executeAt: Attribute.DateTime;
+    mode: Attribute.String;
+    entityId: Attribute.Integer;
+    entitySlug: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::publisher.action',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::publisher.action',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiArticleArticle extends Schema.CollectionType {
   collectionName: 'articles';
   info: {
@@ -797,19 +838,6 @@ export interface ApiArticleArticle extends Schema.CollectionType {
           localized: false;
         };
       }>;
-    description: Attribute.RichText &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    price: Attribute.Decimal &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     slug: Attribute.UID<'api::article.article', 'name'> &
       Attribute.Required &
       Attribute.SetPluginOptions<{
@@ -817,39 +845,24 @@ export interface ApiArticleArticle extends Schema.CollectionType {
           localized: true;
         };
       }>;
-    roasts: Attribute.Relation<
-      'api::article.article',
-      'oneToMany',
-      'api::roast.roast'
-    >;
     roaster: Attribute.Relation<
       'api::article.article',
       'oneToOne',
       'api::roaster.roaster'
     >;
-    gallery: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: false;
-        };
-      }>;
-    image: Attribute.Media &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     cata: Attribute.Component<'charts.radar'> &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    varieties: Attribute.Relation<
-      'api::article.article',
-      'oneToMany',
-      'api::variety.variety'
-    >;
+    variants: Attribute.Component<'global.variant', true> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -869,6 +882,53 @@ export interface ApiArticleArticle extends Schema.CollectionType {
       'api::article.article',
       'oneToMany',
       'api::article.article'
+    >;
+    locale: Attribute.String;
+  };
+}
+
+export interface ApiCarouselCarousel extends Schema.SingleType {
+  collectionName: 'carousels';
+  info: {
+    singularName: 'carousel';
+    pluralName: 'carousels';
+    displayName: 'Carousel';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    Slide: Attribute.Component<'global.slide', true> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::carousel.carousel',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::carousel.carousel',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    localizations: Attribute.Relation<
+      'api::carousel.carousel',
+      'oneToMany',
+      'api::carousel.carousel'
     >;
     locale: Attribute.String;
   };
@@ -1038,54 +1098,6 @@ export interface ApiPagePage extends Schema.CollectionType {
   };
 }
 
-export interface ApiRoastRoast extends Schema.CollectionType {
-  collectionName: 'roasts';
-  info: {
-    singularName: 'roast';
-    pluralName: 'roasts';
-    displayName: 'Roast';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::roast.roast',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::roast.roast',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    localizations: Attribute.Relation<
-      'api::roast.roast',
-      'oneToMany',
-      'api::roast.roast'
-    >;
-    locale: Attribute.String;
-  };
-}
-
 export interface ApiRoasterRoaster extends Schema.CollectionType {
   collectionName: 'roasters';
   info: {
@@ -1116,36 +1128,6 @@ export interface ApiRoasterRoaster extends Schema.CollectionType {
   };
 }
 
-export interface ApiVarietyVariety extends Schema.CollectionType {
-  collectionName: 'varieties';
-  info: {
-    singularName: 'variety';
-    pluralName: 'varieties';
-    displayName: 'Variety';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    name: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::variety.variety',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::variety.variety',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1164,14 +1146,14 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::publisher.action': PluginPublisherAction;
       'api::article.article': ApiArticleArticle;
+      'api::carousel.carousel': ApiCarouselCarousel;
       'api::coffe-shop.coffe-shop': ApiCoffeShopCoffeShop;
       'api::menu.menu': ApiMenuMenu;
       'api::order.order': ApiOrderOrder;
       'api::page.page': ApiPagePage;
-      'api::roast.roast': ApiRoastRoast;
       'api::roaster.roaster': ApiRoasterRoaster;
-      'api::variety.variety': ApiVarietyVariety;
     }
   }
 }

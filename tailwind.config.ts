@@ -26,6 +26,12 @@ module.exports = {
 				warning: colors.red[500],
 				error: colors.red[800],
 			},
+			spacing: {
+				section: '1200px',
+			},
+			gap: {
+				layoutPublic: '5rem',
+			}
 		},
 	},
 	plugins: [

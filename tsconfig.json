@@ -37,8 +37,7 @@
 		"**/*.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		"tailwind.config.ts",
-		"src/services/generateTypes.js"
+		"tailwind.config.ts"
 	],
 	"exclude": ["node_modules"]
 }

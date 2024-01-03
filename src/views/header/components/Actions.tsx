@@ -1,14 +1,17 @@
 // Next
 import Link from 'next/link';
 
-// Components
+// Views
 import Menu from '@views/header/components/Menu';
 import Cart from '@views/cart';
 
+// Components
+import Section from '@components/Section';
+
 const Actions = () => {
 	return (
-		<section className='sticky z-50 px-4'>
-			<div className='container mx-auto flex max-w-7xl justify-between py-2'>
+		<Section className='sticky z-50'>
+			<div className='flex justify-between py-2'>
 				<Link
 					className='flex items-center'
 					href={'/'}
@@ -33,7 +36,7 @@ const Actions = () => {
 					</div>
 				</nav>
 			</div>
-		</section>
+		</Section>
 	);
 };
 

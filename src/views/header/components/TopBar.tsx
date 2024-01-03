@@ -1,31 +1,33 @@
+// Next
 import Link from 'next/link';
+
+// Components
+import Section from '@components/Section';
 
 const TopBar = () => {
 	return (
-		<section className='bg-secondary text-white '>
-			<div className='container mx-auto flex max-w-7xl justify-between py-1'>
-				<div>
-					<p></p>
-				</div>
-
-				<nav className='flex'>
-					<ul className='divide-x'>
-						<Link
-							href='/'
-							className='px-2'
-						>
-							Sign In
-						</Link>
-						<Link
-							href='/toasters'
-							className='px-2'
-						>
-							Register
-						</Link>
-					</ul>
-				</nav>
+		<Section className='bg-secondary text-white '>
+			<div>
+				<p></p>
 			</div>
-		</section>
+
+			<nav className='flex'>
+				<ul className='divide-x'>
+					<Link
+						href='/'
+						className='px-2'
+					>
+						Sign In
+					</Link>
+					<Link
+						href='/toasters'
+						className='px-2'
+					>
+						Register
+					</Link>
+				</ul>
+			</nav>
+		</Section>
 	);
 };
 

@@ -9,9 +9,9 @@ export interface ChartsRadar extends Schema.Component {
   };
   attributes: {
     title: Attribute.String;
-    General: Attribute.Component<'coffe-attributes.general'>;
-    Defects: Attribute.Component<'coffe-attributes.defects'>;
-    Quality: Attribute.Component<'coffe-attributes.beans-quality'>;
+    general: Attribute.Component<'coffe-attributes.general'>;
+    defects: Attribute.Component<'coffe-attributes.defects'>;
+    quality: Attribute.Component<'coffe-attributes.beans-quality'>;
   };
 }
 
@@ -87,11 +87,6 @@ export interface CoffeAttributesGeneral extends Schema.Component {
   };
   attributes: {
     origin: Attribute.String;
-    roast: Attribute.Relation<
-      'coffe-attributes.general',
-      'oneToOne',
-      'api::roast.roast'
-    >;
     tasting_date: Attribute.Date;
     altitude: Attribute.Decimal;
     acidity: Attribute.Decimal &
@@ -205,6 +200,25 @@ export interface GlobalLink extends Schema.Component {
   };
 }
 
+export interface GlobalSlide extends Schema.Component {
+  collectionName: 'components_global_slides';
+  info: {
+    displayName: 'Slide';
+    icon: 'stack';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    sub_title: Attribute.String & Attribute.Required;
+    background_image: Attribute.Media;
+    articles: Attribute.Relation<
+      'global.slide',
+      'oneToOne',
+      'api::article.article'
+    >;
+  };
+}
+
 export interface GlobalSubLink extends Schema.Component {
   collectionName: 'components_global_sub_links';
   info: {
@@ -218,6 +232,36 @@ export interface GlobalSubLink extends Schema.Component {
   };
 }
 
+export interface GlobalVariant extends Schema.Component {
+  collectionName: 'components_global_variants';
+  info: {
+    displayName: 'Variant';
+    icon: 'manyWays';
+    description: '';
+  };
+  attributes: {
+    description: Attribute.RichText;
+    price: Attribute.Float &
+      Attribute.Required &
+      Attribute.SetMinMax<{
+        min: 0;
+      }>;
+    roast: Attribute.Enumeration<['Ligero', 'Medio', 'Oscuro', 'Sin tostar']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'Medio'>;
+    gallery: Attribute.Media;
+    image: Attribute.Media;
+    ground: Attribute.Enumeration<['Grano', 'Grueso', 'Medio', 'Fino']> &
+      Attribute.Required &
+      Attribute.DefaultTo<'Grano'>;
+    name: Attribute.String;
+    weight: Attribute.Decimal &
+      Attribute.SetMinMax<{
+        min: 0;
+      }>;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -228,7 +272,9 @@ declare module '@strapi/types' {
       'global.attribute': GlobalAttribute;
       'global.carousel': GlobalCarousel;
       'global.link': GlobalLink;
+      'global.slide': GlobalSlide;
       'global.sub-link': GlobalSubLink;
+      'global.variant': GlobalVariant;
     }
   }
 }

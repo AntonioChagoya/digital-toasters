@@ -7,7 +7,7 @@ const PublicLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			<HeaderIndex />
-			<main className='container relative z-0 mx-auto flex max-w-7xl flex-col gap-20 py-10'>
+			<main className='container relative z-0 mx-auto flex flex-col gap-layoutPublic py-10'>
 				{children}
 			</main>
 			<Footer />

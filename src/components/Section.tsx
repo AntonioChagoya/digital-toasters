@@ -1,11 +1,14 @@
+// Constants
+
 interface SectionProps {
-	renderSection?: () => React.ReactNode;
+	children: React.ReactNode;
+	className?: string;
 }
 
-const Section = ({ renderSection }: SectionProps) => {
+const Section = ({ children, className }: SectionProps) => {
 	return (
-		<section className='container mx-auto max-w-7xl'>
-			{renderSection && renderSection()}
+		<section className={`${className ? className : ''}`}>
+			<div className={`container mx-auto max-w-section`}>{children}</div>
 		</section>
 	);
 };
