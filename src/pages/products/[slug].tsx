@@ -16,18 +16,18 @@ import Section from '@components/Section';
 import Box from '@components/Box';
 
 // Views
+import ImagesCarousel from '@views/product-page/components/ImagesCarousel';
 import ProductForm from '@views/product-page/components/ProductForm';
 
 type Props = {
 	product: IProduct;
 };
 
-export const getServerSideProps = (async ({ params, locale, query }) => {
+export const getServerSideProps = (async ({ params, locale }) => {
 	try {
 		const { data } = await getArticleBySlug(
 			params?.slug,
-			Locale[locale as keyof typeof Locale],
-			query
+			Locale[locale as keyof typeof Locale]
 		);
 
 		return {
@@ -45,12 +45,25 @@ export const getServerSideProps = (async ({ params, locale, query }) => {
 	}
 }) satisfies GetServerSideProps<Props>;
 
-const ProductPage = ({ product }: { product: IProduct }) => {
+const ProductPage = ({ product }: Props) => {
+	const {
+		image: { data: imageData },
+		gallery: { data: galleryData },
+	} = product?.attributes || {};
+
 	return (
 		<>
 			<Section>
 				<Box className='flex flex-col justify-start gap-5 p-5 md:flex-row lg:gap-10'>
-					{/* <ImagesCarousel images={images.edges.map(({ node }) => node)} /> */}
+					{imageData && galleryData ? (
+						<ImagesCarousel
+							images={[imageData, ...galleryData]?.map(node => node.attributes)}
+						/>
+					) : (
+						<ImagesCarousel
+							images={[imageData]?.map(node => node?.attributes)}
+						/>
+					)}
 					<ProductForm product={product} />
 				</Box>
 			</Section>

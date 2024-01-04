@@ -1,239 +1,206 @@
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// Context
-// import { useCartContext } from '@context/CartContext';
+// Next
+import { useRouter } from 'next/router';
 
 // Utils
 import { parseMoneyFormat } from '@utils/stringParse';
 
 // Libs
-// import { shopifyClient } from '@libs/shopify';
-// import { TbCircleArrowRightFilled } from 'react-icons/tb';
-// import { useForm } from 'react-hook-form';
-
-// Utils
-// import { calculateAvergeRating } from '@utils/rates';
-// import { groupArrayObjectsByGroupSize } from '@utils/arrays';
+import { useForm } from 'react-hook-form';
 
 // Components
 import Box from '@components/Box';
+import Button from '@components/buttons/Button';
+import QuantitySelector from '@views/product-page/components/QuantitySelector';
 
 // Views
 import ProductPageDescription from '@views/product-page/components/Description';
 import Options from '@views/product-page/components/Options';
 
-// Types
+export type FormValues = {
+	amount: number;
+};
 
-// import Button from '@components/buttons/Button';
-// import RatingStars from '@views/product-page/components/RatingStars';
-// import QuantitySelector from '@components/QuantitySelector';
+function containsProperties(obj: object, targetObject: object) {
+	for (const key in targetObject) {
+		if (
+			obj[key as keyof typeof obj] !==
+			targetObject[key as keyof typeof targetObject]
+		) {
+			return false;
+		}
+	}
+	return true;
+}
+function areObjectsEqual(obj1: object, obj2: object): boolean {
+	const entries1 = Object.entries(obj1 as object);
+	const entries2 = Object.entries(obj2 as object);
 
-// Types
-// import { ButtonColor, ButtonSize, ButtonWide } from 'theme';
+	return (
+		entries1.length === entries2.length &&
+		entries1.every(
+			([key, value]) =>
+				Object.prototype.hasOwnProperty.call(obj2, key) &&
+				(obj2 as Record<string, keyof typeof obj2>)[key] === value
+		)
+	);
+}
 
 const ProductForm = ({ product }: { product: IProduct }) => {
-	const { name, roaster, variations, price, description, attributes } =
-		product?.attributes || {};
-	// const variant = variants?.length > 0 ? variants[0] : null;
-	// const { setIsCartOpen, checkout, setCheckout } = useCartContext();
-	// const { fields } = relevantInfoMetaobject || [];
-	// const groupedFields = groupArrayObjectsByGroupSize(fields, 3);
+	const router = useRouter();
+	const { query } = router;
+
+	const {
+		name,
+		roaster,
+		variations,
+		description,
+		attributes,
+		price,
+		sale_price,
+	} = product?.attributes || {};
+	const [loading, setLoading] = useState(false);
+
+	// Variant management
+	const fallbackVariant =
+		variations && variations?.data?.length > 0 ? variations.data[0] : null;
+
+	const [selectedVariant, setSelectedVariant] = useState(fallbackVariant);
 
 	// Form management
-	// const [loading, setLoading] = useState(false);
-	const [selectedVariant] = useState(
-		variations && variations?.data?.length > 0 ? variations.data[0] : null
-	);
-	// const { getValues, setValue, register, handleSubmit, watch } = useForm({
-	// 	defaultValues: {
-	// 		ProductAmount: 1,
-	// 	},
-	// });
+	const { getValues, setValue, register, handleSubmit, watch } =
+		useForm<FormValues>({
+			defaultValues: {
+				amount: 1,
+			},
+		});
 
 	// Add to cart
-	// const onSubmit = async data => {
-	// 	setLoading(true);
-	// 	const currentCheckout = await shopifyClient.checkout.fetch(checkout?.id);
-	// 	const lineItemToAdd = {
-	// 		variantId: selectedVariant.id,
-	// 		quantity: data.ProductAmount,
-	// 	};
+	const onSubmit = () => {};
 
-	// 	const getLineItemInCheckout = currentCheckout.lineItems.find(
-	// 		item => item.id === lineItemToAdd.variantId
-	// 	);
+	const getPrice = () => {
+		if (
+			selectedVariant?.attributes?.sale_price &&
+			selectedVariant?.attributes?.price
+		) {
+			return (
+				<h4 className='text-secondary'>
+					{parseMoneyFormat(selectedVariant?.attributes?.price)}{' '}
+					<span className='text-gray-500 line-through'>
+						{parseMoneyFormat(selectedVariant?.attributes?.sale_price)}
+					</span>
+				</h4>
+			);
+		} else if (selectedVariant?.attributes?.price) {
+			return (
+				<h4 className='text-secondary'>
+					{parseMoneyFormat(selectedVariant?.attributes?.price)}
+				</h4>
+			);
+		} else {
+			return (
+				<h4 className='text-secondary'>
+					{parseMoneyFormat(price)}{' '}
+					<span className='text-gray-500 line-through'>
+						{parseMoneyFormat(sale_price)}
+					</span>
+				</h4>
+			);
+		}
+	};
 
-	// 	if (getLineItemInCheckout) {
-	// 		updateLineItem(
-	// 			[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
-	// 			currentCheckout,
-	// 			setCheckout
-	// 		);
-	// 	} else {
-	// 		addLineItem(
-	// 			[{ variantId: selectedVariant.id, quantity: data.ProductAmount }],
-	// 			currentCheckout,
-	// 			setCheckout
-	// 		);
-	// 	}
+	useEffect(() => {
+		const copyQuery = { ...query };
+		delete copyQuery.slug;
 
-	// 	setIsCartOpen(true);
-	// 	setLoading(false);
-	// };
+		if (Object.keys(copyQuery).length > 0) {
+			const newVariant = variations?.data?.filter(({ attributes }) => {
+				const variantInfo = attributes.variantInfo.reduce(
+					(acc, curr) => ({
+						...acc,
+						...curr,
+					}),
+					{}
+				);
 
-	// Quantity Selectors
-	// const incrementCounter = () => {
-	// 	setLoading(true);
-	// 	if (watch('ProductAmount') < 99) {
-	// 		const currentValue = getValues('ProductAmount') || 0;
-	// 		setValue('ProductAmount', currentValue + 1);
-	// 	}
-	// 	setTimeout(() => {
-	// 		setLoading(false);
-	// 	}, 500);
-	// };
+				const querySize = Object.keys(copyQuery).length;
+				const variantInfoSize = Object.keys(variantInfo).length;
 
-	// const decrementCounter = () => {
-	// 	setLoading(true);
-	// 	if (watch('ProductAmount') > 1) {
-	// 		const currentValue = getValues('ProductAmount') || 0;
-	// 		setValue('ProductAmount', currentValue - 1);
-	// 	}
-	// 	setTimeout(() => {
-	// 		setLoading(false);
-	// 	}, 500);
-	// };
-	console.log('selectedVariant', selectedVariant);
+				if (querySize !== variantInfoSize) {
+					return containsProperties(variantInfo, copyQuery);
+				} else {
+					return areObjectsEqual(copyQuery, variantInfo);
+				}
+			});
+
+			newVariant && setSelectedVariant(newVariant[0]);
+		}
+	}, [query, variations, router]);
 
 	return (
 		<Box className='lg:max-w-[35rem]'>
-			<></>
-			{
-				<form>
-					<div className='flex flex-col gap-7'>
-						<div className='flex flex-col gap-5'>
+			<form>
+				<div className='flex flex-col gap-7'>
+					{/* General info */}
+					<Box className='flex flex-col gap-5'>
+						<div>
 							<div>
-								<div>
-									<h1 className='text-3xl font-bold'>
-										{selectedVariant?.attributes?.name
-											? selectedVariant?.attributes?.name
-											: name.toString()}{' '}
-										{''}
-									</h1>
-								</div>
-								<div className='pointer-events-none text-accent'>
-									Tostador: {roaster?.data?.attributes?.name.toString()}
-								</div>
-								{/* <div className='flex items-center gap-2'>
-									<RatingStars
-										currentRating={calculateAvergeRating(rateMetaobject)}
-										onSelectRate={() => {}}
-									/>
-								</div> */}
+								<h1 className='text-3xl font-bold'>
+									{selectedVariant?.attributes?.name
+										? selectedVariant?.attributes?.name
+										: name.toString()}{' '}
+								</h1>
 							</div>
-							<div className='flex gap-3'>
-								<h4 className='text-secondary'>
-									{selectedVariant?.attributes?.sale_price
-										? parseMoneyFormat(selectedVariant?.attributes?.sale_price)
-										: parseMoneyFormat(price)}{' '}
-									{selectedVariant?.attributes?.price && (
-										<span className='text-gray-500 line-through'>
-											{parseMoneyFormat(selectedVariant?.attributes?.price)}
-										</span>
-									)}
-								</h4>
+							<div className='pointer-events-none text-accent'>
+								Tostador: {roaster?.data?.attributes?.name.toString()}
 							</div>
-							<ProductPageDescription
-								description={
-									selectedVariant?.attributes?.description || description
-								}
-							/>
-
-							{/* {fields && fields?.length > 0 && (
-								<div className='flex flex-wrap justify-end gap-1'>
-									<table className='table-fixed'>
-										<tbody className='text-left'>
-											{groupedFields.map((group, index) => {
-												return (
-													<tr key={index}>
-														{group.map((field, index) => {
-															if (field.key === 'altura') {
-																return (
-																	<td key={index}>
-																		<h6>{field.key.replaceAll('_', ' ')}</h6>
-																		<p className='mb-0'>
-																			{JSON.parse(field.value).value} m s. n. m.
-																		</p>
-																	</td>
-																);
-															} else {
-																return (
-																	<td key={index}>
-																		<h6>{field.key.replaceAll('_', ' ')}</h6>
-																		<p className='mb-0'>{field.value}</p>
-																	</td>
-																);
-															}
-														})}
-													</tr>
-												);
-											})}
-										</tbody>
-									</table>
-									<span
-										onClick={() => {
-											document
-												.getElementById('Description')
-												.scrollIntoView({ behavior: 'smooth' });
-										}}
-										className='flex cursor-pointer items-center text-sm text-accent hover:opacity-80'
-									>
-										Saber más
-										<TbCircleArrowRightFilled
-											size={15}
-											className='ml-1 inline-block'
-										/>
-									</span>
-								</div>
-							)} */}
 						</div>
 
-						<section className='flex flex-col flex-nowrap justify-between gap-8 sm:flex-row sm:items-end lg:gap-5'>
-							{attributes && attributes.length > 1 && (
-								<Options attributes={attributes} />
-							)}
-							{/* <QuantitySelector
-								id='ProductPageSelector'
-								inputsize='w-20 h-10'
-								buttonsize='w-10 h-10'
-								name={'ProductAmount'}
-								decrementCounter={decrementCounter}
-								incrementCounter={incrementCounter}
-								register={register}
-								setValue={setValue}
-							/> */}
-						</section>
+						{getPrice()}
 
-						{/* <Box className='flex flex-col items-start justify-start gap-1'>
-							<span className='text-xs italic text-ligth'>
-								El costo de envío se calcula en el momento de pagar*
-							</span>
-							<Button
-								type='submit'
-								loading={loading}
-								action={handleSubmit(onSubmit)}
-								color={ButtonColor.primary}
-								size={ButtonSize.lg}
-								wide={ButtonWide.full}
-							>
-								Agregar al carrito -{' '}
-								{parseMoneyFormat(parseFloat(selectedVariant?.price.amount))}
-							</Button>
-						</Box> */}
-					</div>
-				</form>
-			}
+						<ProductPageDescription
+							description={
+								selectedVariant?.attributes?.description || description
+							}
+						/>
+					</Box>
+
+					{/* Swatches */}
+					{attributes && (
+						<Options
+							attributes={attributes}
+							selectedVariant={selectedVariant}
+						/>
+					)}
+
+					{/* Quantity selector */}
+					<QuantitySelector
+						name='amount'
+						register={register}
+						setValue={setValue}
+						getValues={getValues}
+						setLoading={setLoading}
+						watch={watch}
+					/>
+
+					{/* Pay button */}
+					<Box className='flex flex-col items-start justify-start gap-1'>
+						<span className='text-xs italic text-ligth'>
+							El costo de envío se calcula en el momento de pagar*
+						</span>
+						<Button
+							type='submit'
+							loading={loading}
+							action={handleSubmit(onSubmit)}
+						>
+							Agregar al carrito -{' '}
+							{/* {parseMoneyFormat(parseFloat(selectedVariant?.attributes?.price))} */}
+						</Button>
+					</Box>
+				</div>
+			</form>
 		</Box>
 	);
 };

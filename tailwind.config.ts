@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require('tailwindcss/defaultTheme');
-const colors = require('tailwindcss/colors');
+import defaultTheme from 'tailwindcss/defaultTheme';
+import colors from 'tailwindcss/colors';
 
 module.exports = {
 	content: [
@@ -27,7 +27,7 @@ module.exports = {
 				error: colors.red[800],
 			},
 			spacing: {
-				section: '1200px',
+				section: '1100px',
 			},
 			gap: {
 				layoutPublic: '5rem',

@@ -16,6 +16,8 @@ type Product = {
   cata?: ICataAttr,
   variations?: IRelationModel<IVariant[]>;
   attributes?: IAttribute[];
+  image: IRelationModel<IImage>;
+  gallery: IRelationModel<IImage[]>;
 }
 
 type Variant = {
@@ -26,8 +28,9 @@ type Variant = {
   stock: number;
   createdAt: Date;
   updatedAt: Date;
-  // image: IRelationModel<IImage>;
-  // gallery: IRelationModel<IImage[]>;
+  image: IRelationModel<IImage>;
+  gallery: IRelationModel<IImage[]>;
+  variantInfo: object[];
 }
 
 type Attribute = {

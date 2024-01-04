@@ -9,7 +9,7 @@ import {
 	ButtonWide,
 } from 'theme';
 
-interface ButtonProps {
+interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 	children: React.ReactNode;
 	type?: 'button' | 'submit' | 'reset';
 	color?: ButtonColor;
@@ -29,7 +29,9 @@ const Button = ({
 	loading,
 	action,
 }: ButtonProps) => {
-	const defaults = 'rounded font-bold text-white duration-200 hover:opacity-80';
+	const defaults = `rounded font-bold text-white duration-200 hover:opacity-80 min-h-[3rem] min-w-[20rem] ${
+		loading ? 'opacity-50' : ''
+	}`;
 	const classNames = defaults + ' ' + size + ' ' + color + ' ' + ' ' + wide;
 
 	return (
@@ -37,7 +39,8 @@ const Button = ({
 			type={type}
 			disabled={loading}
 			className={classNames}
-			onClick={() => {
+			onClick={e => {
+				e.preventDefault();
 				action && action();
 			}}
 		>
